@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login — Arovon AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;0,700;1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<style>
+:root {
+  --accent: #FF6B00;
+  --accent-light: rgba(255,107,0,0.08);
+  --accent-border: rgba(255,107,0,0.18);
+  --ink: #111318;
+  --ink-2: #555;
+  --ink-3: #999;
+  --white: #ffffff;
+  --bg: #fafafa;
+  --border: rgba(0,0,0,0.08);
+  --radius: 14px;
+  --radius-sm: 10px;
+  --radius-lg: 22px;
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { height: 100%; font-family: 'DM Sans', sans-serif; background: var(--white); color: var(--ink); -webkit-font-smoothing: antialiased; }
+
+/* Tricolor */
+.tricolor { height: 3px; background: linear-gradient(90deg, #FF9933 33.33%, #fff 33.33%, #fff 66.66%, #138808 66.66%); }
+
+/* Layout */
+.page { display: flex; min-height: calc(100vh - 3px); }
+
+/* Left panel */
+.left {
+  width: 48%;
+  background: var(--ink);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 60px 48px;
+  position: relative; overflow: hidden;
+}
+
+.left-bg-circle {
+  position: absolute; border-radius: 50%; pointer-events: none;
+}
+.left-bg-circle:nth-child(1) {
+  width: 500px; height: 500px;
+  top: -150px; right: -150px;
+  background: radial-gradient(circle, rgba(255,107,0,0.1), transparent 70%);
+  animation: breathe 9s ease-in-out infinite;
+}
+.left-bg-circle:nth-child(2) {
+  width: 350px; height: 350px;
+  bottom: -100px; left: -100px;
+  background: radial-gradient(circle, rgba(255,107,0,0.07), transparent 70%);
+  animation: breathe 7s ease-in-out infinite reverse;
+}
+@keyframes breathe { 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.1); } }
+
+.left-content { position: relative; z-index: 1; text-align: center; max-width: 360px; }
+
+.left-logo {
+  display: inline-flex; align-items: center; gap: 12px;
+  text-decoration: none; margin-bottom: 52px;
+}
+.left-logo-icon { width: 42px; height: 42px; }
+.left-logo-name { font-family: 'Fraunces', serif; font-size: 1.6rem; color: var(--white); letter-spacing: -0.5px; }
+.left-logo-name span { color: var(--accent); }
+
+.left-headline {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  color: var(--white); font-weight: 600;
+  line-height: 1.25; margin-bottom: 16px;
+  letter-spacing: -0.5px;
+}
+.left-headline em { color: var(--accent); font-style: italic; }
+
+.left-sub {
+  font-size: 0.9rem; color: rgba(255,255,255,0.5);
+  line-height: 1.75; margin-bottom: 44px;
+}
+
+.left-langs {
+  display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+}
+.left-lang {
+  padding: 5px 14px;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 100px;
+  font-size: 0.75rem; color: rgba(255,255,255,0.45);
+}
+
+.left-bottom {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #FF9933 33.33%, rgba(255,255,255,0.3) 33.33%, rgba(255,255,255,0.3) 66.66%, #138808 66.66%);
+}
+
+/* Right panel */
+.right {
+  flex: 1;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 60px 48px;
+  position: relative;
+  overflow-y: auto;
+}
+
+.back-link {
+  position: absolute; top: 24px; left: 24px;
+  display: flex; align-items: center; gap: 6px;
+  font-size: 0.8rem; color: var(--ink-3);
+  text-decoration: none;
+  transition: color .2s;
+}
+.back-link:hover { color: var(--accent); }
+.back-link svg { transition: transform .2s; }
+.back-link:hover svg { transform: translateX(-2px); }
+
+.form-wrap {
+  width: 100%; max-width: 380px;
+  animation: fadeUp .6s ease both;
+}
+@keyframes fadeUp { from{ opacity:0; transform:translateY(16px); } to{ opacity:1; transform:translateY(0); } }
+
+.form-title {
+  font-family: 'Fraunces', serif;
+  font-size: 2rem; font-weight: 700;
+  color: var(--ink); margin-bottom: 6px; letter-spacing: -0.5px;
+}
+.form-title span { color: var(--accent); }
+.form-sub { font-size: 0.875rem; color: var(--ink-3); margin-bottom: 32px; line-height: 1.6; }
+
+/* Tabs */
+.tabs {
+  display: flex; background: var(--bg);
+  border-radius: var(--radius-sm);
+  padding: 3px; margin-bottom: 26px; gap: 3px;
+}
+.tab {
+  flex: 1; padding: 9px;
+  border: none; background: transparent;
+  border-radius: 8px;
+  font-size: 0.875rem; font-weight: 500;
+  color: var(--ink-3); font-family: 'DM Sans', sans-serif;
+  transition: all .2s;
+}
+.tab.active {
+  background: var(--white); color: var(--ink); font-weight: 600;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.07);
+}
+
+/* Message box */
+.msg {
+  padding: 11px 14px; border-radius: var(--radius-sm);
+  font-size: 0.82rem; font-weight: 500;
+  margin-bottom: 16px; display: none;
+}
+.msg.error { background: rgba(220,38,38,0.07); color: #dc2626; border: 1px solid rgba(220,38,38,0.15); }
+.msg.success { background: rgba(22,163,74,0.07); color: #16a34a; border: 1px solid rgba(22,163,74,0.15); }
+
+/* Input group */
+.input-group { margin-bottom: 16px; }
+.input-label {
+  display: block; font-size: 0.8rem; font-weight: 600;
+  color: var(--ink-2); margin-bottom: 6px; letter-spacing: 0.02em;
+}
+.input-wrap { position: relative; }
+.input-field {
+  width: 100%; padding: 13px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem; font-family: 'DM Sans', sans-serif;
+  background: var(--white); color: var(--ink);
+  outline: none; transition: border-color .2s, box-shadow .2s;
+}
+.input-field:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(255,107,0,0.1);
+}
+.input-field::placeholder { color: #ccc; }
+.eye-btn {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; color: var(--ink-3);
+  font-size: 0.78rem; font-family: 'DM Sans', sans-serif;
+  font-weight: 500; padding: 4px 6px;
+}
+
+.forgot { display: block; text-align: right; font-size: 0.78rem; color: var(--accent); text-decoration: none; margin-top: -10px; margin-bottom: 18px; }
+.forgot:hover { text-decoration: underline; }
+
+/* Submit */
+.submit-btn {
+  width: 100%; padding: 14px;
+  background: var(--accent); color: var(--white);
+  border: none; border-radius: var(--radius-sm);
+  font-size: 0.95rem; font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  transition: background .2s, transform .2s, box-shadow .2s;
+  box-shadow: 0 3px 14px rgba(255,107,0,0.28);
+  position: relative; overflow: hidden;
+}
+.submit-btn:hover { background: #e55a00; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(255,107,0,0.35); }
+.submit-btn:active { transform: translateY(0); }
+.btn-text { display: block; }
+.btn-loader {
+  display: none; width: 18px; height: 18px; margin: 0 auto;
+  border: 2px solid rgba(255,255,255,0.35);
+  border-top-color: white; border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+@keyframes spin { to{ transform:rotate(360deg); } }
+
+/* Divider */
+.divider {
+  display: flex; align-items: center; gap: 12px;
+  margin: 20px 0; color: var(--ink-3); font-size: 0.78rem;
+}
+.divider::before, .divider::after { content:''; flex:1; height:1px; background:var(--border); }
+
+/* Google btn */
+.google-btn {
+  width: 100%; padding: 12px;
+  background: var(--white); color: var(--ink);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem; font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  transition: border-color .2s, box-shadow .2s, transform .2s;
+}
+.google-btn:hover { border-color: rgba(0,0,0,0.18); box-shadow: 0 3px 12px rgba(0,0,0,0.06); transform: translateY(-1px); }
+
+.form-note { text-align: center; font-size: 0.75rem; color: var(--ink-3); margin-top: 20px; line-height: 1.6; }
+.form-note a { color: var(--accent); text-decoration: none; }
+
+/* Forgot panel */
+.forgot-panel { display: none; animation: fadeUp .4s ease both; }
+
+/* Responsive */
+@media(max-width: 768px) {
+  .page { flex-direction: column; }
+  .left { width: 100%; min-height: 220px; padding: 36px 24px; }
+  .left-langs { display: none; }
+  .left-sub { display: none; }
+  .left-headline { font-size: 1.4rem; margin-bottom: 0; }
+  .right { padding: 36px 24px 60px; }
+  .back-link { top: 16px; left: 16px; }
+}
+@media(max-width: 480px) {
+  .form-title { font-size: 1.7rem; }
+  .right { padding: 32px 20px 60px; }
+}
+</style>
+</head>
+<body>
+
+<div class="tricolor"></div>
+
+<div class="page">
+
+  <!-- Left -->
+  <div class="left">
+    <div class="left-bg-circle"></div>
+    <div class="left-bg-circle"></div>
+    <div class="left-content">
+      <a href="index.html" class="left-logo">
+        <svg class="left-logo-icon" viewBox="0 0 42 42" fill="none">
+          <rect width="42" height="42" rx="12" fill="#FF6B00"/>
+          <circle cx="21" cy="21" r="8" stroke="white" stroke-width="1.5" fill="none"/>
+          <circle cx="21" cy="21" r="3" fill="white"/>
+          <line x1="21" y1="8" x2="21" y2="13" stroke="white" stroke-width="1.5"/>
+          <line x1="21" y1="29" x2="21" y2="34" stroke="white" stroke-width="1.5"/>
+          <line x1="8" y1="21" x2="13" y2="21" stroke="white" stroke-width="1.5"/>
+          <line x1="29" y1="21" x2="34" y2="21" stroke="white" stroke-width="1.5"/>
+          <line x1="11.5" y1="11.5" x2="15.5" y2="15.5" stroke="white" stroke-width="1.2"/>
+          <line x1="26.5" y1="26.5" x2="30.5" y2="30.5" stroke="white" stroke-width="1.2"/>
+          <line x1="30.5" y1="11.5" x2="26.5" y2="15.5" stroke="white" stroke-width="1.2"/>
+          <line x1="15.5" y1="26.5" x2="11.5" y2="30.5" stroke="white" stroke-width="1.2"/>
+        </svg>
+        <span class="left-logo-name">Aro<span>von</span></span>
+      </a>
+      <h2 class="left-headline">Ask anything.<br>In <em>your language.</em></h2>
+      <p class="left-sub">Join thousands of users getting instant answers in Hindi, Tamil, Bengali and every Indian language.</p>
+      <div class="left-langs">
+        <span class="left-lang">हिंदी</span>
+        <span class="left-lang">தமிழ்</span>
+        <span class="left-lang">తెలుగు</span>
+        <span class="left-lang">বাংলা</span>
+        <span class="left-lang">मराठी</span>
+        <span class="left-lang">ગુજરાતી</span>
+        <span class="left-lang">ಕನ್ನಡ</span>
+        <span class="left-lang">മലയാളം</span>
+        <span class="left-lang">English</span>
+      </div>
+    </div>
+    <div class="left-bottom"></div>
+  </div>
+
+  <!-- Right -->
+  <div class="right">
+    <a href="index.html" class="back-link">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+      Back to Home
+    </a>
+
+    <!-- Auth form -->
+    <div class="form-wrap" id="authWrap">
+      <h1 class="form-title">Welcome <span>back</span></h1>
+      <p class="form-sub" id="formSub">Sign in to continue your conversation.</p>
+
+      <div class="tabs">
+        <button class="tab active" id="tabLogin" onclick="switchTab('login')">Sign In</button>
+        <button class="tab" id="tabSignup" onclick="switchTab('signup')">Sign Up</button>
+      </div>
+
+      <div class="msg" id="msgBox"></div>
+
+      <!-- Login -->
+      <div id="loginFields">
+        <div class="input-group">
+          <label class="input-label">Email</label>
+          <input type="email" class="input-field" id="loginEmail" placeholder="you@email.com" autocomplete="email"/>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Password</label>
+          <div class="input-wrap">
+            <input type="password" class="input-field" id="loginPass" placeholder="Your password" autocomplete="current-password"/>
+            <button class="eye-btn" onclick="toggleEye('loginPass', this)">Show</button>
+          </div>
+        </div>
+        <a href="#" class="forgot" onclick="showForgot(event)">Forgot password?</a>
+        <button class="submit-btn" id="loginBtn" onclick="doLogin()">
+          <span class="btn-text">Sign In</span>
+          <div class="btn-loader" id="loginLoader"></div>
+        </button>
+      </div>
+
+      <!-- Signup -->
+      <div id="signupFields" style="display:none;">
+        <div class="input-group">
+          <label class="input-label">Full Name</label>
+          <input type="text" class="input-field" id="signupName" placeholder="Your name"/>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Email</label>
+          <input type="email" class="input-field" id="signupEmail" placeholder="you@email.com" autocomplete="email"/>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Password</label>
+          <div class="input-wrap">
+            <input type="password" class="input-field" id="signupPass" placeholder="Min 6 characters" autocomplete="new-password"/>
+            <button class="eye-btn" onclick="toggleEye('signupPass', this)">Show</button>
+          </div>
+        </div>
+        <div class="input-group">
+          <label class="input-label">Confirm Password</label>
+          <input type="password" class="input-field" id="signupPass2" placeholder="Repeat password"/>
+        </div>
+        <button class="submit-btn" id="signupBtn" onclick="doSignup()">
+          <span class="btn-text">Create Account</span>
+          <div class="btn-loader" id="signupLoader"></div>
+        </button>
+      </div>
+
+      <div class="divider">or</div>
+
+      <button class="google-btn" onclick="doGoogle()">
+        <svg width="18" height="18" viewBox="0 0 24 24">
+          <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+          <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+          <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+          <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+        </svg>
+        Continue with Google
+      </button>
+
+      <p class="form-note">By continuing you agree to Arovon's <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</p>
+    </div>
+
+    <!-- Forgot password -->
+    <div class="forgot-panel form-wrap" id="forgotWrap">
+      <a href="#" onclick="hideForgot(event)" style="display:inline-flex;align-items:center;gap:6px;font-size:0.8rem;color:var(--ink-3);text-decoration:none;margin-bottom:28px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Back
+      </a>
+      <h1 class="form-title">Reset <span>password</span></h1>
+      <p class="form-sub">Enter your email and we will send a reset link.</p>
+      <div class="msg" id="forgotMsg"></div>
+      <div class="input-group">
+        <label class="input-label">Email</label>
+        <input type="email" class="input-field" id="forgotEmail" placeholder="you@email.com"/>
+      </div>
+      <button class="submit-btn" onclick="doForgot()">
+        <span class="btn-text" id="forgotBtnText">Send Reset Link</span>
+        <div class="btn-loader" id="forgotLoader"></div>
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+let auth;
+let currentTab = 'login';
+
+async function initApp() {
+  try {
+    const res = await fetch('/api/config');
+    const config = await res.json();
+    firebase.initializeApp(config.firebase);
+    auth = firebase.auth();
+    auth.onAuthStateChanged(user => {
+      if (user) window.location.href = 'chat.html';
+    });
+  } catch(e) {
+    showMsg('Server connection failed. Please try again.', 'error');
+  }
+}
+initApp();
+
+// Tab switch
+function switchTab(tab) {
+  currentTab = tab;
+  document.getElementById('loginFields').style.display = tab === 'login' ? 'block' : 'none';
+  document.getElementById('signupFields').style.display = tab === 'signup' ? 'block' : 'none';
+  document.getElementById('tabLogin').className = 'tab' + (tab === 'login' ? ' active' : '');
+  document.getElementById('tabSignup').className = 'tab' + (tab === 'signup' ? ' active' : '');
+  const title = document.querySelector('.form-title');
+  const sub = document.getElementById('formSub');
+  if (tab === 'login') {
+    title.innerHTML = 'Welcome <span style="color:var(--accent)">back</span>';
+    sub.textContent = 'Sign in to continue your conversation.';
+  } else {
+    title.innerHTML = 'Create <span style="color:var(--accent)">account</span>';
+    sub.textContent = 'Free forever. No credit card needed.';
+  }
+  hideMsg();
+}
+
+// Message
+function showMsg(text, type, id = 'msgBox') {
+  const el = document.getElementById(id);
+  el.textContent = text;
+  el.className = 'msg ' + type;
+  el.style.display = 'block';
+}
+function hideMsg() {
+  document.getElementById('msgBox').style.display = 'none';
+}
+
+// Eye toggle
+function toggleEye(id, btn) {
+  const el = document.getElementById(id);
+  el.type = el.type === 'password' ? 'text' : 'password';
+  btn.textContent = el.type === 'password' ? 'Show' : 'Hide';
+}
+
+// Loading
+function setLoad(prefix, on) {
+  document.querySelector('#' + prefix + 'Btn .btn-text').style.display = on ? 'none' : 'block';
+  document.getElementById(prefix + 'Loader').style.display = on ? 'block' : 'none';
+}
+
+// Login
+async function doLogin() {
+  if (!auth) return;
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass = document.getElementById('loginPass').value;
+  if (!email || !pass) { showMsg('Please fill in all fields.', 'error'); return; }
+  setLoad('login', true); hideMsg();
+  try {
+    await auth.signInWithEmailAndPassword(email, pass);
+  } catch(e) {
+    setLoad('login', false);
+    const map = {
+      'auth/user-not-found': 'No account found with this email.',
+      'auth/wrong-password': 'Incorrect password.',
+      'auth/invalid-email': 'Invalid email format.',
+      'auth/too-many-requests': 'Too many attempts. Please wait.'
+    };
+    showMsg(map[e.code] || 'Sign in failed. Please try again.', 'error');
+  }
+}
+
+// Signup
+async function doSignup() {
+  if (!auth) return;
+  const name = document.getElementById('signupName').value.trim();
+  const email = document.getElementById('signupEmail').value.trim();
+  const pass = document.getElementById('signupPass').value;
+  const pass2 = document.getElementById('signupPass2').value;
+  if (!name || !email || !pass || !pass2) { showMsg('Please fill in all fields.', 'error'); return; }
+  if (pass !== pass2) { showMsg('Passwords do not match.', 'error'); return; }
+  if (pass.length < 6) { showMsg('Password must be at least 6 characters.', 'error'); return; }
+  setLoad('signup', true); hideMsg();
+  try {
+    const cred = await auth.createUserWithEmailAndPassword(email, pass);
+    await cred.user.updateProfile({ displayName: name });
+  } catch(e) {
+    setLoad('signup', false);
+    const map = {
+      'auth/email-already-in-use': 'An account with this email already exists.',
+      'auth/invalid-email': 'Invalid email format.',
+      'auth/weak-password': 'Password is too weak.'
+    };
+    showMsg(map[e.code] || 'Sign up failed. Please try again.', 'error');
+  }
+}
+
+// Google
+async function doGoogle() {
+  if (!auth) return;
+  try {
+    const provider = new firebase.auth.GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: 'select_account' });
+    await auth.signInWithPopup(provider);
+  } catch(e) {
+    showMsg('Google sign in failed. Please try again.', 'error');
+  }
+}
+
+// Forgot
+function showForgot(e) {
+  e.preventDefault();
+  document.getElementById('authWrap').style.display = 'none';
+  const fp = document.getElementById('forgotWrap');
+  fp.style.display = 'block';
+}
+function hideForgot(e) {
+  e.preventDefault();
+  document.getElementById('forgotWrap').style.display = 'none';
+  document.getElementById('authWrap').style.display = 'block';
+}
+async function doForgot() {
+  if (!auth) return;
+  const email = document.getElementById('forgotEmail').value.trim();
+  if (!email) { showMsg('Please enter your email.', 'error', 'forgotMsg'); return; }
+  document.getElementById('forgotBtnText').style.display = 'none';
+  document.getElementById('forgotLoader').style.display = 'block';
+  try {
+    await auth.sendPasswordResetEmail(email);
+    showMsg('Reset link sent. Please check your email.', 'success', 'forgotMsg');
+  } catch(e) {
+    showMsg('Email not found. Please check and try again.', 'error', 'forgotMsg');
+  }
+  document.getElementById('forgotBtnText').style.display = 'block';
+  document.getElementById('forgotLoader').style.display = 'none';
+}
+
+// Enter key
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Enter') return;
+  if (document.getElementById('forgotWrap').style.display === 'block') { doForgot(); return; }
+  if (currentTab === 'login') doLogin();
+  else doSignup();
+});
+</script>
+</body>
+</html>

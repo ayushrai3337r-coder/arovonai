@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Arovon — India's AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,400;0,600;0,700;1,300&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --accent: #FF6B00;
+  --accent-light: rgba(255,107,0,0.08);
+  --accent-border: rgba(255,107,0,0.18);
+  --ink: #111318;
+  --ink-2: #555;
+  --ink-3: #999;
+  --white: #ffffff;
+  --bg: #fafafa;
+  --glass: rgba(255,255,255,0.72);
+  --border: rgba(0,0,0,0.07);
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-lg: 24px;
+}
+
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--white);
+  color: var(--ink);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── CURSOR ── */
+.cur { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transform: translate(-50%,-50%); transition: width .2s, height .2s; }
+.cur-ring { width: 32px; height: 32px; border: 1.5px solid var(--accent); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9998; transform: translate(-50%,-50%); opacity: 0.4; transition: width .2s, height .2s, opacity .2s; }
+.cur.hover { width: 14px; height: 14px; }
+.cur-ring.hover { width: 44px; height: 44px; opacity: 0.2; }
+@media(hover:none){ .cur,.cur-ring { display: none; } body { cursor: auto; } }
+
+/* ── NAVBAR ── */
+.navbar {
+  position: fixed; top: 16px; left: 50%; transform: translateX(-50%);
+  width: calc(100% - 32px); max-width: 1080px;
+  background: var(--glass);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--accent-border);
+  border-radius: 18px;
+  padding: 13px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  z-index: 1000;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.05);
+  transition: box-shadow .3s;
+}
+.navbar.scrolled { box-shadow: 0 8px 32px rgba(0,0,0,0.09); }
+
+.nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+.nav-logo-icon { width: 36px; height: 36px; }
+.nav-logo-name { font-family: 'Fraunces', serif; font-size: 1.3rem; color: var(--ink); letter-spacing: -0.5px; }
+.nav-logo-name span { color: var(--accent); }
+
+.nav-links { display: flex; gap: 28px; list-style: none; }
+.nav-links a {
+  font-size: 0.875rem; font-weight: 500; color: var(--ink-2);
+  text-decoration: none; transition: color .2s;
+  cursor: none;
+}
+.nav-links a:hover { color: var(--accent); }
+
+.nav-cta {
+  padding: 9px 22px;
+  background: var(--accent); color: var(--white);
+  border-radius: var(--radius-sm); font-size: 0.875rem; font-weight: 600;
+  text-decoration: none; cursor: none;
+  transition: background .2s, transform .2s;
+  box-shadow: 0 3px 12px rgba(255,107,0,0.28);
+}
+.nav-cta:hover { background: #e55a00; transform: translateY(-1px); }
+
+.hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: none; padding: 4px; }
+.hamburger span { display: block; width: 20px; height: 1.5px; background: var(--ink); border-radius: 2px; transition: all .3s; }
+
+/* ── MOBILE NAV ── */
+.mobile-nav {
+  position: fixed; inset: 0;
+  background: rgba(255,255,255,0.97);
+  backdrop-filter: blur(20px);
+  z-index: 999;
+  display: none; flex-direction: column; align-items: center; justify-content: center; gap: 36px;
+}
+.mobile-nav.open { display: flex; animation: fadeIn .25s ease; }
+.mobile-nav a { font-family: 'Fraunces', serif; font-size: 2rem; color: var(--ink); text-decoration: none; transition: color .2s; }
+.mobile-nav a:hover { color: var(--accent); }
+.mobile-close { position: absolute; top: 24px; right: 24px; background: none; border: none; font-size: 1.4rem; cursor: none; color: var(--ink-2); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 130px 24px 80px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+}
+.hero-bg-circle {
+  position: absolute; border-radius: 50%;
+  animation: breathe 8s ease-in-out infinite;
+}
+.hero-bg-circle:nth-child(1) {
+  width: 600px; height: 600px;
+  top: -200px; right: -150px;
+  background: radial-gradient(circle, rgba(255,107,0,0.06), transparent 70%);
+}
+.hero-bg-circle:nth-child(2) {
+  width: 400px; height: 400px;
+  bottom: -100px; left: -100px;
+  background: radial-gradient(circle, rgba(255,107,0,0.04), transparent 70%);
+  animation-delay: -4s;
+}
+@keyframes breathe { 0%,100%{ transform: scale(1); } 50%{ transform: scale(1.08); } }
+
+.hero-inner { position: relative; z-index: 1; max-width: 720px; }
+
+.hero-tag {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--accent-light);
+  border: 1px solid var(--accent-border);
+  border-radius: 100px; padding: 5px 16px;
+  font-size: 0.75rem; font-weight: 600; color: var(--accent);
+  letter-spacing: 0.1em; text-transform: uppercase;
+  margin-bottom: 28px;
+  animation: fadeUp .7s ease both;
+}
+.hero-tag-dot {
+  width: 6px; height: 6px; border-radius: 50%; background: var(--accent);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{ opacity:1; transform:scale(1); } 50%{ opacity:.4; transform:scale(.7); } }
+
+.hero-title {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  font-weight: 700; line-height: 1.08; letter-spacing: -1px;
+  color: var(--ink); margin-bottom: 20px;
+  animation: fadeUp .8s ease .08s both;
+}
+.hero-title span { color: var(--accent); font-style: italic; }
+
+.hero-sub {
+  font-size: clamp(1rem, 2vw, 1.15rem);
+  color: var(--ink-2); line-height: 1.75; max-width: 520px;
+  margin: 0 auto 40px; font-weight: 400;
+  animation: fadeUp .8s ease .16s both;
+}
+
+.hero-btns {
+  display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+  animation: fadeUp .8s ease .24s both;
+}
+.btn-primary {
+  padding: 14px 32px;
+  background: var(--accent); color: var(--white);
+  border-radius: var(--radius-sm); font-size: 0.95rem; font-weight: 600;
+  text-decoration: none; cursor: none;
+  box-shadow: 0 4px 20px rgba(255,107,0,0.32);
+  transition: background .2s, transform .2s, box-shadow .2s;
+}
+.btn-primary:hover { background: #e55a00; transform: translateY(-2px); box-shadow: 0 8px 28px rgba(255,107,0,0.38); }
+.btn-ghost {
+  padding: 14px 32px;
+  background: transparent; color: var(--ink);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm); font-size: 0.95rem; font-weight: 500;
+  text-decoration: none; cursor: none;
+  transition: border-color .2s, background .2s, transform .2s;
+}
+.btn-ghost:hover { border-color: var(--accent); background: var(--accent-light); transform: translateY(-2px); }
+
+/* ── HERO CHAT PREVIEW ── */
+.hero-preview {
+  margin-top: 64px; max-width: 600px; width: 100%;
+  animation: fadeUp .9s ease .32s both;
+}
+.preview-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.07);
+  overflow: hidden;
+  animation: floatY 6s ease-in-out infinite;
+}
+@keyframes floatY { 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-8px); } }
+
+.preview-bar {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; gap: 10px;
+}
+.preview-bar-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
+.preview-bar-name { font-size: 0.85rem; font-weight: 600; }
+.preview-bar-status { font-size: 0.72rem; color: #22c55e; margin-left: auto; }
+
+.preview-body { padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+
+.preview-msg { display: flex; gap: 10px; }
+.preview-msg.user { flex-direction: row-reverse; }
+.preview-avatar {
+  width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+.preview-avatar.ai { background: var(--accent); }
+.preview-avatar.user { background: rgba(0,0,0,0.07); }
+.preview-bubble {
+  padding: 10px 14px; border-radius: 14px;
+  font-size: 0.83rem; line-height: 1.6; max-width: 78%;
+}
+.preview-bubble.ai {
+  background: var(--bg); border: 1px solid var(--border);
+  border-bottom-left-radius: 4px;
+}
+.preview-bubble.user {
+  background: var(--accent); color: var(--white);
+  border-bottom-right-radius: 4px;
+}
+.preview-typing { display: flex; gap: 4px; align-items: center; padding: 4px 0; }
+.preview-typing span {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--ink-3);
+  animation: typing 1.2s ease-in-out infinite;
+}
+.preview-typing span:nth-child(2) { animation-delay: .2s; }
+.preview-typing span:nth-child(3) { animation-delay: .4s; }
+@keyframes typing { 0%,100%{ transform:translateY(0);opacity:.4; } 50%{ transform:translateY(-4px);opacity:1; } }
+
+/* ── STATS ── */
+.stats {
+  padding: 60px 24px;
+  display: flex; justify-content: center;
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.stat-item { text-align: center; padding: 20px 48px; border-right: 1px solid var(--border); }
+.stat-item:last-child { border-right: none; }
+.stat-num { font-family: 'Fraunces', serif; font-size: 2.6rem; color: var(--accent); line-height: 1; }
+.stat-lbl { font-size: 0.78rem; color: var(--ink-3); text-transform: uppercase; letter-spacing: .1em; margin-top: 4px; font-weight: 500; }
+
+/* ── FEATURES ── */
+.features { padding: 100px 24px; max-width: 1080px; margin: 0 auto; }
+.section-label { font-size: 0.75rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--accent); margin-bottom: 12px; }
+.section-title { font-family: 'Fraunces', serif; font-size: clamp(1.8rem, 4vw, 2.8rem); color: var(--ink); margin-bottom: 56px; max-width: 500px; line-height: 1.2; }
+
+.features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.feature-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 28px;
+  transition: transform .25s, box-shadow .25s, border-color .25s;
+  position: relative; overflow: hidden;
+}
+.feature-card::after {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+  background: var(--accent); transform: scaleX(0); transform-origin: left;
+  transition: transform .35s ease;
+}
+.feature-card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(0,0,0,0.07); border-color: var(--accent-border); }
+.feature-card:hover::after { transform: scaleX(1); }
+
+.feature-icon-wrap {
+  width: 44px; height: 44px; border-radius: 12px;
+  background: var(--accent-light); display: flex; align-items: center; justify-content: center;
+  margin-bottom: 18px;
+}
+.feature-title { font-weight: 700; font-size: 1rem; margin-bottom: 8px; }
+.feature-desc { font-size: 0.875rem; color: var(--ink-2); line-height: 1.7; }
+
+/* ── LANGUAGES SCROLL ── */
+.langs { padding: 60px 0; overflow: hidden; border-top: 1px solid var(--border); }
+.langs-inner { padding: 0 24px 16px; max-width: 1080px; margin: 0 auto; }
+.langs-title { font-family: 'Fraunces', serif; font-size: 1.4rem; margin-bottom: 24px; }
+.langs-track { display: flex; gap: 12px; width: max-content; animation: scrollLang 20s linear infinite; }
+.langs-track:hover { animation-play-state: paused; }
+@keyframes scrollLang { from{ transform: translateX(0); } to{ transform: translateX(-50%); } }
+.lang-chip {
+  padding: 8px 20px; border: 1px solid var(--border);
+  border-radius: 100px; font-size: 0.83rem; font-weight: 500;
+  color: var(--ink); white-space: nowrap; cursor: default;
+  transition: border-color .2s, background .2s, color .2s;
+}
+.lang-chip:hover { border-color: var(--accent); background: var(--accent-light); color: var(--accent); }
+
+/* ── CTA ── */
+.cta { padding: 100px 24px; text-align: center; }
+.cta-card {
+  max-width: 640px; margin: 0 auto;
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 64px 40px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.05);
+  position: relative; overflow: hidden;
+}
+.cta-card::before {
+  content: ''; position: absolute; top: -80px; right: -80px;
+  width: 240px; height: 240px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,107,0,0.07), transparent 70%);
+  pointer-events: none;
+}
+.cta-title { font-family: 'Fraunces', serif; font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 14px; }
+.cta-desc { font-size: 0.95rem; color: var(--ink-2); line-height: 1.75; margin-bottom: 36px; }
+
+/* ── FOOTER ── */
+footer {
+  padding: 40px 24px;
+  border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 16px;
+  max-width: 1080px; margin: 0 auto;
+}
+.footer-logo { font-family: 'Fraunces', serif; font-size: 1.2rem; color: var(--ink); }
+.footer-logo span { color: var(--accent); }
+.footer-links { display: flex; gap: 24px; }
+.footer-links a { font-size: 0.8rem; color: var(--ink-3); text-decoration: none; transition: color .2s; cursor: none; }
+.footer-links a:hover { color: var(--accent); }
+.footer-copy { font-size: 0.78rem; color: var(--ink-3); }
+
+/* ── TRICOLOR ── */
+.tricolor { height: 3px; background: linear-gradient(90deg, #FF9933 33.33%, #fff 33.33%, #fff 66.66%, #138808 66.66%); }
+
+/* ── REVEAL ── */
+.reveal { opacity: 0; transform: translateY(24px); transition: opacity .7s ease, transform .7s ease; }
+.reveal.on { opacity: 1; transform: translateY(0); }
+
+/* ── ANIM ── */
+@keyframes fadeUp { from{ opacity:0; transform:translateY(20px); } to{ opacity:1; transform:translateY(0); } }
+@keyframes fadeIn { from{ opacity:0; } to{ opacity:1; } }
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){ .features-grid { grid-template-columns: 1fr 1fr; } }
+@media(max-width:700px){
+  .nav-links, .nav-cta { display: none; }
+  .hamburger { display: flex; }
+  .features-grid { grid-template-columns: 1fr; }
+  .stat-item { padding: 16px 28px; border-right: none; border-bottom: 1px solid var(--border); }
+  .stat-item:last-child { border-bottom: none; }
+  footer { flex-direction: column; align-items: flex-start; }
+}
+@media(max-width:480px){
+  .hero-btns { flex-direction: column; align-items: stretch; }
+  .btn-primary, .btn-ghost { text-align: center; }
+  .cta-card { padding: 40px 24px; }
+}
+</style>
+</head>
+<body>
+
+<div class="cur" id="cur"></div>
+<div class="cur-ring" id="curRing"></div>
+
+<div class="tricolor"></div>
+
+<!-- Mobile Nav -->
+<div class="mobile-nav" id="mobileNav">
+  <button class="mobile-close" onclick="closeMobileNav()">&#x2715;</button>
+  <a href="#features" onclick="closeMobileNav()">Features</a>
+  <a href="#languages" onclick="closeMobileNav()">Languages</a>
+  <a href="login.html" style="color:var(--accent)">Get Started</a>
+</div>
+
+<!-- Navbar -->
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="nav-logo">
+    <svg class="nav-logo-icon" viewBox="0 0 36 36" fill="none">
+      <rect width="36" height="36" rx="10" fill="#FF6B00"/>
+      <circle cx="18" cy="18" r="7" stroke="white" stroke-width="1.4" fill="none"/>
+      <circle cx="18" cy="18" r="2.5" fill="white"/>
+      <line x1="18" y1="7" x2="18" y2="11" stroke="white" stroke-width="1.4"/>
+      <line x1="18" y1="25" x2="18" y2="29" stroke="white" stroke-width="1.4"/>
+      <line x1="7" y1="18" x2="11" y2="18" stroke="white" stroke-width="1.4"/>
+      <line x1="25" y1="18" x2="29" y2="18" stroke="white" stroke-width="1.4"/>
+      <line x1="10.5" y1="10.5" x2="13.5" y2="13.5" stroke="white" stroke-width="1.1"/>
+      <line x1="22.5" y1="22.5" x2="25.5" y2="25.5" stroke="white" stroke-width="1.1"/>
+      <line x1="25.5" y1="10.5" x2="22.5" y2="13.5" stroke="white" stroke-width="1.1"/>
+      <line x1="13.5" y1="22.5" x2="10.5" y2="25.5" stroke="white" stroke-width="1.1"/>
+    </svg>
+    <span class="nav-logo-name">Aro<span>von</span></span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#languages">Languages</a></li>
+    <li><a href="#about">About</a></li>
+  </ul>
+  <a href="login.html" class="nav-cta">Get Started</a>
+  <button class="hamburger" onclick="openMobileNav()">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-bg">
+    <div class="hero-bg-circle"></div>
+    <div class="hero-bg-circle"></div>
+  </div>
+  <div class="hero-inner">
+    <div class="hero-tag"><div class="hero-tag-dot"></div>Made in India</div>
+    <h1 class="hero-title">Ask anything.<br>In <span>your language.</span></h1>
+    <p class="hero-sub">Arovon understands Hindi, Tamil, Bengali, Telugu, Marathi and every Indian language. Ask questions, get intelligent answers — instantly.</p>
+    <div class="hero-btns">
+      <a href="login.html" class="btn-primary">Start Chatting</a>
+      <a href="#features" class="btn-ghost">Learn More</a>
+    </div>
+
+    <div class="hero-preview">
+      <div class="preview-card">
+        <div class="preview-bar">
+          <div class="preview-bar-dot"></div>
+          <span class="preview-bar-name">Arovon AI</span>
+          <span class="preview-bar-status">Online</span>
+        </div>
+        <div class="preview-body">
+          <div class="preview-msg user">
+            <div class="preview-avatar user">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <div class="preview-bubble user">Bharat ki rajdhani kya hai?</div>
+          </div>
+          <div class="preview-msg">
+            <div class="preview-avatar ai">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>
+            </div>
+            <div class="preview-bubble ai">Bharat ki rajdhani <strong>New Delhi</strong> hai. Yeh 1911 mein rajdhani bana tha jab Calcutta se shift kiya gaya tha.</div>
+          </div>
+          <div class="preview-msg user">
+            <div class="preview-avatar user">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <div class="preview-bubble user">Tell me more about it in English.</div>
+          </div>
+          <div class="preview-msg">
+            <div class="preview-avatar ai">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg>
+            </div>
+            <div class="preview-bubble ai">
+              <div class="preview-typing"><span></span><span></span><span></span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<div class="stats">
+  <div class="stat-item reveal">
+    <div class="stat-num" data-target="22">0</div>
+    <div class="stat-lbl">Languages</div>
+  </div>
+  <div class="stat-item reveal" style="transition-delay:.1s">
+    <div class="stat-num" data-target="100">0</div>
+    <div class="stat-lbl">Percent Free</div>
+  </div>
+  <div class="stat-item reveal" style="transition-delay:.2s">
+    <div class="stat-num" data-target="3">0</div>
+    <div class="stat-lbl">AI Models</div>
+  </div>
+  <div class="stat-item reveal" style="transition-delay:.3s">
+    <div class="stat-num" data-target="50">0</div>
+    <div class="stat-lbl">Topics Covered</div>
+  </div>
+</div>
+
+<!-- Features -->
+<section class="features" id="features">
+  <p class="section-label reveal">Why Arovon</p>
+  <h2 class="section-title reveal">Built different.<br>Built for India.</h2>
+  <div class="features-grid">
+    <div class="feature-card reveal">
+      <div class="feature-icon-wrap">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF6B00" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      </div>
+      <div class="feature-title">Document Intelligence</div>
+      <div class="feature-desc">Upload your PDFs and documents. Arovon reads them and answers questions directly from your content.</div>
+    </div>
+    <div class="feature-card reveal" style="transition-delay:.08s">
+      <div class="feature-icon-wrap">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF6B00" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      </div>
+      <div class="feature-title">22 Indian Languages</div>
+      <div class="feature-desc">From Hindi to Tamil, Bengali to Gujarati — Arovon speaks your language natively.</div>
+    </div>
+    <div class="feature-card reveal" style="transition-delay:.16s">
+      <div class="feature-icon-wrap">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF6B00" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </div>
+      <div class="feature-title">Secure by Default</div>
+      <div class="feature-desc">Every user gets a private account. Your chat history is yours alone — encrypted and secure.</div>
+    </div>
+    <div class="feature-card reveal" style="transition-delay:.24s">
+      <div class="feature-icon-wrap">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF6B00" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </div>
+      <div class="feature-title">Always Fast</div>
+      <div class="feature-desc">Responses in under a second. No waiting, no loading screens. Just instant answers.</div>
+    </div>
+    <div class="feature-card reveal" style="transition-delay:.32s">
+      <div class="feature-icon-wrap">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF6B00" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <div class="feature-title">Chat History</div>
+      <div class="feature-desc">All your conversations saved. Swipe left to access your full history anytime.</div>
+    </div>
+    <div class="feature-card reveal" style="transition-delay:.4s">
+      <div class="feature-icon-wrap">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#FF6B00" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
+      <div class="feature-title">Multiple Models</div>
+      <div class="feature-desc">Choose between Arovon Lite, Pro, and Ultra depending on how deep your question goes.</div>
+    </div>
+  </div>
+</section>
+
+<!-- Languages -->
+<section class="langs" id="languages">
+  <div class="langs-inner">
+    <h2 class="langs-title reveal">Every Indian language, one platform.</h2>
+  </div>
+  <div style="overflow:hidden;">
+    <div class="langs-track">
+      <div class="lang-chip">Hindi — हिंदी</div>
+      <div class="lang-chip">Tamil — தமிழ்</div>
+      <div class="lang-chip">Telugu — తెలుగు</div>
+      <div class="lang-chip">Bengali — বাংলা</div>
+      <div class="lang-chip">Marathi — मराठी</div>
+      <div class="lang-chip">Gujarati — ગુજરાતી</div>
+      <div class="lang-chip">Kannada — ಕನ್ನಡ</div>
+      <div class="lang-chip">Malayalam — മലയാളം</div>
+      <div class="lang-chip">Punjabi — ਪੰਜਾਬੀ</div>
+      <div class="lang-chip">Odia — ଓଡ଼ିଆ</div>
+      <div class="lang-chip">Urdu — اردو</div>
+      <div class="lang-chip">Assamese — অসমীয়া</div>
+      <div class="lang-chip">English</div>
+      <div class="lang-chip">Hinglish</div>
+      <div class="lang-chip">Hindi — हिंदी</div>
+      <div class="lang-chip">Tamil — தமிழ்</div>
+      <div class="lang-chip">Telugu — తెలుగు</div>
+      <div class="lang-chip">Bengali — বাংলা</div>
+      <div class="lang-chip">Marathi — मराठी</div>
+      <div class="lang-chip">Gujarati — ગુજરાતી</div>
+      <div class="lang-chip">Kannada — ಕನ್ನಡ</div>
+      <div class="lang-chip">Malayalam — മലയാളം</div>
+      <div class="lang-chip">Punjabi — ਪੰਜਾਬੀ</div>
+      <div class="lang-chip">Odia — ଓଡ଼ିଆ</div>
+      <div class="lang-chip">Urdu — اردو</div>
+      <div class="lang-chip">Assamese — অসমীয়া</div>
+      <div class="lang-chip">English</div>
+      <div class="lang-chip">Hinglish</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="about">
+  <div class="cta-card reveal">
+    <h2 class="cta-title">Ready to start?</h2>
+    <p class="cta-desc">Free to use. No credit card. No downloads. Just sign in and start asking.</p>
+    <a href="login.html" class="btn-primary">Create Free Account</a>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-logo">Aro<span>von</span></div>
+  <div class="footer-links">
+    <a href="#">Privacy</a>
+    <a href="#">Terms</a>
+    <a href="#">Contact</a>
+  </div>
+  <div class="footer-copy">Made in India</div>
+</footer>
+<div class="tricolor"></div>
+
+<script>
+// Cursor
+const cur = document.getElementById('cur');
+const curRing = document.getElementById('curRing');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; cur.style.left = mx + 'px'; cur.style.top = my + 'px'; });
+(function loop(){ rx += (mx - rx) * .13; ry += (my - ry) * .13; curRing.style.left = rx + 'px'; curRing.style.top = ry + 'px'; requestAnimationFrame(loop); })();
+document.querySelectorAll('a,button').forEach(el => {
+  el.addEventListener('mouseenter', () => { cur.classList.add('hover'); curRing.classList.add('hover'); });
+  el.addEventListener('mouseleave', () => { cur.classList.remove('hover'); curRing.classList.remove('hover'); });
+});
+
+// Mobile nav
+function openMobileNav(){ document.getElementById('mobileNav').classList.add('open'); document.body.style.overflow='hidden'; }
+function closeMobileNav(){ document.getElementById('mobileNav').classList.remove('open'); document.body.style.overflow=''; }
+
+// Navbar scroll
+window.addEventListener('scroll', () => {
+  document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 40);
+});
+
+// Reveal on scroll
+const revealEls = document.querySelectorAll('.reveal');
+const ro = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('on'); });
+}, { threshold: 0.1 });
+revealEls.forEach(el => ro.observe(el));
+
+// Counter
+const counters = document.querySelectorAll('.stat-num[data-target]');
+const co = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(!e.isIntersecting) return;
+    const el = e.target;
+    const target = +el.dataset.target;
+    let cur = 0;
+    const step = target / 50;
+    const t = setInterval(() => {
+      cur = Math.min(cur + step, target);
+      el.textContent = Math.floor(cur) + (target === 100 ? '%' : '+');
+      if(cur >= target) clearInterval(t);
+    }, 28);
+    co.unobserve(el);
+  });
+}, { threshold: 0.5 });
+counters.forEach(el => co.observe(el));
+
+// Smooth scroll
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const t = document.querySelector(a.getAttribute('href'));
+    if(t) t.scrollIntoView({ behavior: 'smooth' });
+  });
+});
+</script>
+</body>
+</html>
