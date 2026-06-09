@@ -1,178 +1,88 @@
-import requests
+import urllib.request
 import json
 import time
 import os
 
 os.makedirs("wiki_data", exist_ok=True)
 
-# 500 most important topics
 TOPICS = [
-    # Science & Physics
-    "Physics","Gravity","Newton's laws of motion","Thermodynamics",
-    "Quantum mechanics","Optics","Electromagnetism","Nuclear physics",
-    "Semiconductor","Atom","Electron","Photon","Relativity",
-    
-    # Chemistry
-    "Chemistry","Periodic table","Chemical bond","Acid","Base chemistry",
-    "Organic chemistry","Electrochemistry","Polymer","Metal","Reaction",
-    "Atomic theory","Molecule","Ion","Oxidation","Reduction",
-    
-    # Biology
-    "Biology","Cell","DNA","Genetics","Evolution","Photosynthesis",
-    "Human body","Immune system","Nervous system","Heart","Lung","Kidney",
-    "Bacteria","Virus","Vaccine","Biotechnology","Ecology","Ecosystem",
-    
-    # Mathematics
-    "Mathematics","Calculus","Algebra","Trigonometry","Geometry",
-    "Statistics","Probability","Number theory","Matrix","Differential equation",
-    "Integration","Derivative","Logarithm","Set theory","Linear algebra",
-    "Numerical analysis","Interpolation","Bisection method",
-    
-    # Computer Science
-    "Computer science","Algorithm","Data structure","Programming language",
-    "Python","JavaScript","Database","Operating system","Computer network",
-    "Artificial intelligence","Machine learning","Deep learning",
-    "Cybersecurity","Internet","World Wide Web","Cloud computing",
-    "Blockchain","Cryptocurrency",
-    
-    # Indian History
-    "History of India","Indus Valley Civilisation","Vedic period",
-    "Maurya Empire","Gupta Empire","Mughal Empire","Delhi Sultanate",
-    "Maratha Empire","British Raj","Indian independence movement",
-    "Indian National Congress","Partition of India",
-    "Mahatma Gandhi","Jawaharlal Nehru","Subhas Chandra Bose",
-    "Bhimrao Ambedkar","Sardar Vallabhbhai Patel","Bal Gangadhar Tilak",
-    "Bhagat Singh","Chandragupta Maurya","Ashoka","Akbar","Aurangzeb",
-    
-    # World History
-    "Ancient Egypt","Ancient Greece","Roman Empire","Byzantine Empire",
-    "Renaissance","Industrial Revolution","French Revolution",
-    "World War I","World War II","Cold War","United Nations",
-    "American Revolution","Russian Revolution","Chinese Revolution",
-    "Colonialism","Decolonization","Holocaust","Hiroshima","Berlin Wall",
-    
-    # Indian Geography
-    "Geography of India","Himalayas","Deccan Plateau","Indo-Gangetic Plain",
-    "Ganga","Yamuna","Brahmaputra","Godavari","Krishna","Kaveri",
-    "Thar Desert","Western Ghats","Eastern Ghats","Bay of Bengal",
-    "Arabian Sea","Indian Ocean","Rajasthan","Kerala","Tamil Nadu",
-    "Maharashtra","Punjab","Gujarat","West Bengal","Uttar Pradesh",
-    
-    # World Geography
-    "Continent","Ocean","Amazon river","Nile","Mississippi River",
-    "Mount Everest","Alps","Andes","Rocky Mountains","Sahara",
-    "Amazon rainforest","Antarctica","Arctic","Pacific Ocean","Atlantic Ocean",
-    "Africa","Europe","Asia","North America","South America","Australia",
-    
-    # Indian Constitution & Polity
-    "Constitution of India","Fundamental rights","Directive Principles",
-    "Parliament of India","Lok Sabha","Rajya Sabha","President of India",
-    "Prime Minister of India","Supreme Court of India","High court",
-    "Election Commission of India","Panchayati Raj","Federalism",
-    "Indian Penal Code","Right to Information Act",
-    
-    # Indian Economy
-    "Economy of India","GDP","Inflation","Reserve Bank of India",
-    "Five-Year Plans","Green Revolution","Liberalisation in India",
-    "Make in India","Digital India","Startup India","GST","Budget",
-    "Foreign direct investment","Stock exchange","Sensex","NIFTY",
-    
-    # Famous Indians
-    "APJ Abdul Kalam","Rabindranath Tagore","CV Raman","Srinivasa Ramanujan",
-    "Homi J. Bhabha","Vikram Sarabhai","Satyendra Nath Bose",
-    "Swami Vivekananda","Aryabhata","Brahmagupta","Chanakya",
-    "Indira Gandhi","Lal Bahadur Shastri","Rajiv Gandhi",
-    "Sachin Tendulkar","Viswanathan Anand","PV Sindhu","Mary Kom",
-    
-    # ISRO & Space
-    "Indian Space Research Organisation","Chandrayaan","Mangalyaan",
-    "Chandrayaan-3","Gaganyaan","PSLV","GSLV","Satellite",
-    "International Space Station","NASA","Space exploration",
-    "Solar System","Planet","Star","Galaxy","Black hole","Big Bang",
-    
-    # Health & Medicine
-    "Diabetes","Hypertension","Cancer","Tuberculosis","Malaria","Dengue",
-    "COVID-19","Influenza","Heart disease","Stroke","Obesity","Asthma",
-    "Ayurveda","Yoga","Meditation","Nutrition","Vitamin","Protein",
-    "Carbohydrate","Fat","Mineral","Antibiotic","Vaccine","Surgery",
-    
-    # Environment
-    "Climate change","Global warming","Greenhouse gas","Carbon dioxide",
-    "Ozone layer","Biodiversity","Deforestation","Pollution","Acid rain",
-    "Renewable energy","Solar energy","Wind power","Hydroelectricity",
-    "Nuclear energy","Paris Agreement","Kyoto Protocol","Recycling",
-    
-    # Religion & Culture
-    "Hinduism","Buddhism","Islam","Christianity","Sikhism","Jainism",
-    "Vedas","Upanishads","Bhagavad Gita","Ramayana","Mahabharata",
-    "Diwali","Holi","Eid","Christmas","Guru Nanak","Buddha","Mahavira",
-    "Indian classical music","Bharatanatyam","Bollywood","Indian cinema",
-    
-    # Sports
-    "Cricket","Indian Premier League","Football","Hockey","Badminton",
-    "Chess","Kabaddi","Tennis","Olympics","Commonwealth Games",
-    "Asian Games","FIFA World Cup","ICC Cricket World Cup",
-    "Virat Kohli","MS Dhoni","Rohit Sharma","Neeraj Chopra",
-    
-    # International Organizations
-    "United Nations","World Health Organization","World Bank",
-    "International Monetary Fund","World Trade Organization",
-    "NATO","SAARC","BRICS","G20","G7","ASEAN","African Union",
-    "International Court of Justice","UNESCO","UNICEF",
-    
-    # Technology & Inventions
-    "Telephone","Radio","Television","Internet","Electricity",
-    "Steam engine","Automobile","Airplane","Computer","Smartphone",
-    "Printing press","Gunpowder","Compass","Telescope","Microscope",
-    "X-ray","Penicillin","Transistor","Laser","Nuclear weapon",
-    
-    # Law & Rights
-    "Human rights","Universal Declaration of Human Rights",
-    "Consumer protection","Labour law","Environmental law",
-    "International law","Criminal law","Civil law",
-    "Women's rights","Child rights","Right to education",
-    
-    # Finance & Banking
-    "Bank","Central bank","Stock market","Bond","Insurance",
-    "Mutual fund","Foreign exchange","Gold","Inflation",
-    "Fiscal policy","Monetary policy","Tax","Income tax",
-    
-    # Agriculture
-    "Agriculture","Wheat","Rice","Cotton","Sugarcane","Pulses",
-    "Irrigation","Fertilizer","Pesticide","Organic farming",
-    "Green Revolution","Food security","Drought","Flood",
-    
-    # Social Issues
-    "Poverty","Unemployment","Education","Literacy","Gender equality",
-    "Child labour","Human trafficking","Drug abuse","Corruption",
-    "Caste system","Reservation in India","Rural development",
-    
-    # Geography concepts
-    "Latitude","Longitude","Time zone","Climate","Weather",
-    "Monsoon","Earthquake","Volcano","Tsunami","Hurricane",
-    "Map","Cartography","GPS","Remote sensing",
+    "Physics","Gravity","Thermodynamics","Quantum mechanics","Optics",
+    "Electromagnetism","Nuclear physics","Atom","Relativity",
+    "Chemistry","Periodic table","Organic chemistry","Acid","Molecule",
+    "Biology","Cell biology","DNA","Genetics","Evolution","Photosynthesis",
+    "Human body","Immune system","Nervous system","Bacteria","Virus",
+    "Mathematics","Calculus","Algebra","Trigonometry","Statistics",
+    "Probability","Numerical analysis","Differential equation","Matrix",
+    "Computer science","Algorithm","Data structure","Python programming",
+    "Database","Computer network","Artificial intelligence",
+    "Machine learning","Cybersecurity","Internet","Blockchain",
+    "History of India","Indus Valley Civilisation","Maurya Empire",
+    "Gupta Empire","Mughal Empire","British Raj",
+    "Indian independence movement","Mahatma Gandhi","Jawaharlal Nehru",
+    "Subhas Chandra Bose","Bhimrao Ambedkar","Chandragupta Maurya",
+    "Ashoka","Akbar","World War I","World War II","Cold War",
+    "French Revolution","Industrial Revolution","Ancient Egypt",
+    "Ancient Greece","Roman Empire","United Nations",
+    "Geography of India","Himalayas","Ganga","Brahmaputra",
+    "Thar Desert","Western Ghats","Bay of Bengal","Arabian Sea",
+    "Amazon river","Mount Everest","Sahara","Pacific Ocean",
+    "Constitution of India","Fundamental rights","Parliament of India",
+    "Supreme Court of India","Election Commission of India",
+    "Economy of India","Reserve Bank of India","GDP","Inflation",
+    "Make in India","Digital India","GST",
+    "APJ Abdul Kalam","Rabindranath Tagore","CV Raman",
+    "Srinivasa Ramanujan","Vikram Sarabhai","Swami Vivekananda",
+    "Sachin Tendulkar","Virat Kohli","MS Dhoni","Neeraj Chopra",
+    "Indian Space Research Organisation","Chandrayaan",
+    "Mangalyaan","Solar System","Black hole","Galaxy","Star",
+    "Diabetes","Hypertension","Cancer","Tuberculosis","Malaria",
+    "Ayurveda","Yoga","Nutrition","Vitamin","Antibiotic",
+    "Climate change","Global warming","Biodiversity","Pollution",
+    "Solar energy","Wind power","Renewable energy","Paris Agreement",
+    "Hinduism","Buddhism","Islam","Sikhism","Jainism",
+    "Bhagavad Gita","Ramayana","Mahabharata","Vedas",
+    "Cricket","Indian Premier League","Football","Chess","Badminton",
+    "Olympics","FIFA World Cup","ICC Cricket World Cup","Kabaddi",
+    "World Health Organization","World Bank","IMF","BRICS","G20","SAARC",
+    "Telephone","Radio","Television","Airplane","Steam engine",
+    "Printing press","Penicillin","Transistor","Laser",
+    "Human rights","Consumer protection","Labour law",
+    "Bank","Stock market","Insurance","Mutual fund","Tax",
+    "Agriculture","Wheat","Rice","Green Revolution","Irrigation",
+    "Poverty","Literacy","Gender equality","Caste system",
+    "Earthquake","Volcano","Tsunami","Monsoon","Climate",
+    "Continent","Ocean","Time zone","Latitude","Longitude",
 ]
 
-print(f"Fetching {len(TOPICS)} Wikipedia articles...")
-
-results = {}
-failed = []
-
 def fetch_article(title):
-    url = "https://en.wikipedia.org/w/api.php"
-    params = {
-        'action': 'query',
-        'format': 'json',
-        'titles': title,
-        'prop': 'extracts',
-        'exlimit': 1,
-        'explaintext': True,
-        'exsectionformat': 'plain',
-    }
+    # Use REST summary API — simple and fast
+    safe = title.replace(' ', '_').replace("'", '%27')
+    url = f"https://en.wikipedia.org/api/rest_v1/page/summary/{safe}"
     try:
-        r = requests.get(url, params=params, timeout=15)
-        if r.status_code == 200:
-            data = r.json()
+        req = urllib.request.Request(
+            url,
+            headers={'User-Agent': 'ArovonBot/1.0 (educational project)'}
+        )
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            data = json.loads(resp.read().decode('utf-8'))
+            extract = data.get('extract', '')
+            if extract and len(extract) > 100:
+                return extract
+    except Exception as e:
+        pass
+    return None
+
+def fetch_full(title):
+    # Full article API
+    safe = title.replace(' ', '+')
+    url = f"https://en.wikipedia.org/w/api.php?action=query&format=json&titles={safe}&prop=extracts&exlimit=1&explaintext=true&exsectionformat=plain"
+    try:
+        req = urllib.request.Request(
+            url,
+            headers={'User-Agent': 'ArovonBot/1.0 (educational project)'}
+        )
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            data = json.loads(resp.read().decode('utf-8'))
             pages = data.get('query', {}).get('pages', {})
             for pid, page in pages.items():
                 if pid != '-1':
@@ -183,24 +93,42 @@ def fetch_article(title):
         pass
     return None
 
+print(f"Fetching {len(TOPICS)} Wikipedia articles...")
+print("Using urllib — no external library needed\n")
+
+results = {}
+failed = []
+
 for i, topic in enumerate(TOPICS):
-    print(f"[{i+1}/{len(TOPICS)}] {topic}", end=" ... ")
+    print(f"[{i+1}/{len(TOPICS)}] {topic}", end=" ... ", flush=True)
+    
+    # Try summary first (faster)
     text = fetch_article(topic)
-    if text:
-        # Trim to 3000 chars per article to save space
-        results[topic] = text[:3000]
+    
+    # If summary too short, get full article
+    if text and len(text) < 500:
+        full = fetch_full(topic)
+        if full and len(full) > len(text):
+            text = full[:4000]
+    elif not text:
+        text = fetch_full(topic)
+        if text:
+            text = text[:4000]
+    
+    if text and len(text) > 100:
+        results[topic] = text
         print(f"OK ({len(text):,} chars)")
     else:
         failed.append(topic)
         print("SKIP")
     
-    # Be nice to Wikipedia API
-    time.sleep(0.3)
+    time.sleep(0.2)
 
 print(f"\nFetched: {len(results)} articles")
 print(f"Failed: {len(failed)}")
+if failed:
+    print(f"Failed topics: {failed[:5]}...")
 
-# Save
 with open("wiki_data/knowledge.json", 'w', encoding='utf-8') as f:
     json.dump(results, f, ensure_ascii=False)
 

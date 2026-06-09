@@ -63,8 +63,6 @@ html,body{height:100%;width:100%;font-family:'DM Sans',sans-serif;background:var
 
 /* MAIN */
 .main-col{flex:1;min-width:0;display:flex;flex-direction:column;height:100%;background:var(--white);overflow:hidden;}
-
-/* TOPBAR */
 .topbar{height:54px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;border-bottom:1px solid var(--border);background:var(--white);flex-shrink:0;}
 .tb-left{display:flex;align-items:center;gap:10px;}
 .burger{display:none;flex-direction:column;gap:4px;background:none;border:none;padding:6px;cursor:pointer;}
@@ -88,7 +86,7 @@ html,body{height:100%;width:100%;font-family:'DM Sans',sans-serif;background:var
 .ic-btn{width:32px;height:32px;border-radius:8px;background:none;border:1px solid transparent;display:flex;align-items:center;justify-content:center;color:var(--ink3);cursor:pointer;transition:background .15s,border-color .15s,color .15s;}
 .ic-btn:hover{background:var(--bg);border-color:var(--border);color:var(--ink);}
 
-/* CHAT SCROLL */
+/* CHAT */
 .chat-scroll{flex:1;overflow-y:auto;overflow-x:hidden;scrollbar-width:thin;scrollbar-color:rgba(0,0,0,0.1) transparent;}
 .chat-scroll::-webkit-scrollbar{width:4px;}
 .chat-scroll::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.1);border-radius:4px;}
@@ -106,46 +104,41 @@ html,body{height:100%;width:100%;font-family:'DM Sans',sans-serif;background:var
 /* MESSAGES */
 .msgs-container{max-width:760px;margin:0 auto;padding:28px 24px 20px;}
 .msg-row{margin-bottom:28px;}
-
-/* User bubble */
 .msg-user{display:flex;justify-content:flex-end;}
 .msg-user-bub{max-width:72%;background:var(--accent);color:#fff;padding:11px 16px;border-radius:18px 18px 4px 18px;font-size:0.93rem;line-height:1.65;word-break:break-word;white-space:pre-wrap;box-shadow:0 2px 10px rgba(255,107,0,0.18);}
-
-/* AI bubble */
 .msg-ai{display:flex;gap:12px;align-items:flex-start;}
 .ai-av{width:28px;height:28px;border-radius:8px;background:var(--accent);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;}
 .ai-body{flex:1;min-width:0;}
 .ai-label{font-size:0.73rem;font-weight:700;color:var(--ink3);margin-bottom:6px;letter-spacing:.04em;text-transform:uppercase;}
 
-/* AI Text Formatting */
+/* AI TEXT FORMATTING */
 .ai-text{font-size:0.93rem;line-height:1.8;color:var(--ink);word-break:break-word;}
 .ai-text p{margin-bottom:12px;}
 .ai-text p:last-child{margin-bottom:0;}
-.ai-text strong{font-weight:700;color:var(--ink);}
+.ai-text p:empty{display:none;}
+.ai-text strong{font-weight:700;}
 .ai-text em{font-style:italic;}
-.ai-text code{background:#f0f0f0;border:1px solid rgba(0,0,0,0.08);padding:2px 6px;border-radius:5px;font-size:0.85em;font-family:'Courier New',monospace;color:#c0392b;}
-.ai-text pre{background:#1a1a2e;border-radius:10px;padding:16px;margin:12px 0;overflow-x:auto;border:1px solid rgba(0,0,0,0.1);}
-.ai-text pre code{background:none;border:none;padding:0;color:#e8e8e8;font-size:0.85rem;line-height:1.6;}
-.ai-text h1,.ai-text h2,.ai-text h3{font-family:'Fraunces',serif;color:var(--ink);margin:16px 0 8px;}
-.ai-text h1{font-size:1.2rem;}
-.ai-text h2{font-size:1.05rem;}
-.ai-text h3{font-size:0.95rem;color:var(--accent);}
-.ai-text ul{margin:10px 0 10px 20px;display:flex;flex-direction:column;gap:5px;}
-.ai-text ol{margin:10px 0 10px 20px;display:flex;flex-direction:column;gap:5px;}
-.ai-text li{font-size:0.93rem;line-height:1.65;color:var(--ink);}
+.ai-text h1{font-family:'Fraunces',serif;font-size:1.25rem;font-weight:600;color:var(--ink);margin:18px 0 8px;padding-bottom:4px;border-bottom:2px solid rgba(255,107,0,0.2);}
+.ai-text h2{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:600;color:var(--ink);margin:16px 0 7px;}
+.ai-text h3{font-size:0.97rem;font-weight:700;color:var(--accent);margin:14px 0 6px;}
+.ai-text h4{font-size:0.93rem;font-weight:700;color:var(--ink2);margin:12px 0 5px;}
+.ai-text ul{margin:8px 0 12px 18px;display:flex;flex-direction:column;gap:4px;}
+.ai-text ol{margin:8px 0 12px 20px;display:flex;flex-direction:column;gap:4px;}
+.ai-text li{line-height:1.65;}
 .ai-text ul li::marker{color:var(--accent);}
 .ai-text ol li::marker{color:var(--accent);font-weight:700;}
-.ai-text blockquote{border-left:3px solid var(--accent);padding:8px 16px;margin:12px 0;background:rgba(255,107,0,0.04);border-radius:0 8px 8px 0;font-style:italic;color:var(--ink2);}
-.ai-text table{width:100%;border-collapse:collapse;margin:12px 0;font-size:0.88rem;}
-.ai-text th{background:var(--bg);padding:8px 12px;text-align:left;font-weight:700;border:1px solid var(--border);}
+.ai-text code{background:#f0f0ee;border:1px solid rgba(0,0,0,0.08);padding:2px 6px;border-radius:5px;font-size:0.85em;font-family:'Courier New',monospace;color:#c0392b;}
+.ai-text pre{background:#1e1e2e;border-radius:10px;padding:16px 18px;margin:12px 0;overflow-x:auto;border:1px solid rgba(0,0,0,0.1);}
+.ai-text pre code{background:none;border:none;padding:0;color:#cdd6f4;font-size:0.85rem;line-height:1.65;font-family:'Courier New',monospace;}
+.ai-text blockquote{border-left:3px solid var(--accent);padding:8px 14px;margin:12px 0;background:rgba(255,107,0,0.04);border-radius:0 8px 8px 0;color:var(--ink2);font-style:italic;}
+.ai-text table{width:100%;border-collapse:collapse;margin:12px 0;font-size:0.88rem;overflow-x:auto;display:block;}
+.ai-text th{background:var(--bg);padding:8px 12px;text-align:left;font-weight:700;border:1px solid var(--border);white-space:nowrap;}
 .ai-text td{padding:8px 12px;border:1px solid var(--border);}
-.ai-text tr:nth-child(even) td{background:rgba(0,0,0,0.02);}
-.ai-text .math-block{background:#f8f8f8;border:1px solid var(--border);border-radius:8px;padding:12px 16px;margin:10px 0;font-family:'Courier New',monospace;font-size:0.9rem;overflow-x:auto;color:#1a1a2e;}
-.ai-text .q-head{font-weight:700;color:var(--accent);font-size:0.95rem;margin:14px 0 6px;border-left:3px solid var(--accent);padding-left:10px;}
-.ai-text .step{background:rgba(255,107,0,0.04);border-radius:8px;padding:10px 14px;margin:8px 0;border:1px solid rgba(255,107,0,0.1);}
+.ai-text tr:nth-child(even) td{background:rgba(0,0,0,0.018);}
 .ai-text hr{border:none;border-top:1px solid var(--border);margin:16px 0;}
+.ai-text .math{background:#f8f8f6;border:1px solid var(--border);border-radius:8px;padding:12px 16px;margin:10px 0;font-family:'Courier New',monospace;font-size:0.9rem;overflow-x:auto;color:#1a1a2e;display:block;}
 
-/* Message actions */
+/* ACTIONS */
 .msg-acts{display:flex;gap:4px;margin-top:8px;margin-left:40px;opacity:0;transition:opacity .2s;}
 .msg-row:hover .msg-acts{opacity:1;}
 .act-btn{padding:3px 9px;border-radius:5px;font-size:0.72rem;color:var(--ink3);border:1px solid var(--border);background:var(--white);font-family:'DM Sans',sans-serif;cursor:pointer;transition:color .15s,border-color .15s;}
@@ -167,17 +160,15 @@ html,body{height:100%;width:100%;font-family:'DM Sans',sans-serif;background:var
 .input-box:focus-within{border-color:rgba(0,0,0,0.22);box-shadow:0 4px 20px rgba(0,0,0,0.09);}
 .msg-input{flex:1;min-width:0;border:none;outline:none;resize:none;background:transparent;font-size:1rem;font-family:'DM Sans',sans-serif;color:var(--ink);line-height:1.5;min-height:26px;max-height:150px;overflow-y:auto;scrollbar-width:none;display:block;padding:2px 0;}
 .msg-input::-webkit-scrollbar{display:none;}
-.msg-input::placeholder{color:#c0c0c0;font-size:1rem;}
+.msg-input::placeholder{color:#c0c0c0;}
 .send-btn{width:38px;height:38px;border-radius:10px;background:var(--accent);border:none;display:flex;align-items:center;justify-content:center;flex-shrink:0;cursor:pointer;transition:background .2s;box-shadow:0 2px 8px rgba(255,107,0,0.3);}
 .send-btn:disabled{background:#e0e0e0;box-shadow:none;cursor:not-allowed;}
 .send-btn:not(:disabled):hover{background:#e55a00;}
 .input-hint{font-size:0.68rem;color:#ccc;margin-top:7px;padding:0 4px;}
 
-/* OVERLAY */
+/* OVERLAY & TOAST */
 .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.3);z-index:49;}
 .overlay.show{display:block;}
-
-/* TOAST */
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--ink);color:#fff;padding:10px 20px;border-radius:10px;font-size:0.83rem;font-weight:500;z-index:9999;opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
@@ -194,15 +185,14 @@ html,body{height:100%;width:100%;font-family:'DM Sans',sans-serif;background:var
 }
 @media(max-width:480px){
   .wc-title{font-size:1.55rem;}
-  .ai-text pre{font-size:0.78rem;}
+  .ai-text pre{font-size:0.78rem;padding:12px;}
+  .ai-text table{font-size:0.8rem;}
 }
 </style>
 </head>
 <body>
-
 <div class="overlay" id="overlay" onclick="closeSB()"></div>
 <div class="toast" id="toast"></div>
-
 <div class="layout">
 
   <!-- SIDEBAR -->
@@ -256,9 +246,7 @@ html,body{height:100%;width:100%;font-family:'DM Sans',sans-serif;background:var
   <div class="main-col">
     <div class="topbar">
       <div class="tb-left">
-        <button class="burger" onclick="openSB()">
-          <span></span><span></span><span></span>
-        </button>
+        <button class="burger" onclick="openSB()"><span></span><span></span><span></span></button>
         <div class="mdl-wrap">
           <button class="mdl-btn" id="mdlBtn" onclick="toggleMdl()">
             <div class="mdl-dot"></div>
@@ -307,11 +295,11 @@ html,body{height:100%;width:100%;font-family:'DM Sans',sans-serif;background:var
           <button class="sug-card" onclick="useSug('What is the history of India?')">
             <div class="sug-lbl">History</div>What is the history of India?
           </button>
-          <button class="sug-card" onclick="useSug('Explain machine learning simply')">
-            <div class="sug-lbl">Technology</div>Explain machine learning simply
+          <button class="sug-card" onclick="useSug('Explain machine learning')">
+            <div class="sug-lbl">Technology</div>Explain machine learning
           </button>
-          <button class="sug-card" onclick="useSug('Mujhe Python sikhao')">
-            <div class="sug-lbl">Learning</div>Mujhe Python sikhao
+          <button class="sug-card" onclick="useSug('Solve: bisection method for x^3 + 4x - 9 = 0')">
+            <div class="sug-lbl">Mathematics</div>Solve bisection method problem
           </button>
           <button class="sug-card" onclick="useSug('Give me a motivational quote')">
             <div class="sug-lbl">Inspiration</div>Give me a motivational quote
@@ -324,14 +312,7 @@ html,body{height:100%;width:100%;font-family:'DM Sans',sans-serif;background:var
     <div class="input-area">
       <div class="input-inner">
         <div class="input-box">
-          <textarea
-            id="msgInput"
-            class="msg-input"
-            placeholder="Message Arovon..."
-            rows="1"
-            onkeydown="onKey(event)"
-            oninput="onType(this)"
-          ></textarea>
+          <textarea id="msgInput" class="msg-input" placeholder="Message Arovon..." rows="1" onkeydown="onKey(event)" oninput="onType(this)"></textarea>
           <button class="send-btn" id="sendBtn" onclick="send()" disabled>
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
               <line x1="22" y1="2" x2="11" y2="13"/>
@@ -369,12 +350,12 @@ let busy = false;
         me = u;
         initUser();
         loadHist();
-        loadChunks();
+        loadAllKnowledge();
         newChat();
       });
     });
   } catch(e) {
-    console.error(e);
+    console.error('Boot error:', e);
     showToast('Server error — refresh page');
   }
 })();
@@ -392,9 +373,14 @@ async function doLogout() {
   location.href = 'login.html';
 }
 
-// LOAD CHUNKS
-async function loadChunks() {
+// LOAD ALL KNOWLEDGE — PDFs + Wikipedia
+async function loadAllKnowledge() {
   chunks = [];
+  await Promise.all([loadPDFChunks(), loadWikiKnowledge()]);
+  console.log('Total knowledge chunks:', chunks.length);
+}
+
+async function loadPDFChunks() {
   try {
     const snap = await db.collection('pdfs').get();
     for (const pd of snap.docs) {
@@ -404,94 +390,213 @@ async function loadChunks() {
         if (!cs.empty) {
           cs.forEach(cd => {
             const c = cd.data();
-            chunks.push({ text:c.text||'', tf:c.tf||{}, wordCount:c.wordCount||100, pdfName:c.pdfName||pdata.name||'Doc', pdfId:pd.id });
+            chunks.push({
+              text: c.text||'',
+              tf: c.tf||{},
+              wordCount: parseInt(c.wordCount)||100,
+              source: c.pdfName||pdata.name||'Document',
+              type: 'pdf'
+            });
           });
         } else if (pdata.text) {
-          const tf = {};
-          tok(pdata.text).forEach(w => { tf[w]=(tf[w]||0)+1; });
-          chunks.push({ text:pdata.text, tf, wordCount:pdata.text.split(/\s+/).length, pdfName:pdata.name||'Doc', pdfId:pd.id });
+          const tf = buildTF(pdata.text);
+          chunks.push({
+            text: pdata.text,
+            tf,
+            wordCount: pdata.text.split(/\s+/).length,
+            source: pdata.name||'Document',
+            type: 'pdf'
+          });
         }
       } catch(e) {}
     }
-    console.log('Chunks loaded:', chunks.length);
-  } catch(e) { console.log('loadChunks error:', e); }
+    console.log('PDF chunks:', chunks.filter(c=>c.type==='pdf').length);
+  } catch(e) { console.log('PDF load error:', e); }
+}
+
+async function loadWikiKnowledge() {
+  try {
+    const snap = await db.collection('knowledge').get();
+    snap.forEach(doc => {
+      const d = doc.data();
+      if (d.text) {
+        chunks.push({
+          text: d.text,
+          tf: d.tf||{},
+          wordCount: parseInt(d.wordCount)||100,
+          source: d.name||doc.id.replace(/_/g,' '),
+          type: 'wiki'
+        });
+      }
+    });
+    console.log('Wiki articles:', chunks.filter(c=>c.type==='wiki').length);
+  } catch(e) { console.log('Wiki load error:', e); }
+}
+
+function buildTF(text) {
+  const tf = {};
+  tok(text).forEach(w => { tf[w] = (tf[w]||0)+1; });
+  return tf;
 }
 
 function tok(t) {
-  const sw = new Set(['the','a','an','and','or','but','in','on','at','to','for','of','with','is','are','was','were','be','been','have','has','had','do','does','did','will','would','could','should','this','that','i','you','he','she','it','we','they','my','your','his','her','its','ka','ki','ke','hai','ko','se','mein','ne','kya','aur','ya','woh','yeh','ek','nahi','bhi','hi']);
+  const sw = new Set(['the','a','an','and','or','but','in','on','at','to','for','of','with','is','are','was','were','be','been','have','has','had','do','does','did','will','would','could','should','this','that','i','you','he','she','it','we','they','my','your','his','her','its','ka','ki','ke','hai','ko','se','mein','ne','kya','aur','ya','woh','yeh','ek','nahi','bhi','hi','its','also','been','from','by','as','not','all','can','may','more','one','two','three','some','such','other','than','then','there','their','which','who','what','how','when','where']);
   return t.toLowerCase().replace(/[^\w\s]/g,' ').split(/\s+/).filter(w=>w.length>2&&!sw.has(w));
 }
 
-async function bm25(q) {
+// BM25 SEARCH
+async function bm25Search(q) {
   if (!chunks.length) return null;
   try {
-    const r = await fetch('/api/search',{
+    const r = await fetch('/api/search', {
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({query:q,chunks})
+      body:JSON.stringify({query:q, chunks})
     });
     const d = await r.json();
     if (!d.results?.length) return null;
     const top = d.results;
-    return {
-      text: top.map(c=>c.text.trim()).join('\n\n').substring(0,1500),
-      score: top[0].score
-    };
+    const combined = top.map(c=>c.text.trim()).join('\n\n').substring(0,2000);
+    return { text:combined, score:top[0].score, source:top[0].source };
   } catch(e) { return null; }
 }
 
-// RESPONSE GENERATOR
+// MAIN RESPONSE GENERATOR
 async function getReply(q) {
   const ql = q.toLowerCase();
 
-  // BM25 PDF search
-  const pdf = await bm25(q);
-  if (pdf && pdf.score > 0.3) {
-    return { text: formatPDFAnswer(pdf.text) };
+  // BM25 search first
+  const found = await bm25Search(q);
+  if (found && found.score > 0.4) {
+    return { text: smartFormat(found.text, q) };
   }
 
-  // Built-in KB
+  // Built-in knowledge base with rich formatted answers
   const kb = [
-    {k:['hello','hi','hey','namaste'],a:'Hello! I am Arovon, your AI assistant. How can I help you today?'},
-    {k:['who are you','kaun ho','arovon kya'],a:'I am **Arovon** — an AI assistant built for India.\n\nI can answer questions in:\n- Hindi\n- English\n- Tamil\n- And all major Indian languages\n\nAsk me anything!'},
-    {k:['india','bharat','itihas','history of india'],a:'## History of India\n\nIndia has one of the world\'s oldest civilizations.\n\n### Key Periods:\n1. **Indus Valley Civilization** — 3000 BCE, one of the world\'s first urban cultures\n2. **Vedic Period** — 1500 BCE, foundation of Hindu culture\n3. **Maurya Empire** — 322 BCE, Chandragupta Maurya unified India\n4. **Gupta Empire** — 320 CE, golden age of science and art\n5. **Mughal Empire** — 1526 CE, great architectural achievements\n6. **British Rule** — 1858–1947\n7. **Independence** — August 15, 1947\n\nToday India is the world\'s largest democracy with 1.4 billion people.'},
-    {k:['python','coding','programming','code'],a:'## Python Programming\n\nPython is the best language for beginners.\n\n### Why Python?\n- **Simple syntax** — reads like English\n- **Versatile** — web dev, data science, AI, automation\n- **Large community** — tons of libraries\n\n### Basic Example:\n```python\n# Hello World\nprint("Hello, World!")\n\n# Variables\nname = "Arovon"\nage = 1\nprint(f"I am {name}, age {age}")\n```\n\nWant me to teach you a specific topic?'},
-    {k:['machine learning','ml','ai','artificial intelligence'],a:'## Machine Learning\n\nMachine learning is a branch of AI where computers **learn from data** without being explicitly programmed.\n\n### Types of ML:\n1. **Supervised Learning** — learns from labeled data (e.g., spam detection)\n2. **Unsupervised Learning** — finds patterns in unlabeled data (e.g., clustering)\n3. **Reinforcement Learning** — learns by trial and error (e.g., game AI)\n\n### How it works:\n```\nData → Algorithm → Model → Predictions\n```\n\nDeep learning uses **neural networks** inspired by the human brain.'},
-    {k:['motivat','inspire','quote','himmat'],a:'## Motivational Quotes\n\n> "Your time is limited, so do not waste it living someone else\'s life." — **Steve Jobs**\n\n> "The future belongs to those who believe in the beauty of their dreams." — **Eleanor Roosevelt**\n\n> "Khud ko kamzor mat samjho — tumhare andar woh shakti hai jo duniya badal sake." — **Arovon**\n\nKeep going — every day is a new opportunity!'},
-    {k:['cricket','ipl','virat','sachin','dhoni'],a:'## Cricket in India\n\nCricket is India\'s most beloved sport.\n\n### Legends:\n| Player | Achievement |\n|--------|------------|\n| Sachin Tendulkar | 100 international centuries — world record |\n| MS Dhoni | World Cup wins: 2007 T20, 2011 ODI |\n| Virat Kohli | Fastest to 8000, 9000, 10000 ODI runs |\n| Rohit Sharma | Current Test captain |\n\n### IPL:\nThe Indian Premier League is the world\'s most-watched cricket league, founded in 2008.'},
-    {k:['health','sehat','yoga','exercise','fitness'],a:'## Health Tips\n\n### Daily Routine:\n1. **Exercise** — 30 minutes daily (walking, yoga, gym)\n2. **Diet** — balanced meals with vegetables, protein, whole grains\n3. **Sleep** — 7-8 hours every night\n4. **Hydration** — 2-3 liters of water daily\n5. **Stress** — meditation, pranayama\n\n### Yoga Benefits:\n- Improves flexibility and strength\n- Reduces stress and anxiety\n- Better sleep quality\n- Boosts immunity\n\n*Always consult a doctor for medical advice.*'},
-    {k:['thank','shukriya','thanks'],a:'You are welcome! Feel free to ask me anything else.'},
-    {k:['capital','rajdhani','delhi'],a:'**New Delhi** is the capital of India.\n\nIt became the capital in **1911** when the British shifted from Calcutta (now Kolkata). Today it is the political, administrative, and cultural hub of India.'},
-    {k:['weather','mausam'],a:'I do not have live weather data.\n\nFor accurate weather, please check:\n- **IMD**: imd.gov.in\n- **Google**: search your city + weather\n- Your phone\'s weather app'},
-    {k:['math','mathematics','calculate','solve'],a:'I can help with math problems!\n\nPlease share the specific question or equation you want me to solve, and I will work through it step by step.'},
+    {
+      k:['hello','hi','hey','namaste','helo','hii'],
+      a:`Hello! I am **Arovon** — India's own AI assistant.
+
+I can help you with:
+- **Science & Math** — Physics, Chemistry, Biology, Calculus
+- **History & Geography** — India and World
+- **Coding** — Python, JavaScript, any language
+- **General Knowledge** — Current affairs, GK
+- **Any language** — Hindi, English, Tamil, Bengali and more
+
+What would you like to know today?`
+    },
+    {
+      k:['who are you','kaun ho','arovon kya hai','what are you'],
+      a:`## About Arovon
+
+I am **Arovon** — India's own AI assistant, built to answer questions in every Indian language.
+
+### What I can do:
+1. Answer questions on **any topic** — science, history, math, coding
+2. Respond in **your language** — Hindi, English, Tamil, Bengali, Marathi, Gujarati and more
+3. Solve **math problems** step by step
+4. Explain **complex topics** simply
+5. Help with **studies and research**
+
+### My knowledge includes:
+- Science, Technology, Mathematics
+- Indian and World History
+- Geography, Polity, Economy
+- Health, Sports, Culture
+- Coding and Computer Science`
+    },
+    {
+      k:['motivat','inspire','quote','himmat','hausla'],
+      a:`## Motivational Quotes
+
+> "Your time is limited, so do not waste it living someone else's life." — **Steve Jobs**
+
+> "The future belongs to those who believe in the beauty of their dreams." — **Eleanor Roosevelt**
+
+> "Khud ko kamzor mat samjho — tumhare andar woh shakti hai jo duniya badal sake." — **Arovon**
+
+> "Arise, awake and stop not till the goal is reached." — **Swami Vivekananda**
+
+> "You have to dream before your dreams can come true." — **APJ Abdul Kalam**
+
+Keep going — every day is a new opportunity to become better than yesterday!`
+    },
+    {
+      k:['thank','shukriya','dhanyawad','thanks','bahut accha','shukriya'],
+      a:'You are most welcome! Feel free to ask me anything else — I am always here to help.'
+    },
+    {
+      k:['weather','mausam','temperature','barish','rain'],
+      a:`I don't have access to live weather data.
+
+**For accurate weather information:**
+- Visit **imd.gov.in** (India Meteorological Department)
+- Search on Google: your city name + weather
+- Check your phone's weather app
+
+**IMD also provides:**
+- Seasonal forecasts
+- Flood warnings
+- Cyclone alerts`
+    },
   ];
 
   for (const item of kb) {
-    if (item.k.some(k=>ql.includes(k))) return { text: item.a };
+    if (item.k.some(k=>ql.includes(k))) {
+      return { text: item.a };
+    }
   }
 
-  // Low score PDF
-  if (pdf && pdf.score > 0) return { text: formatPDFAnswer(pdf.text) };
+  // Low score PDF result
+  if (found && found.score > 0) {
+    return { text: smartFormat(found.text, q) };
+  }
 
-  return { text: 'Could you give me more detail? I want to give you the most accurate answer possible.' };
+  // No answer found
+  return {
+    text: `I want to give you the most accurate answer possible.
+
+Could you:
+- **Be more specific** about what you want to know
+- **Add more context** to your question
+- **Try rephrasing** in a different way
+
+For example, instead of "Tell me about physics" try "Explain Newton's first law of motion with examples"`
+  };
 }
 
-// FORMAT PDF ANSWER — clean structure
-function formatPDFAnswer(raw) {
-  // Clean up garbled text, keep structure
-  let text = raw.trim();
+// SMART FORMAT — structure raw Wikipedia text
+function smartFormat(text, query) {
+  if (!text) return text;
 
-  // If text has question patterns, format them
-  if (text.match(/Que\.\s*\d+|Q\.\s*\d+|Question\s*\d+/i)) {
-    text = text.replace(/(Que\.\s*\d+[^:]*[:.]?)/gi, '\n\n### $1\n');
-  }
+  // Already has markdown
+  if (text.includes('##') || text.includes('**')) return text;
 
-  // If has numbered steps
-  if (text.match(/Step\s*\d+|Iteration\s*\d+/i)) {
-    text = text.replace(/(Step\s*\d+|Iteration\s*\d+)/gi, '\n**$1:**');
-  }
+  const lines = text.split('\n').filter(l => l.trim());
+  if (lines.length === 0) return text;
 
-  return text;
+  let result = '';
+  const title = lines[0];
+  result += `## ${title}\n\n`;
+
+  const rest = lines.slice(1).join('\n');
+
+  // Split into paragraphs
+  const paras = rest.split(/\n{2,}/);
+  paras.forEach((para, i) => {
+    if (para.trim()) {
+      if (i === 0) {
+        result += para.trim() + '\n\n';
+      } else if (para.length > 200) {
+        result += para.trim() + '\n\n';
+      } else {
+        result += para.trim() + '\n\n';
+      }
+    }
+  });
+
+  return result.trim();
 }
 
 // NEW CHAT
@@ -530,7 +635,7 @@ async function send() {
   await saveFB('user', txt);
 
   const typ = addTyping();
-  await sleep(500 + Math.random() * 600);
+  await sleep(400 + Math.random() * 500);
 
   const res = await getReply(txt);
   typ.remove();
@@ -545,7 +650,6 @@ async function send() {
 
 function sleep(ms) { return new Promise(r=>setTimeout(r,ms)); }
 
-// ADD USER BUBBLE
 function addUserBub(txt) {
   const b = document.getElementById('msgsBox');
   const r = document.createElement('div');
@@ -555,7 +659,6 @@ function addUserBub(txt) {
   scrollD();
 }
 
-// ADD AI BUBBLE — with stream
 async function addAIBub(txt) {
   const b = document.getElementById('msgsBox');
   const r = document.createElement('div');
@@ -568,10 +671,8 @@ async function addAIBub(txt) {
       <div class="ai-av">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
           <circle cx="12" cy="12" r="5"/>
-          <line x1="12" y1="2" x2="12" y2="5"/>
-          <line x1="12" y1="19" x2="12" y2="22"/>
-          <line x1="2" y1="12" x2="5" y2="12"/>
-          <line x1="19" y1="12" x2="22" y2="12"/>
+          <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
+          <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
         </svg>
       </div>
       <div class="ai-body">
@@ -587,13 +688,12 @@ async function addAIBub(txt) {
   const el = document.getElementById(id);
   const html = md2html(txt);
 
-  // Stream render
   await new Promise(res => {
     let i = 0;
     function tick() {
       if (i < html.length) {
-        el.innerHTML = html.substring(0, i + 6);
-        i += 6;
+        el.innerHTML = html.substring(0, i+8);
+        i += 8;
         scrollD();
         requestAnimationFrame(tick);
       } else {
@@ -606,7 +706,6 @@ async function addAIBub(txt) {
   });
 }
 
-// TYPING INDICATOR
 function addTyping() {
   const b = document.getElementById('msgsBox');
   const r = document.createElement('div');
@@ -615,10 +714,8 @@ function addTyping() {
     <div class="typ-av">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
         <circle cx="12" cy="12" r="5"/>
-        <line x1="12" y1="2" x2="12" y2="5"/>
-        <line x1="12" y1="19" x2="12" y2="22"/>
-        <line x1="2" y1="12" x2="5" y2="12"/>
-        <line x1="19" y1="12" x2="22" y2="12"/>
+        <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
+        <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
       </svg>
     </div>
     <div class="typ-dots"><span></span><span></span><span></span></div>`;
@@ -627,95 +724,82 @@ function addTyping() {
   return r;
 }
 
-// MARKDOWN TO HTML CONVERTER
+// MARKDOWN TO HTML
 function md2html(text) {
-  let s = text;
+  let s = text
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;');
 
-  // Escape HTML first
-  s = s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-
-  // Code blocks ```lang\n...\n```
+  // Code blocks
   s = s.replace(/```(\w*)\n?([\s\S]*?)```/g, (m, lang, code) => {
-    return `<pre><code>${code.trim()}</code></pre>`;
+    return `<pre><code class="lang-${lang}">${code.trim()}</code></pre>`;
   });
 
-  // Inline code `text`
-  s = s.replace(/`([^`]+)`/g, '<code>$1</code>');
+  // Inline code
+  s = s.replace(/`([^`\n]+)`/g, '<code>$1</code>');
 
-  // Headers ### ## #
+  // Headers
+  s = s.replace(/^#### (.+)$/gm, '<h4>$1</h4>');
   s = s.replace(/^### (.+)$/gm, '<h3>$1</h3>');
   s = s.replace(/^## (.+)$/gm, '<h2>$1</h2>');
   s = s.replace(/^# (.+)$/gm, '<h1>$1</h1>');
 
-  // Bold **text**
+  // Bold & italic
+  s = s.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>');
   s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  s = s.replace(/\*([^*\n]+)\*/g, '<em>$1</em>');
 
-  // Italic *text*
-  s = s.replace(/\*([^*]+)\*/g, '<em>$1</em>');
-
-  // Blockquote > text
+  // Blockquote
   s = s.replace(/^&gt; (.+)$/gm, '<blockquote>$1</blockquote>');
 
-  // HR ---
+  // HR
   s = s.replace(/^---+$/gm, '<hr>');
 
   // Tables
-  s = s.replace(/^\|(.+)\|$/gm, (match, content) => {
-    const cells = content.split('|').map(c => c.trim());
-    return '<tr>' + cells.map(c => `<td>${c}</td>`).join('') + '</tr>';
-  });
-  s = s.replace(/(<tr>.*<\/tr>)/gs, (match) => {
-    // First row = header
-    const rows = match.match(/<tr>.*?<\/tr>/gs) || [];
-    if (rows.length === 0) return match;
-    const head = rows[0].replace(/<td>/g,'<th>').replace(/<\/td>/g,'</th>');
-    const body = rows.slice(1).join('');
-    return `<table><thead>${head}</thead><tbody>${body}</tbody></table>`;
+  const tableRegex = /(\|.+\|\n)((?:\|[-:]+\|\n)+)((?:\|.+\|\n?)*)/g;
+  s = s.replace(tableRegex, (match, header, sep, body) => {
+    const parseRow = (row, tag) =>
+      '<tr>' + row.trim().replace(/^\||\|$/g,'').split('|')
+        .map(c => `<${tag}>${c.trim()}</${tag}>`).join('') + '</tr>';
+    const headerHTML = parseRow(header, 'th');
+    const bodyHTML = body.trim().split('\n').filter(Boolean).map(r => parseRow(r, 'td')).join('');
+    return `<table><thead>${headerHTML}</thead><tbody>${bodyHTML}</tbody></table>`;
   });
 
-  // Unordered lists - item
-  s = s.replace(/^[-*] (.+)$/gm, '<li>$1</li>');
-  s = s.replace(/(<li>.*?<\/li>)(\s*<li>)/gs, '$1$2');
-  s = s.replace(/(<li>[\s\S]+?(?=(?:<h[1-6]>|<pre>|<blockquote>|<table>|$)))/g, (match) => {
-    if (!match.includes('<ul>') && !match.includes('<ol>')) {
-      return '<ul>' + match + '</ul>';
-    }
-    return match;
+  // Unordered list
+  s = s.replace(/^[-*•] (.+)$/gm, '<li data-ul>$1</li>');
+  s = s.replace(/(<li data-ul>[\s\S]*?<\/li>)(\n(?!<li data-ul>)|$)/g, (m) => {
+    return m.replace(/(<li) data-ul>/g, '<li>');
+  });
+  s = s.replace(/((?:<li>[^<]*<\/li>\n?)+)/g, (m) => {
+    if (!m.includes('<ol>') && !m.includes('<ul>')) return `<ul>${m}</ul>`;
+    return m;
   });
 
-  // Ordered lists 1. item
-  s = s.replace(/^\d+\. (.+)$/gm, '<oli>$1</oli>');
-  s = s.replace(/(<oli>[\s\S]+?(?=(?:<h[1-6]>|<pre>|<blockquote>|<ul>|<table>|$)))/g, (match) => {
-    return '<ol>' + match.replace(/<oli>/g,'<li>').replace(/<\/oli>/g,'</li>') + '</ol>';
+  // Ordered list
+  s = s.replace(/^\d+\. (.+)$/gm, '<li data-ol>$1</li>');
+  s = s.replace(/((?:<li data-ol>[^<]*<\/li>\n?)+)/g, (m) => {
+    return `<ol>${m.replace(/(<li) data-ol>/g,'<li>')}</ol>`;
   });
-  s = s.replace(/<oli>/g,'<li>').replace(/<\/oli>/g,'</li>');
+  s = s.replace(/<li data-ol>/g,'<li>');
 
-  // Paragraphs — double newline
-  s = s.replace(/\n\n+/g, '</p><p>');
+  // Paragraphs
+  const blocks = ['h1','h2','h3','h4','ul','ol','pre','table','blockquote','hr'];
+  const blockRe = new RegExp(`^(<(?:${blocks.join('|')})[^>]*>)`, 'gm');
 
-  // Single newline
-  s = s.replace(/\n/g, '<br>');
+  s = s.replace(/\n{2,}/g, '\n\n');
+  const parts = s.split('\n\n');
+  s = parts.map(part => {
+    part = part.trim();
+    if (!part) return '';
+    if (blocks.some(b => part.startsWith('<'+b))) return part;
+    return '<p>' + part.replace(/\n/g,'<br>') + '</p>';
+  }).join('\n');
 
-  // Wrap in paragraph if not starting with block element
-  if (!s.startsWith('<h') && !s.startsWith('<ul') && !s.startsWith('<ol') && !s.startsWith('<pre') && !s.startsWith('<table') && !s.startsWith('<blockquote')) {
-    s = '<p>' + s + '</p>';
-  }
-
-  // Clean up empty paragraphs
-  s = s.replace(/<p><\/p>/g, '');
-  s = s.replace(/<p>(<h[1-6]>)/g, '$1');
-  s = s.replace(/(<\/h[1-6]>)<\/p>/g, '$1');
-  s = s.replace(/<p>(<ul>)/g, '$1');
-  s = s.replace(/(<\/ul>)<\/p>/g, '$1');
-  s = s.replace(/<p>(<ol>)/g, '$1');
-  s = s.replace(/(<\/ol>)<\/p>/g, '$1');
-  s = s.replace(/<p>(<pre>)/g, '$1');
-  s = s.replace(/(<\/pre>)<\/p>/g, '$1');
-  s = s.replace(/<p>(<table>)/g, '$1');
-  s = s.replace(/(<\/table>)<\/p>/g, '$1');
-  s = s.replace(/<p>(<blockquote>)/g, '$1');
-  s = s.replace(/(<\/blockquote>)<\/p>/g, '$1');
-  s = s.replace(/<p>(<hr>)<\/p>/g, '$1');
+  // Clean empty tags
+  s = s.replace(/<p><\/p>/g,'');
+  s = s.replace(/<p>(<(?:h[1-4]|ul|ol|pre|table|blockquote|hr)[^>]*>)/g,'$1');
 
   return s;
 }
@@ -731,35 +815,22 @@ function cpTxt(enc, btn) {
   });
 }
 
-// FIRESTORE SAVE
+// FIRESTORE
 async function saveFB(role, text) {
   if (!me||!sid||!db) return;
   try {
-    await db.collection('users').doc(me.uid)
-      .collection('chats').doc(sid)
-      .collection('messages').add({
-        role, text,
-        timestamp: firebase.firestore.FieldValue.serverTimestamp()
-      });
-    await db.collection('users').doc(me.uid)
-      .collection('chats').doc(sid)
-      .set({
-        title: fmsg.substring(0,42)||'New chat',
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-        model: mdl,
-        uid: me.uid
-      }, {merge:true});
-  } catch(e) { console.error('saveFB error:',e); }
+    await db.collection('users').doc(me.uid).collection('chats').doc(sid).collection('messages').add({role,text,timestamp:firebase.firestore.FieldValue.serverTimestamp()});
+    await db.collection('users').doc(me.uid).collection('chats').doc(sid).set({title:fmsg.substring(0,42)||'New chat',updatedAt:firebase.firestore.FieldValue.serverTimestamp(),model:mdl,uid:me.uid},{merge:true});
+  } catch(e) { console.error('saveFB:',e); }
 }
 
-// LOAD HISTORY
+// HISTORY
 async function loadHist() {
   if (!me||!db) return;
   try {
-    const snap = await db.collection('users').doc(me.uid)
-      .collection('chats').orderBy('updatedAt','desc').limit(40).get();
+    const snap = await db.collection('users').doc(me.uid).collection('chats').orderBy('updatedAt','desc').limit(40).get();
     const list = document.getElementById('histList');
-    list.innerHTML = '';
+    list.innerHTML='';
     if (snap.empty) { list.innerHTML='<div class="hist-empty">No chats yet</div>'; return; }
     snap.forEach(d => addHistEl(d.id, d.data().title||'Chat', false));
   } catch(e) {}
@@ -770,13 +841,9 @@ function addHistEl(id, title, active) {
   const emp = list.querySelector('.hist-empty');
   if (emp) emp.remove();
   const el = document.createElement('div');
-  el.className = 'hi' + (active?' on':'');
+  el.className = 'hi'+(active?' on':'');
   el.dataset.id = id;
-  el.innerHTML = `
-    <span class="hi-txt">${esc(title)}</span>
-    <button class="hi-del" onclick="delChat(event,'${id}')">
-      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
-    </button>`;
+  el.innerHTML = `<span class="hi-txt">${esc(title)}</span><button class="hi-del" onclick="delChat(event,'${id}')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg></button>`;
   el.addEventListener('click', e => { if (!e.target.closest('.hi-del')) openChat(id,el); });
   list.insertBefore(el, list.firstChild);
   return el;
@@ -798,9 +865,7 @@ async function openChat(id, el) {
   document.getElementById('msgsBox').style.display='block';
   document.getElementById('msgsBox').innerHTML='';
   try {
-    const snap = await db.collection('users').doc(me.uid)
-      .collection('chats').doc(id)
-      .collection('messages').orderBy('timestamp').get();
+    const snap = await db.collection('users').doc(me.uid).collection('chats').doc(id).collection('messages').orderBy('timestamp').get();
     snap.forEach(d => {
       const data = d.data();
       if (data.role==='user') {
@@ -809,17 +874,15 @@ async function openChat(id, el) {
       } else {
         const b = document.getElementById('msgsBox');
         const row = document.createElement('div');
-        row.className = 'msg-row';
-        const enc = encodeURIComponent(data.text||'');
-        row.innerHTML = `
+        row.className='msg-row';
+        const enc=encodeURIComponent(data.text||'');
+        row.innerHTML=`
           <div class="msg-ai">
             <div class="ai-av" style="width:28px;height:28px;border-radius:8px;background:var(--accent);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
                 <circle cx="12" cy="12" r="5"/>
-                <line x1="12" y1="2" x2="12" y2="5"/>
-                <line x1="12" y1="19" x2="12" y2="22"/>
-                <line x1="2" y1="12" x2="5" y2="12"/>
-                <line x1="19" y1="12" x2="22" y2="12"/>
+                <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
+                <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
               </svg>
             </div>
             <div class="ai-body">
@@ -827,9 +890,7 @@ async function openChat(id, el) {
               <div class="ai-text">${md2html(data.text||'')}</div>
             </div>
           </div>
-          <div class="msg-acts">
-            <button class="act-btn" onclick="cpTxt('${enc}',this)">Copy</button>
-          </div>`;
+          <div class="msg-acts"><button class="act-btn" onclick="cpTxt('${enc}',this)">Copy</button></div>`;
         b.appendChild(row);
       }
     });
@@ -842,8 +903,7 @@ async function delChat(e, id) {
   e.stopPropagation();
   if (!me||!db) return;
   try {
-    const ms = await db.collection('users').doc(me.uid)
-      .collection('chats').doc(id).collection('messages').get();
+    const ms = await db.collection('users').doc(me.uid).collection('chats').doc(id).collection('messages').get();
     const batch = db.batch();
     ms.forEach(d=>batch.delete(d.ref));
     await batch.commit();
@@ -858,17 +918,8 @@ async function delChat(e, id) {
 }
 
 // MODEL
-function toggleMdl() {
-  document.getElementById('mdlDD').classList.toggle('open');
-  document.getElementById('mdlBtn').classList.toggle('open');
-}
-function pickMdl(name,id,el) {
-  mdl=id;
-  document.getElementById('mdlName').textContent=name;
-  document.querySelectorAll('.mdl-opt').forEach(o=>o.classList.remove('sel'));
-  el.classList.add('sel');
-  toggleMdl();
-}
+function toggleMdl() { document.getElementById('mdlDD').classList.toggle('open'); document.getElementById('mdlBtn').classList.toggle('open'); }
+function pickMdl(name,id,el) { mdl=id; document.getElementById('mdlName').textContent=name; document.querySelectorAll('.mdl-opt').forEach(o=>o.classList.remove('sel')); el.classList.add('sel'); toggleMdl(); }
 
 // SIDEBAR
 function openSB() { document.getElementById('sb').classList.add('open'); document.getElementById('overlay').classList.add('show'); }
@@ -878,16 +929,11 @@ function closeSB() { document.getElementById('sb').classList.remove('open'); doc
 function toggleDD() { document.getElementById('uDD').classList.toggle('open'); }
 document.addEventListener('click', e => {
   if (!e.target.closest('#uRow')) document.getElementById('uDD').classList.remove('open');
-  if (!e.target.closest('.mdl-wrap')) {
-    document.getElementById('mdlDD').classList.remove('open');
-    document.getElementById('mdlBtn').classList.remove('open');
-  }
+  if (!e.target.closest('.mdl-wrap')) { document.getElementById('mdlDD').classList.remove('open'); document.getElementById('mdlBtn').classList.remove('open'); }
 });
 
 // INPUT
-function onKey(e) {
-  if (e.key==='Enter'&&!e.shiftKey) { e.preventDefault(); send(); }
-}
+function onKey(e) { if (e.key==='Enter'&&!e.shiftKey) { e.preventDefault(); send(); } }
 function onType(el) {
   el.style.height='auto';
   el.style.height=Math.min(el.scrollHeight,150)+'px';
@@ -895,15 +941,8 @@ function onType(el) {
 }
 
 // UTILS
-function scrollD() {
-  const c = document.getElementById('chatScroll');
-  c.scrollTop = c.scrollHeight;
-}
-function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2400);
-}
+function scrollD() { const c=document.getElementById('chatScroll'); c.scrollTop=c.scrollHeight; }
+function showToast(msg) { const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2400); }
 </script>
 </body>
 </html>
