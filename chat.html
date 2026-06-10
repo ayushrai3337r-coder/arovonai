@@ -13,14 +13,8 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
-  --accent:#FF6B00;
-  --ink:#111318;
-  --ink2:#555;
-  --ink3:#999;
-  --white:#fff;
-  --bg:#f4f4f0;
-  --border:rgba(0,0,0,0.08);
-  --sw:258px;
+  --accent:#FF6B00;--ink:#111318;--ink2:#555;--ink3:#999;
+  --white:#fff;--bg:#f4f4f0;--border:rgba(0,0,0,0.08);--sw:258px;
 }
 html,body{height:100%;width:100%;font-family:'DM Sans',sans-serif;background:var(--white);color:var(--ink);-webkit-font-smoothing:antialiased;}
 .layout{position:fixed;inset:0;display:flex;overflow:hidden;}
@@ -100,25 +94,24 @@ html,body{height:100%;width:100%;font-family:'DM Sans',sans-serif;background:var
 .ai-av{width:28px;height:28px;border-radius:8px;background:var(--accent);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;}
 .ai-body{flex:1;min-width:0;}
 .ai-label{font-size:0.73rem;font-weight:700;color:var(--ink3);margin-bottom:6px;letter-spacing:.04em;text-transform:uppercase;}
-/* AI TEXT STYLES */
 .ai-text{font-size:0.93rem;line-height:1.8;color:var(--ink);word-break:break-word;}
 .ai-text p{margin-bottom:12px;}
 .ai-text p:last-child{margin-bottom:0;}
 .ai-text p:empty{display:none;}
-.ai-text strong{font-weight:700;color:var(--ink);}
+.ai-text strong{font-weight:700;}
 .ai-text em{font-style:italic;color:var(--ink2);}
 .ai-text h1{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:600;color:var(--ink);margin:4px 0 10px;padding-bottom:6px;border-bottom:2px solid rgba(255,107,0,0.15);}
 .ai-text h2{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:600;color:var(--ink);margin:16px 0 8px;}
 .ai-text h2:first-child{margin-top:0;}
 .ai-text h3{font-size:0.97rem;font-weight:700;color:var(--accent);margin:14px 0 7px;}
 .ai-text h4{font-size:0.93rem;font-weight:700;color:var(--ink2);margin:12px 0 6px;}
-.ai-text ul{margin:6px 0 12px 0;padding-left:18px;display:flex;flex-direction:column;gap:5px;list-style:disc;}
-.ai-text ol{margin:6px 0 12px 0;padding-left:22px;display:flex;flex-direction:column;gap:5px;list-style:decimal;}
-.ai-text li{line-height:1.65;color:var(--ink);}
+.ai-text ul{margin:6px 0 12px 0;padding-left:18px;list-style:disc;display:flex;flex-direction:column;gap:4px;}
+.ai-text ol{margin:6px 0 12px 0;padding-left:22px;list-style:decimal;display:flex;flex-direction:column;gap:4px;}
+.ai-text li{line-height:1.65;}
 .ai-text ul li::marker{color:var(--accent);}
 .ai-text ol li::marker{color:var(--accent);font-weight:700;}
 .ai-text code{background:#f0f0ee;border:1px solid rgba(0,0,0,0.08);padding:2px 6px;border-radius:5px;font-size:0.85em;font-family:'Courier New',monospace;color:#c0392b;}
-.ai-text pre{background:#1e1e2e;border-radius:10px;padding:16px 18px;margin:12px 0;overflow-x:auto;border:1px solid rgba(0,0,0,0.1);}
+.ai-text pre{background:#1e1e2e;border-radius:10px;padding:16px 18px;margin:12px 0;overflow-x:auto;}
 .ai-text pre code{background:none;border:none;padding:0;color:#cdd6f4;font-size:0.85rem;line-height:1.65;font-family:'Courier New',monospace;}
 .ai-text blockquote{border-left:3px solid var(--accent);padding:8px 14px;margin:12px 0;background:rgba(255,107,0,0.04);border-radius:0 8px 8px 0;color:var(--ink2);font-style:italic;}
 .ai-text table{width:100%;border-collapse:collapse;margin:12px 0;font-size:0.88rem;}
@@ -162,10 +155,7 @@ html,body{height:100%;width:100%;font-family:'DM Sans',sans-serif;background:var
   .welcome-screen{padding:60px 20px 30px;}
   .msg-user-bub{max-width:88%;}
 }
-@media(max-width:480px){
-  .wc-title{font-size:1.55rem;}
-  .ai-text pre{font-size:0.78rem;padding:12px;}
-}
+@media(max-width:480px){.wc-title{font-size:1.55rem;}.ai-text pre{font-size:0.78rem;}}
 </style>
 </head>
 <body>
@@ -265,17 +255,17 @@ html,body{height:100%;width:100%;font-family:'DM Sans',sans-serif;background:var
         <h1 class="wc-title">Hello, <span id="wcName">there</span></h1>
         <p class="wc-sub">Ask me anything — in English, Hindi, Tamil, or any Indian language.</p>
         <div class="sug-grid">
-          <button class="sug-card" onclick="useSug('What is the history of India?')">
-            <div class="sug-lbl">History</div>What is the history of India?
-          </button>
-          <button class="sug-card" onclick="useSug('Explain machine learning')">
-            <div class="sug-lbl">Technology</div>Explain machine learning
+          <button class="sug-card" onclick="useSug('What are Newton laws of motion?')">
+            <div class="sug-lbl">Physics</div>What are Newton laws of motion?
           </button>
           <button class="sug-card" onclick="useSug('Who was APJ Abdul Kalam?')">
             <div class="sug-lbl">People</div>Who was APJ Abdul Kalam?
           </button>
-          <button class="sug-card" onclick="useSug('Give me a motivational quote')">
-            <div class="sug-lbl">Inspiration</div>Give me a motivational quote
+          <button class="sug-card" onclick="useSug('What is machine learning?')">
+            <div class="sug-lbl">Technology</div>What is machine learning?
+          </button>
+          <button class="sug-card" onclick="useSug('History of India')">
+            <div class="sug-lbl">History</div>History of India
           </button>
         </div>
       </div>
@@ -300,7 +290,7 @@ html,body{height:100%;width:100%;font-family:'DM Sans',sans-serif;background:var
 <script>
 let auth, db;
 let me = null, sid = null, fmsg = '';
-let chunks = [];
+let allChunks = [];
 let mdl = 'lite', busy = false;
 
 // BOOT
@@ -317,13 +307,13 @@ let mdl = 'lite', busy = false;
         me = u;
         initUser();
         loadHist();
-        loadAllKnowledge();
+        loadKnowledge();
         newChat();
       });
     });
   } catch(e) {
     console.error('Boot:', e);
-    showToast('Server error — refresh page');
+    showToast('Server error — refresh');
   }
 })();
 
@@ -340,143 +330,256 @@ async function doLogout() {
   location.href = 'login.html';
 }
 
-// LOAD ALL KNOWLEDGE
-async function loadAllKnowledge() {
-  chunks = [];
-  await Promise.all([loadPDFChunks(), loadWikiKnowledge()]);
-  console.log('Total knowledge chunks:', chunks.length);
-}
-
-async function loadPDFChunks() {
+// LOAD ALL KNOWLEDGE FROM FIRESTORE
+async function loadKnowledge() {
+  allChunks = [];
   try {
-    const snap = await db.collection('pdfs').get();
-    for (const pd of snap.docs) {
+    // Load Wikipedia knowledge
+    const wSnap = await db.collection('knowledge').get();
+    wSnap.forEach(doc => {
+      const d = doc.data();
+      if (d.text && d.text.length > 50) {
+        allChunks.push({
+          text: d.text,
+          name: d.name || doc.id.replace(/_/g, ' '),
+          words: (d.text.toLowerCase().match(/\b\w{3,}\b/g) || [])
+        });
+      }
+    });
+
+    // Load PDF chunks
+    const pSnap = await db.collection('pdfs').get();
+    for (const pd of pSnap.docs) {
       const pdata = pd.data();
       try {
-        const cs = await db.collection('pdfs').doc(pd.id).collection('chunks').get();
-        if (!cs.empty) {
-          cs.forEach(cd => {
+        const cSnap = await db.collection('pdfs').doc(pd.id).collection('chunks').get();
+        if (!cSnap.empty) {
+          cSnap.forEach(cd => {
             const c = cd.data();
-            chunks.push({ text:c.text||'', tf:c.tf||{}, wordCount:parseInt(c.wordCount)||100, source:c.pdfName||pdata.name||'Document', type:'pdf' });
+            if (c.text && c.text.length > 50) {
+              allChunks.push({
+                text: c.text,
+                name: c.pdfName || pdata.name || 'Document',
+                words: (c.text.toLowerCase().match(/\b\w{3,}\b/g) || [])
+              });
+            }
           });
         } else if (pdata.text) {
-          const tf = buildTF(pdata.text);
-          chunks.push({ text:pdata.text, tf, wordCount:pdata.text.split(/\s+/).length, source:pdata.name||'Document', type:'pdf' });
+          allChunks.push({
+            text: pdata.text,
+            name: pdata.name || 'Document',
+            words: (pdata.text.toLowerCase().match(/\b\w{3,}\b/g) || [])
+          });
         }
       } catch(e) {}
     }
-  } catch(e) {}
-}
-
-async function loadWikiKnowledge() {
-  try {
-    const snap = await db.collection('knowledge').get();
-    snap.forEach(doc => {
-      const d = doc.data();
-      if (d.text) {
-        chunks.push({ text:d.text, tf:d.tf||{}, wordCount:parseInt(d.wordCount)||100, source:d.name||doc.id.replace(/_/g,' '), type:'wiki' });
-      }
-    });
-  } catch(e) {}
-}
-
-function buildTF(text) {
-  const tf = {};
-  tok(text).forEach(w => { tf[w] = (tf[w]||0)+1; });
-  return tf;
-}
-
-function tok(t) {
-  const sw = new Set(['the','a','an','and','or','but','in','on','at','to','for','of','with','is','are','was','were','be','been','have','has','had','do','does','did','will','would','could','should','this','that','i','you','he','she','it','we','they','my','your','his','her','its','ka','ki','ke','hai','ko','se','mein','ne','kya','aur','ya','woh','yeh','ek','nahi','bhi','hi','also','from','by','as','not','all','can','may','more','one','two','some','other','than','then','there','their','which','who','what','how','when','where']);
-  return t.toLowerCase().replace(/[^\w\s]/g,' ').split(/\s+/).filter(w=>w.length>2&&!sw.has(w));
-}
-
-// BM25 SEARCH
-async function bm25Search(q) {
-  if (!chunks.length) return null;
-  try {
-    const r = await fetch('/api/search', {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({query:q, chunks})
-    });
-    const d = await r.json();
-    if (!d.results?.length) return null;
-    const top = d.results;
-    const combined = top.map(c=>c.text.trim()).join('\n\n').substring(0,2500);
-    return { text:combined, score:top[0].score, source:top[0].source };
-  } catch(e) { return null; }
-}
-
-// DETECT QUERY TYPE
-function detectType(q) {
-  const ql = q.toLowerCase();
-  if (ql.match(/who is|who was|who were|kaun|kaun hai|kaun tha|tell me about person|biography/)) return 'person';
-  if (ql.match(/how to|how does|how do|kaise|steps|process|method|procedure|explain how/)) return 'howto';
-  if (ql.match(/list|types|kinds|name all|enumerate|what are the different|categories/)) return 'list';
-  if (ql.match(/difference|compare|vs|versus|better than|between.*and/)) return 'compare';
-  if (ql.match(/solve|calculate|find value|compute|equation|formula|bisection|newton raphson|numerical|integral|derivative|matrix|determinant/)) return 'math';
-  if (ql.match(/write code|write a program|implement|function for|code for|programming/)) return 'code';
-  return 'explain';
-}
-
-// STRUCTURED ANSWER BUILDER
-async function buildStructuredAnswer(rawText, query) {
-  try {
-    const qtype = detectType(query);
-    const r = await fetch('/api/format', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ text: rawText, query, qtype })
-    });
-    const d = await r.json();
-    return d.formatted || rawText;
+    console.log('Knowledge loaded:', allChunks.length, 'chunks');
   } catch(e) {
-    return rawText;
+    console.error('loadKnowledge error:', e);
   }
 }
 
-// MAIN RESPONSE
+// SIMPLE KEYWORD SEARCH — no BM25 API needed
+function searchKnowledge(query) {
+  if (!allChunks.length) return null;
+
+  const STOP = new Set(['the','a','an','and','or','but','in','on','at','to','for','of','with','is','are','was','were','be','been','have','has','had','do','does','did','will','would','could','should','this','that','i','you','he','she','it','we','they','my','your','his','her','its','ka','ki','ke','hai','ko','se','mein','ne','kya','aur','ya','woh','yeh','ek','nahi','bhi','hi','also','from','by','as','not','all','can','may','more','one','some','other','than','then','there','their','which','who','what','how','when','where','about','tell','me','explain','what','describe']);
+
+  // Extract meaningful query words
+  const qWords = query.toLowerCase()
+    .replace(/[^\w\s]/g, ' ')
+    .split(/\s+/)
+    .filter(w => w.length > 2 && !STOP.has(w));
+
+  if (!qWords.length) return null;
+
+  console.log('Searching for:', qWords);
+
+  // Score each chunk
+  const scored = allChunks.map(chunk => {
+    const text = chunk.text.toLowerCase();
+    const name = chunk.name.toLowerCase();
+    let score = 0;
+
+    qWords.forEach(qw => {
+      // Exact word match in text
+      const regex = new RegExp('\\b' + qw + '\\b', 'g');
+      const matches = (text.match(regex) || []).length;
+      score += matches * 2;
+
+      // Partial match
+      if (text.includes(qw)) score += 1;
+
+      // Name match = high score
+      if (name.includes(qw)) score += 20;
+    });
+
+    // Boost if first word of query matches strongly
+    if (qWords[0] && name.toLowerCase().includes(qWords[0])) {
+      score += 30;
+    }
+
+    return { ...chunk, score };
+  });
+
+  // Sort by score
+  scored.sort((a, b) => b.score - a.score);
+
+  const best = scored[0];
+  console.log('Best match:', best.name, 'score:', best.score);
+
+  if (best.score < 2) return null;
+
+  // Combine top 2 results if they're about same topic
+  const top2 = scored.slice(0, 2).filter(c => c.score > 0);
+  const combined = top2.map(c => c.text).join('\n\n').substring(0, 2000);
+
+  return {
+    text: combined,
+    name: best.name,
+    score: best.score
+  };
+}
+
+// FORMAT RAW TEXT INTO STRUCTURED MARKDOWN
+function formatAnswer(rawText, query, topicName) {
+  if (!rawText) return rawText;
+
+  // Clean Wikipedia artifacts
+  let text = rawText
+    .replace(/\[\d+\]/g, '')
+    .replace(/={2,}[^=\n]+=+/g, '')
+    .replace(/\n{3,}/g, '\n\n')
+    .replace(/thumb\|[^\n]+/g, '')
+    .trim();
+
+  const ql = query.toLowerCase();
+
+  // Detect query intent
+  const isPerson = ql.match(/who (is|was|were)|biography|life of|about.*person/);
+  const isHowTo = ql.match(/how (to|does|do|is)|kaise|process|steps|method/);
+  const isList = ql.match(/list|types|kinds|name all|what are the/);
+  const isMath = ql.match(/solve|calculate|equation|formula|numerical|bisection|newton|integral|derivative/);
+  const isDefine = ql.match(/what is|what are|define|explain|describe|kya hai|batao/);
+
+  // Split into paragraphs
+  const paras = text.split(/\n{2,}/).map(p => p.trim()).filter(p => p.length > 20);
+  if (!paras.length) return `## ${topicName}\n\n${text}`;
+
+  let out = '';
+
+  if (isPerson) {
+    out = `## ${topicName}\n\n`;
+    out += paras[0] + '\n\n';
+    if (paras.length > 1) {
+      out += `### Life & Contributions\n\n`;
+      paras.slice(1, 3).forEach(p => { out += p + '\n\n'; });
+    }
+    // Extract key facts
+    const allText = paras.join(' ');
+    const bornMatch = allText.match(/born[^.]{5,60}\./i);
+    const diedMatch = allText.match(/died[^.]{5,60}\./i);
+    const awardMatch = allText.match(/(?:award|prize|honour|Nobel)[^.]{5,80}\./i);
+    const facts = [bornMatch, diedMatch, awardMatch].filter(Boolean).map(m => m[0]);
+    if (facts.length) {
+      out += `### Quick Facts\n\n`;
+      facts.forEach(f => { out += `- ${f.trim()}\n`; });
+    }
+
+  } else if (isMath) {
+    out = `## ${topicName}\n\n`;
+    out += paras[0] + '\n\n';
+    if (paras.length > 1) {
+      out += `### Details\n\n`;
+      paras.slice(1, 4).forEach(p => { out += p + '\n\n'; });
+    }
+
+  } else if (isHowTo) {
+    out = `## ${topicName}\n\n`;
+    out += paras[0] + '\n\n';
+    if (paras.length > 1) {
+      out += `### How It Works\n\n`;
+      const sentences = paras.slice(1).join(' ').split(/(?<=[.!?])\s+(?=[A-Z])/).filter(s => s.length > 20);
+      sentences.slice(0, 6).forEach((s, i) => {
+        out += `${i + 1}. ${s.trim()}\n`;
+      });
+    }
+
+  } else if (isList) {
+    out = `## ${topicName}\n\n`;
+    out += paras[0] + '\n\n';
+    if (paras.length > 1) {
+      out += `### Key Points\n\n`;
+      paras.slice(1, 5).forEach(p => {
+        const sentences = p.split(/(?<=[.!?])\s+(?=[A-Z])/).filter(s => s.length > 15);
+        sentences.slice(0, 3).forEach(s => { out += `- ${s.trim()}\n`; });
+      });
+    }
+
+  } else {
+    // General / explain
+    out = `## ${topicName}\n\n`;
+    out += paras[0] + '\n\n';
+    if (paras.length > 1) {
+      out += `### Key Information\n\n`;
+      paras.slice(1, 4).forEach(p => {
+        if (p.length > 200) {
+          // Long paragraph — convert to bullets
+          const sentences = p.split(/(?<=[.!?])\s+(?=[A-Z])/).filter(s => s.length > 20);
+          if (sentences.length >= 3) {
+            sentences.slice(0, 4).forEach(s => { out += `- ${s.trim()}\n`; });
+            out += '\n';
+          } else {
+            out += p + '\n\n';
+          }
+        } else {
+          out += p + '\n\n';
+        }
+      });
+    }
+  }
+
+  return out.trim();
+}
+
+// MAIN RESPONSE GENERATOR
 async function getReply(q) {
   const ql = q.toLowerCase();
 
-  // Built-in KB
+  // Built-in responses
   const kb = [
-    { k:['hello','hi','hey','namaste','helo','hii'], a:`Hello! I am **Arovon** — India's own AI assistant.\n\nI can help you with:\n- **Science & Math** — Physics, Chemistry, Biology, Calculus\n- **History & Geography** — India and World\n- **Coding** — Python, JavaScript, any language\n- **General Knowledge** — Sports, Politics, Current Affairs\n- **Any Indian language** — Hindi, English, Tamil, Bengali, Marathi and more\n\nWhat would you like to know?` },
-    { k:['who are you','kaun ho','arovon kya','what are you'], a:`## About Arovon\n\nI am **Arovon** — India's own AI assistant.\n\n### What I can do:\n1. Answer questions on **any topic** — science, history, math, coding\n2. Respond in **your language** — Hindi, English, Tamil, Bengali, Marathi and more\n3. Solve **math problems** step by step\n4. Explain **complex topics** simply\n\n### My knowledge covers:\n- Science, Technology, Mathematics, Computer Science\n- Indian and World History, Geography, Polity\n- Health, Sports, Culture, Current Affairs` },
-    { k:['motivat','inspire','quote','himmat'], a:`## Motivational Quotes\n\n> "Your time is limited, so do not waste it living someone else's life." — **Steve Jobs**\n\n> "The future belongs to those who believe in the beauty of their dreams." — **Eleanor Roosevelt**\n\n> "Arise, awake and stop not till the goal is reached." — **Swami Vivekananda**\n\n> "You have to dream before your dreams can come true." — **APJ Abdul Kalam**\n\nKeep going — every day is a new opportunity!` },
-    { k:['thank','shukriya','thanks'], a:'You are most welcome! Feel free to ask me anything else.' },
-    { k:['weather','mausam','temperature'], a:`I don't have live weather data.\n\n**For accurate weather:**\n- Visit **imd.gov.in**\n- Google: your city + weather\n- Check your phone's weather app` },
+    { k:['hello','hi','hey','namaste','helo','hii','sup'], a:`Hello! I am **Arovon** — India's own AI assistant.\n\nI can help you with:\n- **Science & Math** — Physics, Chemistry, Biology, Calculus\n- **History & Geography** — India and World\n- **Coding** — Python, JavaScript, any language\n- **General Knowledge** — Sports, Politics, Current Affairs\n- **Any Indian language** — Hindi, English, Tamil, Bengali and more\n\nWhat would you like to know?` },
+    { k:['who are you','kaun ho','arovon kya','what are you'], a:`## About Arovon\n\nI am **Arovon** — India's own AI assistant.\n\n### What I can do:\n1. Answer questions on **any topic**\n2. Respond in **your language** — Hindi, English, Tamil, Bengali and more\n3. Solve **math problems** step by step\n4. Explain **complex topics** simply\n\n### My knowledge covers:\n- Science, Technology, Mathematics\n- Indian and World History, Geography\n- Health, Sports, Culture, Current Affairs\n- Coding and Programming` },
+    { k:['motivat','inspire','quote','himmat','hausla'], a:`## Motivational Quotes\n\n> "Your time is limited, so do not waste it living someone else's life." — **Steve Jobs**\n\n> "The future belongs to those who believe in the beauty of their dreams." — **Eleanor Roosevelt**\n\n> "Arise, awake and stop not till the goal is reached." — **Swami Vivekananda**\n\n> "You have to dream before your dreams can come true." — **APJ Abdul Kalam**\n\nKeep going — every day is a new opportunity!` },
+    { k:['thank','shukriya','thanks','dhanyawad'], a:'You are most welcome! Feel free to ask me anything else.' },
+    { k:['weather','mausam','temperature','barish'], a:`I don't have live weather data.\n\n**For accurate weather:**\n- Visit **imd.gov.in**\n- Google: your city + weather\n- Check your phone's weather app` },
   ];
 
   for (const item of kb) {
-    if (item.k.some(k=>ql.includes(k))) return { text: item.a };
+    if (item.k.some(k => ql.includes(k))) return { text: item.a };
   }
 
-  // BM25 search
-  const found = await bm25Search(q);
+  // Search knowledge base
+  const result = searchKnowledge(q);
 
-  if (found && found.score > 0.2) {
-    const structured = await buildStructuredAnswer(found.text, q);
-    return { text: structured };
+  if (result) {
+    const formatted = formatAnswer(result.text, q, result.name);
+    return { text: formatted };
   }
 
-  if (found && found.score > 0) {
-    const structured = await buildStructuredAnswer(found.text, q);
-    return { text: structured };
-  }
-
-  return { text: `I want to give you the most accurate answer possible.\n\n**Could you try:**\n- Being more specific about what you want to know\n- Adding more context to your question\n- Rephrasing in a different way` };
+  return {
+    text: `I want to give you the most accurate answer possible.\n\n**Could you try:**\n- Being more specific about what you want to know\n- For example: "What are Newton's laws of motion?" instead of just "Newton"\n- Or try asking about a specific topic from my knowledge base`
+  };
 }
 
-// CHAT FUNCTIONS
+// CHAT CORE
 function newChat() {
   sid = 'sess_' + Date.now();
   fmsg = '';
   document.getElementById('welcomeScreen').style.display = 'flex';
   document.getElementById('msgsBox').style.display = 'none';
   document.getElementById('msgsBox').innerHTML = '';
-  document.querySelectorAll('.hi').forEach(e=>e.classList.remove('on'));
+  document.querySelectorAll('.hi').forEach(e => e.classList.remove('on'));
   if (window.innerWidth < 768) closeSB();
 }
 
@@ -509,7 +612,7 @@ async function send() {
   scrollD();
 }
 
-function sleep(ms) { return new Promise(r=>setTimeout(r,ms)); }
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 function addUserBub(txt) {
   const b = document.getElementById('msgsBox');
@@ -574,66 +677,30 @@ function addTyping() {
 
 // MARKDOWN TO HTML
 function md2html(text) {
-  let s = text
-    .replace(/&/g,'&amp;')
-    .replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;');
-
-  // Code blocks
-  s = s.replace(/```(\w*)\n?([\s\S]*?)```/g, (m, lang, code) =>
-    `<pre><code>${code.trim()}</code></pre>`);
-
-  // Inline code
+  let s = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  s = s.replace(/```(\w*)\n?([\s\S]*?)```/g, (m,l,c) => `<pre><code>${c.trim()}</code></pre>`);
   s = s.replace(/`([^`\n]+)`/g, '<code>$1</code>');
-
-  // Headers
   s = s.replace(/^#### (.+)$/gm, '<h4>$1</h4>');
   s = s.replace(/^### (.+)$/gm, '<h3>$1</h3>');
   s = s.replace(/^## (.+)$/gm, '<h2>$1</h2>');
   s = s.replace(/^# (.+)$/gm, '<h1>$1</h1>');
-
-  // Bold & italic
   s = s.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>');
   s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
   s = s.replace(/\*([^*\n]+)\*/g, '<em>$1</em>');
-
-  // Blockquote
   s = s.replace(/^&gt; (.+)$/gm, '<blockquote>$1</blockquote>');
-
-  // HR
   s = s.replace(/^---+$/gm, '<hr>');
-
-  // Tables
-  s = s.replace(/^\|(.+)\|$/gm, (match) => {
-    const cells = match.slice(1,-1).split('|').map(c => c.trim());
-    return '<tr>' + cells.map(c => `<td>${c}</td>`).join('') + '</tr>';
-  });
-  s = s.replace(/^<tr>.*<\/tr>$/gm, m => m);
-  // Wrap table rows
-  s = s.replace(/((?:<tr>.*<\/tr>\n?)+)/g, tableBlock => {
-    const rows = tableBlock.trim().split('\n');
-    if (rows.length < 2) return tableBlock;
-    const head = rows[0].replace(/<td>/g,'<th>').replace(/<\/td>/g,'</th>');
-    const body = rows.slice(1).filter(r => !r.match(/^<tr><td>[-:| ]+<\/td><\/tr>$/)).join('\n');
-    return `<table><thead>${head}</thead><tbody>${body}</tbody></table>`;
-  });
-
-  // Lists — unordered
-  s = s.replace(/^[-*] (.+)$/gm, '<li class="u">$1</li>');
-  // Lists — ordered
-  s = s.replace(/^\d+\. (.+)$/gm, '<li class="o">$1</li>');
-
-  // Wrap lists
-  let inUL = false, inOL = false, out = '';
-  s.split('\n').forEach(line => {
-    if (line.startsWith('<li class="u">')) {
+  // Lists
+  const lines = s.split('\n');
+  let out = '', inUL = false, inOL = false;
+  lines.forEach(line => {
+    if (/^- (.+)$/.test(line)) {
       if (inOL) { out += '</ol>\n'; inOL = false; }
       if (!inUL) { out += '<ul>\n'; inUL = true; }
-      out += line.replace(' class="u"','') + '\n';
-    } else if (line.startsWith('<li class="o">')) {
+      out += `<li>${line.slice(2)}</li>\n`;
+    } else if (/^\d+\. (.+)$/.test(line)) {
       if (inUL) { out += '</ul>\n'; inUL = false; }
       if (!inOL) { out += '<ol>\n'; inOL = true; }
-      out += line.replace(' class="o"','') + '\n';
+      out += `<li>${line.replace(/^\d+\. /, '')}</li>\n`;
     } else {
       if (inUL) { out += '</ul>\n'; inUL = false; }
       if (inOL) { out += '</ol>\n'; inOL = false; }
@@ -643,42 +710,34 @@ function md2html(text) {
   if (inUL) out += '</ul>\n';
   if (inOL) out += '</ol>\n';
   s = out;
-
   // Paragraphs
-  const blockTags = ['<h1','<h2','<h3','<h4','<ul','<ol','<pre','<table','<blockquote','<hr'];
+  const blocks = ['<h1','<h2','<h3','<h4','<ul','<ol','<pre','<blockquote','<hr','<table'];
   const parts = s.split(/\n{2,}/);
-  s = parts.map(part => {
-    part = part.trim();
-    if (!part) return '';
-    if (blockTags.some(t => part.startsWith(t))) return part;
-    if (part.includes('\n')) part = part.replace(/\n/g, '<br>');
-    return '<p>' + part + '</p>';
+  s = parts.map(p => {
+    p = p.trim();
+    if (!p) return '';
+    if (blocks.some(b => p.startsWith(b))) return p;
+    return '<p>' + p.replace(/\n/g,'<br>') + '</p>';
   }).filter(Boolean).join('\n');
-
-  // Clean
-  s = s.replace(/<p><\/p>/g,'');
-  s = s.replace(/<p>(<(?:h[1-4]|ul|ol|pre|table|blockquote|hr)[> ])/g,'$1');
-
+  s = s.replace(/<p><\/p>/g, '');
+  s = s.replace(/<p>(<h[1-4]|<ul|<ol|<pre|<blockquote|<hr)/g, '$1');
   return s;
 }
 
-function esc(t) {
-  return String(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
+function esc(t) { return String(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 
 function cpTxt(enc, btn) {
-  navigator.clipboard.writeText(decodeURIComponent(enc)).then(()=>{
-    btn.textContent='Copied'; setTimeout(()=>{btn.textContent='Copy';},2000);
+  navigator.clipboard.writeText(decodeURIComponent(enc)).then(() => {
+    btn.textContent = 'Copied'; setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
   });
 }
 
-// FIRESTORE
 async function saveFB(role, text) {
   if (!me||!sid||!db) return;
   try {
     await db.collection('users').doc(me.uid).collection('chats').doc(sid).collection('messages').add({role,text,timestamp:firebase.firestore.FieldValue.serverTimestamp()});
     await db.collection('users').doc(me.uid).collection('chats').doc(sid).set({title:fmsg.substring(0,42)||'New chat',updatedAt:firebase.firestore.FieldValue.serverTimestamp(),model:mdl,uid:me.uid},{merge:true});
-  } catch(e) { console.error('save:',e); }
+  } catch(e) {}
 }
 
 async function loadHist() {
@@ -686,8 +745,8 @@ async function loadHist() {
   try {
     const snap = await db.collection('users').doc(me.uid).collection('chats').orderBy('updatedAt','desc').limit(40).get();
     const list = document.getElementById('histList');
-    list.innerHTML='';
-    if (snap.empty) { list.innerHTML='<div class="hist-empty">No chats yet</div>'; return; }
+    list.innerHTML = '';
+    if (snap.empty) { list.innerHTML = '<div class="hist-empty">No chats yet</div>'; return; }
     snap.forEach(d => addHistEl(d.id, d.data().title||'Chat', false));
   } catch(e) {}
 }
@@ -697,46 +756,46 @@ function addHistEl(id, title, active) {
   const emp = list.querySelector('.hist-empty');
   if (emp) emp.remove();
   const el = document.createElement('div');
-  el.className = 'hi'+(active?' on':'');
+  el.className = 'hi' + (active ? ' on' : '');
   el.dataset.id = id;
   el.innerHTML = `<span class="hi-txt">${esc(title)}</span><button class="hi-del" onclick="delChat(event,'${id}')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg></button>`;
-  el.addEventListener('click', e => { if (!e.target.closest('.hi-del')) openChat(id,el); });
+  el.addEventListener('click', e => { if (!e.target.closest('.hi-del')) openChat(id, el); });
   list.insertBefore(el, list.firstChild);
   return el;
 }
 
 function updateHist() {
   if (!document.querySelector(`.hi[data-id="${sid}"]`)) {
-    document.querySelectorAll('.hi').forEach(e=>e.classList.remove('on'));
+    document.querySelectorAll('.hi').forEach(e => e.classList.remove('on'));
     addHistEl(sid, fmsg.substring(0,40)||'New chat', true);
   }
 }
 
 async function openChat(id, el) {
   if (!me||!db) return;
-  sid=id; fmsg='';
-  document.querySelectorAll('.hi').forEach(e=>e.classList.remove('on'));
+  sid = id; fmsg = '';
+  document.querySelectorAll('.hi').forEach(e => e.classList.remove('on'));
   el.classList.add('on');
-  document.getElementById('welcomeScreen').style.display='none';
-  document.getElementById('msgsBox').style.display='block';
-  document.getElementById('msgsBox').innerHTML='';
+  document.getElementById('welcomeScreen').style.display = 'none';
+  document.getElementById('msgsBox').style.display = 'block';
+  document.getElementById('msgsBox').innerHTML = '';
   try {
     const snap = await db.collection('users').doc(me.uid).collection('chats').doc(id).collection('messages').orderBy('timestamp').get();
     snap.forEach(d => {
       const data = d.data();
-      if (data.role==='user') { if(!fmsg)fmsg=data.text; addUserBub(data.text); }
+      if (data.role === 'user') { if (!fmsg) fmsg = data.text; addUserBub(data.text); }
       else {
         const b = document.getElementById('msgsBox');
         const row = document.createElement('div');
-        row.className='msg-row';
-        const enc=encodeURIComponent(data.text||'');
-        row.innerHTML=`<div class="msg-ai"><div class="ai-av" style="width:28px;height:28px;border-radius:8px;background:var(--accent);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg></div><div class="ai-body"><div class="ai-label">Arovon</div><div class="ai-text">${md2html(data.text||'')}</div></div></div><div class="msg-acts"><button class="act-btn" onclick="cpTxt('${enc}',this)">Copy</button></div>`;
+        row.className = 'msg-row';
+        const enc = encodeURIComponent(data.text||'');
+        row.innerHTML = `<div class="msg-ai"><div class="ai-av" style="width:28px;height:28px;border-radius:8px;background:var(--accent);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg></div><div class="ai-body"><div class="ai-label">Arovon</div><div class="ai-text">${md2html(data.text||'')}</div></div></div><div class="msg-acts"><button class="act-btn" onclick="cpTxt('${enc}',this)">Copy</button></div>`;
         b.appendChild(row);
       }
     });
     scrollD();
   } catch(e) { showToast('Could not load chat'); }
-  if (window.innerWidth<768) closeSB();
+  if (window.innerWidth < 768) closeSB();
 }
 
 async function delChat(e, id) {
@@ -745,20 +804,20 @@ async function delChat(e, id) {
   try {
     const ms = await db.collection('users').doc(me.uid).collection('chats').doc(id).collection('messages').get();
     const batch = db.batch();
-    ms.forEach(d=>batch.delete(d.ref));
+    ms.forEach(d => batch.delete(d.ref));
     await batch.commit();
     await db.collection('users').doc(me.uid).collection('chats').doc(id).delete();
     const el = document.querySelector(`.hi[data-id="${id}"]`);
     if (el) el.remove();
     const list = document.getElementById('histList');
-    if (!list.children.length) list.innerHTML='<div class="hist-empty">No chats yet</div>';
-    if (sid===id) newChat();
+    if (!list.children.length) list.innerHTML = '<div class="hist-empty">No chats yet</div>';
+    if (sid === id) newChat();
     showToast('Chat deleted');
   } catch(e) { showToast('Delete failed'); }
 }
 
 function toggleMdl() { document.getElementById('mdlDD').classList.toggle('open'); document.getElementById('mdlBtn').classList.toggle('open'); }
-function pickMdl(name,id,el) { mdl=id; document.getElementById('mdlName').textContent=name; document.querySelectorAll('.mdl-opt').forEach(o=>o.classList.remove('sel')); el.classList.add('sel'); toggleMdl(); }
+function pickMdl(name, id, el) { mdl=id; document.getElementById('mdlName').textContent=name; document.querySelectorAll('.mdl-opt').forEach(o=>o.classList.remove('sel')); el.classList.add('sel'); toggleMdl(); }
 function openSB() { document.getElementById('sb').classList.add('open'); document.getElementById('overlay').classList.add('show'); }
 function closeSB() { document.getElementById('sb').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
 function toggleDD() { document.getElementById('uDD').classList.toggle('open'); }
@@ -768,9 +827,9 @@ document.addEventListener('click', e => {
 });
 function onKey(e) { if (e.key==='Enter'&&!e.shiftKey) { e.preventDefault(); send(); } }
 function onType(el) {
-  el.style.height='auto';
-  el.style.height=Math.min(el.scrollHeight,150)+'px';
-  document.getElementById('sendBtn').disabled = !el.value.trim()||busy;
+  el.style.height = 'auto';
+  el.style.height = Math.min(el.scrollHeight,150) + 'px';
+  document.getElementById('sendBtn').disabled = !el.value.trim() || busy;
 }
 function scrollD() { const c=document.getElementById('chatScroll'); c.scrollTop=c.scrollHeight; }
 function showToast(msg) { const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2400); }
