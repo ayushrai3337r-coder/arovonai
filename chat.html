@@ -12,10 +12,7 @@
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
-:root{
-  --accent:#FF6B00;--ink:#111318;--ink2:#555;--ink3:#999;
-  --white:#fff;--bg:#f4f4f0;--border:rgba(0,0,0,0.08);--sw:258px;
-}
+:root{--accent:#FF6B00;--ink:#111318;--ink2:#555;--ink3:#999;--white:#fff;--bg:#f4f4f0;--border:rgba(0,0,0,0.08);--sw:258px;}
 html,body{height:100%;width:100%;font-family:'DM Sans',sans-serif;background:var(--white);color:var(--ink);-webkit-font-smoothing:antialiased;}
 .layout{position:fixed;inset:0;display:flex;overflow:hidden;}
 .sb{width:var(--sw);min-width:var(--sw);background:var(--bg);border-right:1px solid var(--border);display:flex;flex-direction:column;height:100%;transition:transform .28s ease;z-index:50;}
@@ -95,31 +92,31 @@ html,body{height:100%;width:100%;font-family:'DM Sans',sans-serif;background:var
 .ai-body{flex:1;min-width:0;}
 .ai-label{font-size:0.73rem;font-weight:700;color:var(--ink3);margin-bottom:6px;letter-spacing:.04em;text-transform:uppercase;}
 .ai-text{font-size:0.93rem;line-height:1.8;color:var(--ink);word-break:break-word;}
-.ai-text p{margin-bottom:12px;}
+.ai-text p{margin-bottom:10px;}
 .ai-text p:last-child{margin-bottom:0;}
 .ai-text p:empty{display:none;}
 .ai-text strong{font-weight:700;}
 .ai-text em{font-style:italic;color:var(--ink2);}
-.ai-text h1{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:600;color:var(--ink);margin:4px 0 10px;padding-bottom:6px;border-bottom:2px solid rgba(255,107,0,0.15);}
-.ai-text h2{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:600;color:var(--ink);margin:16px 0 8px;}
+.ai-text h1{font-family:'Fraunces',serif;font-size:1.25rem;font-weight:600;color:var(--ink);margin:4px 0 10px;padding-bottom:5px;border-bottom:2px solid rgba(255,107,0,0.15);}
+.ai-text h2{font-family:'Fraunces',serif;font-size:1.08rem;font-weight:600;color:var(--ink);margin:14px 0 7px;}
 .ai-text h2:first-child{margin-top:0;}
-.ai-text h3{font-size:0.97rem;font-weight:700;color:var(--accent);margin:14px 0 7px;}
-.ai-text h4{font-size:0.93rem;font-weight:700;color:var(--ink2);margin:12px 0 6px;}
-.ai-text ul{margin:6px 0 12px 0;padding-left:18px;list-style:disc;display:flex;flex-direction:column;gap:4px;}
-.ai-text ol{margin:6px 0 12px 0;padding-left:22px;list-style:decimal;display:flex;flex-direction:column;gap:4px;}
+.ai-text h3{font-size:0.95rem;font-weight:700;color:var(--accent);margin:12px 0 6px;}
+.ai-text h4{font-size:0.92rem;font-weight:700;color:var(--ink2);margin:10px 0 5px;}
+.ai-text ul{margin:5px 0 10px 0;padding-left:18px;list-style:disc;display:flex;flex-direction:column;gap:4px;}
+.ai-text ol{margin:5px 0 10px 0;padding-left:22px;list-style:decimal;display:flex;flex-direction:column;gap:4px;}
 .ai-text li{line-height:1.65;}
 .ai-text ul li::marker{color:var(--accent);}
 .ai-text ol li::marker{color:var(--accent);font-weight:700;}
-.ai-text code{background:#f0f0ee;border:1px solid rgba(0,0,0,0.08);padding:2px 6px;border-radius:5px;font-size:0.85em;font-family:'Courier New',monospace;color:#c0392b;}
-.ai-text pre{background:#1e1e2e;border-radius:10px;padding:16px 18px;margin:12px 0;overflow-x:auto;}
-.ai-text pre code{background:none;border:none;padding:0;color:#cdd6f4;font-size:0.85rem;line-height:1.65;font-family:'Courier New',monospace;}
-.ai-text blockquote{border-left:3px solid var(--accent);padding:8px 14px;margin:12px 0;background:rgba(255,107,0,0.04);border-radius:0 8px 8px 0;color:var(--ink2);font-style:italic;}
-.ai-text table{width:100%;border-collapse:collapse;margin:12px 0;font-size:0.88rem;}
-.ai-text th{background:var(--bg);padding:8px 12px;text-align:left;font-weight:700;border:1px solid var(--border);}
-.ai-text td{padding:8px 12px;border:1px solid var(--border);}
-.ai-text tr:nth-child(even) td{background:rgba(0,0,0,0.018);}
-.ai-text hr{border:none;border-top:1px solid var(--border);margin:14px 0;}
-.msg-acts{display:flex;gap:4px;margin-top:8px;margin-left:40px;opacity:0;transition:opacity .2s;}
+.ai-text code{background:#f0f0ee;border:1px solid rgba(0,0,0,0.08);padding:2px 6px;border-radius:5px;font-size:0.84em;font-family:'Courier New',monospace;color:#c0392b;}
+.ai-text pre{background:#1e1e2e;border-radius:10px;padding:16px;margin:10px 0;overflow-x:auto;}
+.ai-text pre code{background:none;border:none;padding:0;color:#cdd6f4;font-size:0.84rem;line-height:1.6;}
+.ai-text blockquote{border-left:3px solid var(--accent);padding:8px 14px;margin:10px 0;background:rgba(255,107,0,0.04);border-radius:0 8px 8px 0;color:var(--ink2);font-style:italic;}
+.ai-text table{width:100%;border-collapse:collapse;margin:10px 0;font-size:0.87rem;}
+.ai-text th{background:var(--bg);padding:7px 11px;text-align:left;font-weight:700;border:1px solid var(--border);}
+.ai-text td{padding:7px 11px;border:1px solid var(--border);}
+.ai-text tr:nth-child(even) td{background:rgba(0,0,0,0.015);}
+.ai-text hr{border:none;border-top:1px solid var(--border);margin:12px 0;}
+.msg-acts{display:flex;gap:4px;margin-top:7px;margin-left:40px;opacity:0;transition:opacity .2s;}
 .msg-row:hover .msg-acts{opacity:1;}
 .act-btn{padding:3px 9px;border-radius:5px;font-size:0.72rem;color:var(--ink3);border:1px solid var(--border);background:var(--white);font-family:'DM Sans',sans-serif;cursor:pointer;transition:color .15s,border-color .15s;}
 .act-btn:hover{color:var(--accent);border-color:rgba(255,107,0,0.3);}
@@ -146,14 +143,14 @@ html,body{height:100%;width:100%;font-family:'DM Sans',sans-serif;background:var
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--ink);color:#fff;padding:10px 20px;border-radius:10px;font-size:0.83rem;font-weight:500;z-index:9999;opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 @media(max-width:768px){
-  .sb{position:fixed;left:0;top:0;bottom:0;transform:translateX(-100%);z-index:100;}
-  .sb.open{transform:translateX(0);}
-  .burger{display:flex;}
-  .sug-grid{grid-template-columns:1fr;}
-  .msgs-container{padding:20px 16px 20px;}
-  .input-area{padding:10px 14px 14px;}
-  .welcome-screen{padding:60px 20px 30px;}
-  .msg-user-bub{max-width:88%;}
+.sb{position:fixed;left:0;top:0;bottom:0;transform:translateX(-100%);z-index:100;}
+.sb.open{transform:translateX(0);}
+.burger{display:flex;}
+.sug-grid{grid-template-columns:1fr;}
+.msgs-container{padding:20px 16px 20px;}
+.input-area{padding:10px 14px 14px;}
+.welcome-screen{padding:60px 20px 30px;}
+.msg-user-bub{max-width:88%;}
 }
 @media(max-width:480px){.wc-title{font-size:1.55rem;}.ai-text pre{font-size:0.78rem;}}
 </style>
@@ -162,138 +159,137 @@ html,body{height:100%;width:100%;font-family:'DM Sans',sans-serif;background:var
 <div class="overlay" id="overlay" onclick="closeSB()"></div>
 <div class="toast" id="toast"></div>
 <div class="layout">
-  <aside class="sb" id="sb">
-    <div class="sb-head">
-      <a href="index.html" class="logo-a">
-        <svg class="logo-icon" viewBox="0 0 30 30" fill="none">
-          <rect width="30" height="30" rx="8" fill="#FF6B00"/>
-          <circle cx="15" cy="15" r="5.5" stroke="white" stroke-width="1.2" fill="none"/>
-          <circle cx="15" cy="15" r="2" fill="white"/>
-          <line x1="15" y1="6" x2="15" y2="9.5" stroke="white" stroke-width="1.2"/>
-          <line x1="15" y1="20.5" x2="15" y2="24" stroke="white" stroke-width="1.2"/>
-          <line x1="6" y1="15" x2="9.5" y2="15" stroke="white" stroke-width="1.2"/>
-          <line x1="20.5" y1="15" x2="24" y2="15" stroke="white" stroke-width="1.2"/>
-        </svg>
-        <span class="logo-txt">Aro<span>von</span></span>
-      </a>
-      <button class="new-btn" onclick="newChat()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-        New chat
-      </button>
-    </div>
-    <div class="sb-hist">
-      <div class="hist-lbl">Recent</div>
-      <div id="histList"><div class="hist-empty">No chats yet</div></div>
-    </div>
-    <div class="sb-foot">
-      <div class="u-row" id="uRow" onclick="toggleDD()">
-        <div class="u-av" id="uAv">A</div>
-        <div class="u-info">
-          <div class="u-name" id="uName">Loading...</div>
-          <div class="u-email" id="uEmail"></div>
-        </div>
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-        <div class="u-dd" id="uDD">
-          <button class="ddi" onclick="event.stopPropagation();showToast('Profile coming soon')">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            Profile
-          </button>
-          <div class="ddi-sep"></div>
-          <button class="ddi red" onclick="doLogout()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-            Sign out
-          </button>
-        </div>
-      </div>
-    </div>
-  </aside>
-  <div class="main-col">
-    <div class="topbar">
-      <div class="tb-left">
-        <button class="burger" onclick="openSB()"><span></span><span></span><span></span></button>
-        <div class="mdl-wrap">
-          <button class="mdl-btn" id="mdlBtn" onclick="toggleMdl()">
-            <div class="mdl-dot"></div>
-            <span id="mdlName">Arovon Lite</span>
-            <svg class="mdl-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
-          </button>
-          <div class="mdl-dd" id="mdlDD">
-            <div class="mdl-opt sel" onclick="pickMdl('Arovon Lite','lite',this)">
-              <div class="mdl-nm">Arovon Lite<span class="mdl-tag t-lite">Free</span></div>
-              <div class="mdl-desc">Fast answers for everyday questions</div>
-            </div>
-            <div class="mdl-opt" onclick="pickMdl('Arovon Pro','pro',this)">
-              <div class="mdl-nm">Arovon Pro<span class="mdl-tag t-pro">Smart</span></div>
-              <div class="mdl-desc">Deeper reasoning for complex topics</div>
-            </div>
-            <div class="mdl-opt" onclick="pickMdl('Arovon Ultra','ultra',this)">
-              <div class="mdl-nm">Arovon Ultra<span class="mdl-tag t-ultra">Max</span></div>
-              <div class="mdl-desc">Most capable — research and analysis</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div>
-        <button class="ic-btn" onclick="newChat()">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-        </button>
-      </div>
-    </div>
-    <div class="chat-scroll" id="chatScroll">
-      <div class="welcome-screen" id="welcomeScreen">
-        <div class="wc-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8">
-            <circle cx="12" cy="12" r="5"/>
-            <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
-            <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
-            <line x1="4.22" y1="4.22" x2="6.34" y2="6.34"/>
-            <line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/>
-            <line x1="19.78" y1="4.22" x2="17.66" y2="6.34"/>
-            <line x1="6.34" y1="17.66" x2="4.22" y2="19.78"/>
-          </svg>
-        </div>
-        <h1 class="wc-title">Hello, <span id="wcName">there</span></h1>
-        <p class="wc-sub">Ask me anything — in English, Hindi, Tamil, or any Indian language.</p>
-        <div class="sug-grid">
-          <button class="sug-card" onclick="useSug('What are Newton laws of motion?')">
-            <div class="sug-lbl">Physics</div>What are Newton laws of motion?
-          </button>
-          <button class="sug-card" onclick="useSug('Who was APJ Abdul Kalam?')">
-            <div class="sug-lbl">People</div>Who was APJ Abdul Kalam?
-          </button>
-          <button class="sug-card" onclick="useSug('What is machine learning?')">
-            <div class="sug-lbl">Technology</div>What is machine learning?
-          </button>
-          <button class="sug-card" onclick="useSug('History of India')">
-            <div class="sug-lbl">History</div>History of India
-          </button>
-        </div>
-      </div>
-      <div class="msgs-container" id="msgsBox" style="display:none;"></div>
-    </div>
-    <div class="input-area">
-      <div class="input-inner">
-        <div class="input-box">
-          <textarea id="msgInput" class="msg-input" placeholder="Message Arovon..." rows="1" onkeydown="onKey(event)" oninput="onType(this)"></textarea>
-          <button class="send-btn" id="sendBtn" onclick="send()" disabled>
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
-              <line x1="22" y1="2" x2="11" y2="13"/>
-              <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-            </svg>
-          </button>
-        </div>
-        <div class="input-hint">Enter to send &nbsp;·&nbsp; Shift+Enter for new line</div>
-      </div>
-    </div>
-  </div>
+<aside class="sb" id="sb">
+<div class="sb-head">
+<a href="index.html" class="logo-a">
+<svg class="logo-icon" viewBox="0 0 30 30" fill="none">
+<rect width="30" height="30" rx="8" fill="#FF6B00"/>
+<circle cx="15" cy="15" r="5.5" stroke="white" stroke-width="1.2" fill="none"/>
+<circle cx="15" cy="15" r="2" fill="white"/>
+<line x1="15" y1="6" x2="15" y2="9.5" stroke="white" stroke-width="1.2"/>
+<line x1="15" y1="20.5" x2="15" y2="24" stroke="white" stroke-width="1.2"/>
+<line x1="6" y1="15" x2="9.5" y2="15" stroke="white" stroke-width="1.2"/>
+<line x1="20.5" y1="15" x2="24" y2="15" stroke="white" stroke-width="1.2"/>
+</svg>
+<span class="logo-txt">Aro<span>von</span></span>
+</a>
+<button class="new-btn" onclick="newChat()">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+New chat
+</button>
 </div>
-<script>
-let auth, db;
-let me = null, sid = null, fmsg = '';
-let allChunks = [];
-let mdl = 'lite', busy = false;
+<div class="sb-hist">
+<div class="hist-lbl">Recent</div>
+<div id="histList"><div class="hist-empty">No chats yet</div></div>
+</div>
+<div class="sb-foot">
+<div class="u-row" id="uRow" onclick="toggleDD()">
+<div class="u-av" id="uAv">A</div>
+<div class="u-info">
+<div class="u-name" id="uName">Loading...</div>
+<div class="u-email" id="uEmail"></div>
+</div>
+<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+<div class="u-dd" id="uDD">
+<button class="ddi" onclick="event.stopPropagation();showToast('Profile coming soon')">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+Profile
+</button>
+<div class="ddi-sep"></div>
+<button class="ddi red" onclick="doLogout()">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+Sign out
+</button>
+</div>
+</div>
+</div>
+</aside>
+<div class="main-col">
+<div class="topbar">
+<div class="tb-left">
+<button class="burger" onclick="openSB()"><span></span><span></span><span></span></button>
+<div class="mdl-wrap">
+<button class="mdl-btn" id="mdlBtn" onclick="toggleMdl()">
+<div class="mdl-dot"></div>
+<span id="mdlName">Arovon Lite</span>
+<svg class="mdl-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+</button>
+<div class="mdl-dd" id="mdlDD">
+<div class="mdl-opt sel" onclick="pickMdl('Arovon Lite','lite',this)">
+<div class="mdl-nm">Arovon Lite<span class="mdl-tag t-lite">Free</span></div>
+<div class="mdl-desc">Fast answers for everyday questions</div>
+</div>
+<div class="mdl-opt" onclick="pickMdl('Arovon Pro','pro',this)">
+<div class="mdl-nm">Arovon Pro<span class="mdl-tag t-pro">Smart</span></div>
+<div class="mdl-desc">Deeper reasoning for complex topics</div>
+</div>
+<div class="mdl-opt" onclick="pickMdl('Arovon Ultra','ultra',this)">
+<div class="mdl-nm">Arovon Ultra<span class="mdl-tag t-ultra">Max</span></div>
+<div class="mdl-desc">Most capable — research and analysis</div>
+</div>
+</div>
+</div>
+</div>
+<div>
+<button class="ic-btn" onclick="newChat()">
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+</button>
+</div>
+</div>
+<div class="chat-scroll" id="chatScroll">
+<div class="welcome-screen" id="welcomeScreen">
+<div class="wc-icon">
+<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8">
+<circle cx="12" cy="12" r="5"/>
+<line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
+<line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
+<line x1="4.22" y1="4.22" x2="6.34" y2="6.34"/>
+<line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/>
+<line x1="19.78" y1="4.22" x2="17.66" y2="6.34"/>
+<line x1="6.34" y1="17.66" x2="4.22" y2="19.78"/>
+</svg>
+</div>
+<h1 class="wc-title">Hello, <span id="wcName">there</span></h1>
+<p class="wc-sub">Ask me anything — in English, Hindi, Tamil, or any Indian language.</p>
+<div class="sug-grid">
+<button class="sug-card" onclick="useSug('Who is Narendra Modi?')">
+<div class="sug-lbl">People</div>Who is Narendra Modi?
+</button>
+<button class="sug-card" onclick="useSug('Who was APJ Abdul Kalam?')">
+<div class="sug-lbl">People</div>Who was APJ Abdul Kalam?
+</button>
+<button class="sug-card" onclick="useSug('What is machine learning?')">
+<div class="sug-lbl">Technology</div>What is machine learning?
+</button>
+<button class="sug-card" onclick="useSug('History of India')">
+<div class="sug-lbl">History</div>History of India
+</button>
+</div>
+</div>
+<div class="msgs-container" id="msgsBox" style="display:none;"></div>
+</div>
+<div class="input-area">
+<div class="input-inner">
+<div class="input-box">
+<textarea id="msgInput" class="msg-input" placeholder="Message Arovon..." rows="1" onkeydown="onKey(event)" oninput="onType(this)"></textarea>
+<button class="send-btn" id="sendBtn" onclick="send()" disabled>
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5">
+<line x1="22" y1="2" x2="11" y2="13"/>
+<polygon points="22 2 15 22 11 13 2 9 22 2"/>
+</svg>
+</button>
+</div>
+<div class="input-hint">Enter to send &nbsp;·&nbsp; Shift+Enter for new line</div>
+</div>
+</div>
+</div>
+</div>
 
-// BOOT
+<script>
+let auth, db, me = null, sid = null, fmsg = '';
+let KB = [], mdl = 'lite', busy = false;
+
+// ── BOOT ──
 (async function() {
   try {
     const r = await fetch('/api/config');
@@ -304,11 +300,7 @@ let mdl = 'lite', busy = false;
     auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(() => {
       auth.onAuthStateChanged(u => {
         if (!u) { location.href = 'login.html'; return; }
-        me = u;
-        initUser();
-        loadHist();
-        loadKnowledge();
-        newChat();
+        me = u; initUser(); loadHist(); loadKB(); newChat();
       });
     });
   } catch(e) {
@@ -325,29 +317,19 @@ function initUser() {
   document.getElementById('wcName').textContent = n.split(' ')[0];
 }
 
-async function doLogout() {
-  await auth.signOut();
-  location.href = 'login.html';
-}
+async function doLogout() { await auth.signOut(); location.href = 'login.html'; }
 
-// LOAD ALL KNOWLEDGE FROM FIRESTORE
-async function loadKnowledge() {
-  allChunks = [];
+// ── LOAD KB ──
+async function loadKB() {
+  KB = [];
   try {
-    // Load Wikipedia knowledge
     const wSnap = await db.collection('knowledge').get();
     wSnap.forEach(doc => {
       const d = doc.data();
-      if (d.text && d.text.length > 50) {
-        allChunks.push({
-          text: d.text,
-          name: d.name || doc.id.replace(/_/g, ' '),
-          words: (d.text.toLowerCase().match(/\b\w{3,}\b/g) || [])
-        });
+      if (d.text && d.text.length > 30) {
+        KB.push({ name: (d.name || doc.id.replace(/_/g,' ')).toLowerCase(), originalName: d.name || doc.id.replace(/_/g,' '), text: d.text });
       }
     });
-
-    // Load PDF chunks
     const pSnap = await db.collection('pdfs').get();
     for (const pd of pSnap.docs) {
       const pdata = pd.data();
@@ -356,226 +338,195 @@ async function loadKnowledge() {
         if (!cSnap.empty) {
           cSnap.forEach(cd => {
             const c = cd.data();
-            if (c.text && c.text.length > 50) {
-              allChunks.push({
-                text: c.text,
-                name: c.pdfName || pdata.name || 'Document',
-                words: (c.text.toLowerCase().match(/\b\w{3,}\b/g) || [])
-              });
-            }
+            if (c.text && c.text.length > 30) KB.push({ name: (c.pdfName||pdata.name||'Document').toLowerCase(), originalName: c.pdfName||pdata.name||'Document', text: c.text });
           });
         } else if (pdata.text) {
-          allChunks.push({
-            text: pdata.text,
-            name: pdata.name || 'Document',
-            words: (pdata.text.toLowerCase().match(/\b\w{3,}\b/g) || [])
-          });
+          KB.push({ name: (pdata.name||'Document').toLowerCase(), originalName: pdata.name||'Document', text: pdata.text });
         }
       } catch(e) {}
     }
-    console.log('Knowledge loaded:', allChunks.length, 'chunks');
-  } catch(e) {
-    console.error('loadKnowledge error:', e);
-  }
+    console.log('KB loaded:', KB.length, 'items');
+  } catch(e) { console.error('loadKB error:', e); }
 }
 
-// SIMPLE KEYWORD SEARCH — no BM25 API needed
-function searchKnowledge(query) {
-  if (!allChunks.length) return null;
+// ── SUPER ACCURATE SEARCH ──
+function search(query) {
+  if (!KB.length) return null;
 
-  const STOP = new Set(['the','a','an','and','or','but','in','on','at','to','for','of','with','is','are','was','were','be','been','have','has','had','do','does','did','will','would','could','should','this','that','i','you','he','she','it','we','they','my','your','his','her','its','ka','ki','ke','hai','ko','se','mein','ne','kya','aur','ya','woh','yeh','ek','nahi','bhi','hi','also','from','by','as','not','all','can','may','more','one','some','other','than','then','there','their','which','who','what','how','when','where','about','tell','me','explain','what','describe']);
+  const STOP = new Set([
+    'the','a','an','and','or','but','in','on','at','to','for','of','with',
+    'is','are','was','were','be','been','have','has','had','do','does','did',
+    'will','would','could','should','this','that','i','you','he','she','it',
+    'we','they','my','your','his','her','its','ka','ki','ke','hai','ko','se',
+    'mein','ne','kya','aur','ya','woh','yeh','ek','nahi','bhi','hi','also',
+    'from','by','as','not','all','can','may','more','one','some','other',
+    'than','then','there','their','which','who','what','how','when','where',
+    'about','tell','me','explain','describe','batao','bare','bata','karo',
+    'please','give','show','write','list','define','meaning','means','kaise',
+    'kaun','kahan','kab','kyun','kitna','kisne','konsa','wala','wali'
+  ]);
 
-  // Extract meaningful query words
-  const qWords = query.toLowerCase()
-    .replace(/[^\w\s]/g, ' ')
-    .split(/\s+/)
-    .filter(w => w.length > 2 && !STOP.has(w));
+  const ql = query.toLowerCase().replace(/[^\w\s]/g,' ');
 
-  if (!qWords.length) return null;
+  // --- PHASE 1: Try exact full-query match on name ---
+  const fullQuery = ql.trim();
+  for (const item of KB) {
+    if (item.name === fullQuery) return { ...item, score: 9999 };
+  }
 
-  console.log('Searching for:', qWords);
+  // --- PHASE 2: Try if name contains the full query ---
+  for (const item of KB) {
+    if (item.name.includes(fullQuery) || fullQuery.includes(item.name)) {
+      // Only if name is substantial (>3 chars) to avoid false matches
+      if (item.name.length > 3) return { ...item, score: 8000 };
+    }
+  }
 
-  // Score each chunk
-  const scored = allChunks.map(chunk => {
-    const text = chunk.text.toLowerCase();
-    const name = chunk.name.toLowerCase();
+  // --- PHASE 3: Extract keywords and score ---
+  const words = ql.split(/\s+/).filter(w => w.length > 2 && !STOP.has(w));
+  if (!words.length) return null;
+
+  // Remove common question starters to get the real subject
+  // e.g. "who is narendra modi" -> ["narendra", "modi"]
+  // e.g. "what is machine learning" -> ["machine", "learning"]
+  const subject = words.join(' ');
+
+  const scored = KB.map(item => {
+    const name = item.name;
+    const text = item.text.toLowerCase();
     let score = 0;
 
-    qWords.forEach(qw => {
-      // Exact word match in text
-      const regex = new RegExp('\\b' + qw + '\\b', 'g');
-      const matches = (text.match(regex) || []).length;
-      score += matches * 2;
-
-      // Partial match
-      if (text.includes(qw)) score += 1;
-
-      // Name match = high score
-      if (name.includes(qw)) score += 20;
+    // How many of the subject words appear in the name?
+    let nameMatches = 0;
+    words.forEach(w => {
+      if (name.includes(w)) nameMatches++;
     });
 
-    // Boost if first word of query matches strongly
-    if (qWords[0] && name.toLowerCase().includes(qWords[0])) {
-      score += 30;
-    }
+    // All words match in name = very strong signal
+    if (nameMatches === words.length && words.length > 0) score += 500 * nameMatches;
+    else if (nameMatches > 0) score += 80 * nameMatches;
 
-    return { ...chunk, score };
+    // Name starts with first keyword
+    if (words[0] && name.startsWith(words[0])) score += 100;
+
+    // Count keyword frequency in text (capped to avoid flooding)
+    words.forEach(w => {
+      let pos = 0, count = 0;
+      while ((pos = text.indexOf(w, pos)) !== -1 && count < 20) { count++; pos++; }
+      score += count * 2;
+    });
+
+    // PENALTY: if none of the words appear in the name at all
+    if (nameMatches === 0) score = Math.min(score, 30);
+
+    return { ...item, score };
   });
 
-  // Sort by score
   scored.sort((a, b) => b.score - a.score);
-
   const best = scored[0];
-  console.log('Best match:', best.name, 'score:', best.score);
 
-  if (best.score < 2) return null;
+  console.log('Top match:', best.originalName, '| Score:', best.score, '| Query words:', words);
 
-  // Combine top 2 results if they're about same topic
-  const top2 = scored.slice(0, 2).filter(c => c.score > 0);
-  const combined = top2.map(c => c.text).join('\n\n').substring(0, 2000);
+  // Minimum threshold — must have a decent score
+  if (best.score < 10) return null;
 
-  return {
-    text: combined,
-    name: best.name,
-    score: best.score
-  };
+  // Extra safety: if score is low AND name doesn't share any word with query, reject
+  if (best.score < 100) {
+    const nameWords = best.name.split(/\s+/);
+    const overlap = words.filter(w => nameWords.some(nw => nw.includes(w) || w.includes(nw)));
+    if (overlap.length === 0) return null;
+  }
+
+  return best;
 }
 
-// FORMAT RAW TEXT INTO STRUCTURED MARKDOWN
-function formatAnswer(rawText, query, topicName) {
-  if (!rawText) return rawText;
-
-  // Clean Wikipedia artifacts
-  let text = rawText
+// ── FORMAT ANSWER ──
+function format(item, query) {
+  const ql = query.toLowerCase();
+  let text = item.text
     .replace(/\[\d+\]/g, '')
     .replace(/={2,}[^=\n]+=+/g, '')
     .replace(/\n{3,}/g, '\n\n')
-    .replace(/thumb\|[^\n]+/g, '')
     .trim();
 
-  const ql = query.toLowerCase();
+  const sentences = text.split(/(?<=[.!?])\s+/).map(s => s.trim()).filter(s => s.length > 20);
+  if (!sentences.length) return `## ${item.originalName}\n\n${text}`;
 
-  // Detect query intent
-  const isPerson = ql.match(/who (is|was|were)|biography|life of|about.*person/);
-  const isHowTo = ql.match(/how (to|does|do|is)|kaise|process|steps|method/);
-  const isList = ql.match(/list|types|kinds|name all|what are the/);
-  const isMath = ql.match(/solve|calculate|equation|formula|numerical|bisection|newton|integral|derivative/);
-  const isDefine = ql.match(/what is|what are|define|explain|describe|kya hai|batao/);
+  const isPerson = ql.match(/who (is|was|were)|biography|life|born|kaun|koun/);
+  const isHowTo = ql.match(/how (to|does|do|is|are)|kaise|steps|process|method/);
+  const isList = ql.match(/types|kinds|list|name all|examples/);
 
-  // Split into paragraphs
-  const paras = text.split(/\n{2,}/).map(p => p.trim()).filter(p => p.length > 20);
-  if (!paras.length) return `## ${topicName}\n\n${text}`;
-
-  let out = '';
+  let out = `## ${item.originalName}\n\n`;
 
   if (isPerson) {
-    out = `## ${topicName}\n\n`;
-    out += paras[0] + '\n\n';
-    if (paras.length > 1) {
-      out += `### Life & Contributions\n\n`;
-      paras.slice(1, 3).forEach(p => { out += p + '\n\n'; });
-    }
-    // Extract key facts
-    const allText = paras.join(' ');
-    const bornMatch = allText.match(/born[^.]{5,60}\./i);
-    const diedMatch = allText.match(/died[^.]{5,60}\./i);
-    const awardMatch = allText.match(/(?:award|prize|honour|Nobel)[^.]{5,80}\./i);
-    const facts = [bornMatch, diedMatch, awardMatch].filter(Boolean).map(m => m[0]);
-    if (facts.length) {
-      out += `### Quick Facts\n\n`;
-      facts.forEach(f => { out += `- ${f.trim()}\n`; });
-    }
-
-  } else if (isMath) {
-    out = `## ${topicName}\n\n`;
-    out += paras[0] + '\n\n';
-    if (paras.length > 1) {
-      out += `### Details\n\n`;
-      paras.slice(1, 4).forEach(p => { out += p + '\n\n'; });
-    }
-
+    out += sentences.slice(0, 2).join(' ') + '\n\n';
+    const facts = sentences.slice(2, 7);
+    if (facts.length) { out += `### Key Facts\n\n`; facts.forEach(s => { out += `- ${s}\n`; }); }
   } else if (isHowTo) {
-    out = `## ${topicName}\n\n`;
-    out += paras[0] + '\n\n';
-    if (paras.length > 1) {
-      out += `### How It Works\n\n`;
-      const sentences = paras.slice(1).join(' ').split(/(?<=[.!?])\s+(?=[A-Z])/).filter(s => s.length > 20);
-      sentences.slice(0, 6).forEach((s, i) => {
-        out += `${i + 1}. ${s.trim()}\n`;
-      });
-    }
-
+    out += sentences[0] + '\n\n';
+    const steps = sentences.slice(1, 7);
+    if (steps.length) { out += `### Steps\n\n`; steps.forEach((s, i) => { out += `${i+1}. ${s}\n`; }); }
   } else if (isList) {
-    out = `## ${topicName}\n\n`;
-    out += paras[0] + '\n\n';
-    if (paras.length > 1) {
-      out += `### Key Points\n\n`;
-      paras.slice(1, 5).forEach(p => {
-        const sentences = p.split(/(?<=[.!?])\s+(?=[A-Z])/).filter(s => s.length > 15);
-        sentences.slice(0, 3).forEach(s => { out += `- ${s.trim()}\n`; });
-      });
-    }
-
+    out += sentences[0] + '\n\n';
+    const items = sentences.slice(1, 7);
+    if (items.length) { out += `### Types\n\n`; items.forEach(s => { out += `- ${s}\n`; }); }
   } else {
-    // General / explain
-    out = `## ${topicName}\n\n`;
-    out += paras[0] + '\n\n';
-    if (paras.length > 1) {
-      out += `### Key Information\n\n`;
-      paras.slice(1, 4).forEach(p => {
-        if (p.length > 200) {
-          // Long paragraph — convert to bullets
-          const sentences = p.split(/(?<=[.!?])\s+(?=[A-Z])/).filter(s => s.length > 20);
-          if (sentences.length >= 3) {
-            sentences.slice(0, 4).forEach(s => { out += `- ${s.trim()}\n`; });
-            out += '\n';
-          } else {
-            out += p + '\n\n';
-          }
-        } else {
-          out += p + '\n\n';
-        }
-      });
-    }
+    out += sentences.slice(0, 2).join(' ') + '\n\n';
+    const rest = sentences.slice(2, 6);
+    if (rest.length) { out += `### Key Points\n\n`; rest.forEach(s => { out += `- ${s}\n`; }); }
   }
 
   return out.trim();
 }
 
-// MAIN RESPONSE GENERATOR
+// ── MAIN REPLY ──
 async function getReply(q) {
   const ql = q.toLowerCase();
 
-  // Built-in responses
-  const kb = [
-    { k:['hello','hi','hey','namaste','helo','hii','sup'], a:`Hello! I am **Arovon** — India's own AI assistant.\n\nI can help you with:\n- **Science & Math** — Physics, Chemistry, Biology, Calculus\n- **History & Geography** — India and World\n- **Coding** — Python, JavaScript, any language\n- **General Knowledge** — Sports, Politics, Current Affairs\n- **Any Indian language** — Hindi, English, Tamil, Bengali and more\n\nWhat would you like to know?` },
-    { k:['who are you','kaun ho','arovon kya','what are you'], a:`## About Arovon\n\nI am **Arovon** — India's own AI assistant.\n\n### What I can do:\n1. Answer questions on **any topic**\n2. Respond in **your language** — Hindi, English, Tamil, Bengali and more\n3. Solve **math problems** step by step\n4. Explain **complex topics** simply\n\n### My knowledge covers:\n- Science, Technology, Mathematics\n- Indian and World History, Geography\n- Health, Sports, Culture, Current Affairs\n- Coding and Programming` },
-    { k:['motivat','inspire','quote','himmat','hausla'], a:`## Motivational Quotes\n\n> "Your time is limited, so do not waste it living someone else's life." — **Steve Jobs**\n\n> "The future belongs to those who believe in the beauty of their dreams." — **Eleanor Roosevelt**\n\n> "Arise, awake and stop not till the goal is reached." — **Swami Vivekananda**\n\n> "You have to dream before your dreams can come true." — **APJ Abdul Kalam**\n\nKeep going — every day is a new opportunity!` },
-    { k:['thank','shukriya','thanks','dhanyawad'], a:'You are most welcome! Feel free to ask me anything else.' },
-    { k:['weather','mausam','temperature','barish'], a:`I don't have live weather data.\n\n**For accurate weather:**\n- Visit **imd.gov.in**\n- Google: your city + weather\n- Check your phone's weather app` },
+  const builtIn = [
+    {
+      k: ['hello','hi','hey','namaste','helo','hii','sup','hye'],
+      a: `Hello! I am **Arovon** — India's own AI assistant.\n\nI can help you with:\n- **Science & Math** — Physics, Chemistry, Biology, Calculus\n- **Indian History & Culture** — People, Places, Events\n- **Coding** — Python, JavaScript, C++, Java, HTML, CSS, SQL and more\n- **General Knowledge** — Sports, Health, Geography\n- **Any Indian language** — Hindi, English, Tamil, Bengali and more\n\nWhat would you like to know?`
+    },
+    {
+      k: ['who are you','kaun ho','arovon kya','what are you','introduce yourself','aap kaun'],
+      a: `## About Arovon\n\nI am **Arovon** — India's own AI assistant, built to help everyone.\n\n### What I can do:\n1. Answer questions on **any topic**\n2. Respond in **your language** — Hindi, English, Tamil, Bengali, Marathi and more\n3. Help with **coding** in any programming language\n4. Explain **complex topics** simply\n\n### My knowledge covers:\n- Science, Technology, Mathematics\n- Indian and World History, Geography\n- Health, Sports, Culture\n- Coding and Programming`
+    },
+    {
+      k: ['motivat','inspire','quote','himmat','hausla','zindagi quote'],
+      a: `## Motivational Quotes\n\n> "Your time is limited, so do not waste it living someone else's life." — **Steve Jobs**\n\n> "The future belongs to those who believe in the beauty of their dreams." — **Eleanor Roosevelt**\n\n> "Arise, awake and stop not till the goal is reached." — **Swami Vivekananda**\n\n> "You have to dream before your dreams can come true." — **APJ Abdul Kalam**\n\nKeep going — every day is a new opportunity!`
+    },
+    {
+      k: ['thank','shukriya','thanks','dhanyawad','bahut accha'],
+      a: 'You are most welcome! Feel free to ask me anything else.'
+    },
+    {
+      k: ['weather','mausam','temperature','aaj ka mausam'],
+      a: `I don't have live weather data.\n\n**For accurate weather:**\n- Visit **imd.gov.in** — India Meteorological Department\n- Google: your city + weather\n- Check your phone's weather app`
+    },
+    {
+      k: ['joke','jokes','funny','hasao','comedy'],
+      a: `## Here is a joke!\n\n**Why do programmers prefer dark mode?**\nBecause light attracts bugs!\n\n---\n\n**Teacher:** What is the full form of MATHS?\n**Student:** Mentally Affected Teacher Harassing Students!\n\nHope that made you smile!`
+    },
   ];
 
-  for (const item of kb) {
+  for (const item of builtIn) {
     if (item.k.some(k => ql.includes(k))) return { text: item.a };
   }
 
-  // Search knowledge base
-  const result = searchKnowledge(q);
+  // Search KB
+  const result = search(q);
+  if (result) return { text: format(result, q) };
 
-  if (result) {
-    const formatted = formatAnswer(result.text, q, result.name);
-    return { text: formatted };
-  }
-
+  // Nothing found — honest message, not a random wrong answer
   return {
-    text: `I want to give you the most accurate answer possible.\n\n**Could you try:**\n- Being more specific about what you want to know\n- For example: "What are Newton's laws of motion?" instead of just "Newton"\n- Or try asking about a specific topic from my knowledge base`
+    text: `## 🔧 Server Maintenance\n\nI don't have specific information about **"${q}"** right now.\n\nThis could be because:\n- This topic is not yet in my knowledge base\n- The server is still loading data\n\n**Try asking about:**\n- Indian History — Gandhi, Mughal Empire, Independence\n- Science — Physics, Chemistry, DNA, Evolution\n- Coding — Python, JavaScript, C++, HTML, SQL\n- Sports — Cricket, IPL, Olympics\n- Geography — India, Himalaya, World capitals\n- Health — Nutrition, Vaccines, Mental health\n\nOr try rephrasing your question more specifically!`
   };
 }
 
-// CHAT CORE
+// ── CHAT CORE ──
 function newChat() {
-  sid = 'sess_' + Date.now();
-  fmsg = '';
+  sid = 'sess_' + Date.now(); fmsg = '';
   document.getElementById('welcomeScreen').style.display = 'flex';
   document.getElementById('msgsBox').style.display = 'none';
   document.getElementById('msgsBox').innerHTML = '';
@@ -583,10 +534,7 @@ function newChat() {
   if (window.innerWidth < 768) closeSB();
 }
 
-function useSug(t) {
-  const el = document.getElementById('msgInput');
-  el.value = t; onType(el); send();
-}
+function useSug(t) { const el = document.getElementById('msgInput'); el.value = t; onType(el); send(); }
 
 async function send() {
   const el = document.getElementById('msgInput');
@@ -601,7 +549,7 @@ async function send() {
   addUserBub(txt);
   await saveFB('user', txt);
   const typ = addTyping();
-  await sleep(400 + Math.random() * 400);
+  await sleep(350 + Math.random() * 350);
   const res = await getReply(txt);
   typ.remove();
   await addAIBub(res.text);
@@ -651,7 +599,7 @@ async function addAIBub(txt) {
   await new Promise(res => {
     let i = 0;
     function tick() {
-      if (i < html.length) { el.innerHTML = html.substring(0,i+8); i+=8; scrollD(); requestAnimationFrame(tick); }
+      if (i < html.length) { el.innerHTML = html.substring(0, i + 8); i += 8; scrollD(); requestAnimationFrame(tick); }
       else { el.innerHTML = html; scrollD(); res(); }
     }
     tick();
@@ -675,80 +623,87 @@ function addTyping() {
   return r;
 }
 
-// MARKDOWN TO HTML
+// ── MARKDOWN ──
 function md2html(text) {
   let s = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   s = s.replace(/```(\w*)\n?([\s\S]*?)```/g, (m,l,c) => `<pre><code>${c.trim()}</code></pre>`);
   s = s.replace(/`([^`\n]+)`/g, '<code>$1</code>');
-  s = s.replace(/^#### (.+)$/gm, '<h4>$1</h4>');
-  s = s.replace(/^### (.+)$/gm, '<h3>$1</h3>');
-  s = s.replace(/^## (.+)$/gm, '<h2>$1</h2>');
-  s = s.replace(/^# (.+)$/gm, '<h1>$1</h1>');
-  s = s.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>');
-  s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-  s = s.replace(/\*([^*\n]+)\*/g, '<em>$1</em>');
-  s = s.replace(/^&gt; (.+)$/gm, '<blockquote>$1</blockquote>');
-  s = s.replace(/^---+$/gm, '<hr>');
-  // Lists
+  s = s.replace(/^#### (.+)$/gm,'<h4>$1</h4>');
+  s = s.replace(/^### (.+)$/gm,'<h3>$1</h3>');
+  s = s.replace(/^## (.+)$/gm,'<h2>$1</h2>');
+  s = s.replace(/^# (.+)$/gm,'<h1>$1</h1>');
+  s = s.replace(/\*\*\*(.+?)\*\*\*/g,'<strong><em>$1</em></strong>');
+  s = s.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+  s = s.replace(/\*([^*\n]+)\*/g,'<em>$1</em>');
+  s = s.replace(/^&gt; (.+)$/gm,'<blockquote>$1</blockquote>');
+  s = s.replace(/^---+$/gm,'<hr>');
+  s = s.replace(/^\|(.+)\|$/gm, match => {
+    const cells = match.slice(1,-1).split('|').map(c=>c.trim());
+    return '<tr>'+cells.map(c=>`<td>${c}</td>`).join('')+'</tr>';
+  });
+  s = s.replace(/((?:<tr>.*<\/tr>\n?)+)/g, block => {
+    const rows = block.trim().split('\n').filter(r => r && !r.match(/^<tr><td>[-: |]+<\/td><\/tr>$/));
+    if (!rows.length) return block;
+    const head = rows[0].replace(/<td>/g,'<th>').replace(/<\/td>/g,'</th>');
+    const body = rows.slice(1).join('');
+    return `<table><thead>${head}</thead><tbody>${body}</tbody></table>`;
+  });
   const lines = s.split('\n');
   let out = '', inUL = false, inOL = false;
   lines.forEach(line => {
     if (/^- (.+)$/.test(line)) {
-      if (inOL) { out += '</ol>\n'; inOL = false; }
-      if (!inUL) { out += '<ul>\n'; inUL = true; }
-      out += `<li>${line.slice(2)}</li>\n`;
+      if (inOL){out+='</ol>\n';inOL=false;}
+      if (!inUL){out+='<ul>\n';inUL=true;}
+      out+=`<li>${line.slice(2)}</li>\n`;
     } else if (/^\d+\. (.+)$/.test(line)) {
-      if (inUL) { out += '</ul>\n'; inUL = false; }
-      if (!inOL) { out += '<ol>\n'; inOL = true; }
-      out += `<li>${line.replace(/^\d+\. /, '')}</li>\n`;
+      if (inUL){out+='</ul>\n';inUL=false;}
+      if (!inOL){out+='<ol>\n';inOL=true;}
+      out+=`<li>${line.replace(/^\d+\. /,'')}</li>\n`;
     } else {
-      if (inUL) { out += '</ul>\n'; inUL = false; }
-      if (inOL) { out += '</ol>\n'; inOL = false; }
-      out += line + '\n';
+      if (inUL){out+='</ul>\n';inUL=false;}
+      if (inOL){out+='</ol>\n';inOL=false;}
+      out+=line+'\n';
     }
   });
-  if (inUL) out += '</ul>\n';
-  if (inOL) out += '</ol>\n';
+  if (inUL) out+='</ul>\n';
+  if (inOL) out+='</ol>\n';
   s = out;
-  // Paragraphs
-  const blocks = ['<h1','<h2','<h3','<h4','<ul','<ol','<pre','<blockquote','<hr','<table'];
-  const parts = s.split(/\n{2,}/);
-  s = parts.map(p => {
+  const BLOCK = ['<h1','<h2','<h3','<h4','<ul','<ol','<pre','<table','<blockquote','<hr'];
+  s = s.split(/\n{2,}/).map(p => {
     p = p.trim();
     if (!p) return '';
-    if (blocks.some(b => p.startsWith(b))) return p;
-    return '<p>' + p.replace(/\n/g,'<br>') + '</p>';
+    if (BLOCK.some(b => p.startsWith(b))) return p;
+    return '<p>'+p.replace(/\n/g,'<br>')+'</p>';
   }).filter(Boolean).join('\n');
-  s = s.replace(/<p><\/p>/g, '');
-  s = s.replace(/<p>(<h[1-4]|<ul|<ol|<pre|<blockquote|<hr)/g, '$1');
+  s = s.replace(/<p><\/p>/g,'');
+  s = s.replace(/<p>(<h[1-4]|<ul|<ol|<pre|<table|<blockquote|<hr)/g,'$1');
   return s;
 }
 
 function esc(t) { return String(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function cpTxt(enc,btn) { navigator.clipboard.writeText(decodeURIComponent(enc)).then(()=>{btn.textContent='Copied';setTimeout(()=>{btn.textContent='Copy';},2000);}); }
 
-function cpTxt(enc, btn) {
-  navigator.clipboard.writeText(decodeURIComponent(enc)).then(() => {
-    btn.textContent = 'Copied'; setTimeout(() => { btn.textContent = 'Copy'; }, 2000);
-  });
-}
-
+// ── FIRESTORE ──
 async function saveFB(role, text) {
   if (!me||!sid||!db) return;
   try {
-    await db.collection('users').doc(me.uid).collection('chats').doc(sid).collection('messages').add({role,text,timestamp:firebase.firestore.FieldValue.serverTimestamp()});
-    await db.collection('users').doc(me.uid).collection('chats').doc(sid).set({title:fmsg.substring(0,42)||'New chat',updatedAt:firebase.firestore.FieldValue.serverTimestamp(),model:mdl,uid:me.uid},{merge:true});
-  } catch(e) {}
+    await db.collection('users').doc(me.uid).collection('chats').doc(sid).collection('messages')
+      .add({role,text,timestamp:firebase.firestore.FieldValue.serverTimestamp()});
+    await db.collection('users').doc(me.uid).collection('chats').doc(sid)
+      .set({title:fmsg.substring(0,42)||'New chat',updatedAt:firebase.firestore.FieldValue.serverTimestamp(),model:mdl,uid:me.uid},{merge:true});
+  } catch(e){}
 }
 
+// ── HISTORY ──
 async function loadHist() {
   if (!me||!db) return;
   try {
     const snap = await db.collection('users').doc(me.uid).collection('chats').orderBy('updatedAt','desc').limit(40).get();
     const list = document.getElementById('histList');
     list.innerHTML = '';
-    if (snap.empty) { list.innerHTML = '<div class="hist-empty">No chats yet</div>'; return; }
+    if (snap.empty){list.innerHTML='<div class="hist-empty">No chats yet</div>';return;}
     snap.forEach(d => addHistEl(d.id, d.data().title||'Chat', false));
-  } catch(e) {}
+  } catch(e){}
 }
 
 function addHistEl(id, title, active) {
@@ -756,7 +711,7 @@ function addHistEl(id, title, active) {
   const emp = list.querySelector('.hist-empty');
   if (emp) emp.remove();
   const el = document.createElement('div');
-  el.className = 'hi' + (active ? ' on' : '');
+  el.className = 'hi'+(active?' on':'');
   el.dataset.id = id;
   el.innerHTML = `<span class="hi-txt">${esc(title)}</span><button class="hi-del" onclick="delChat(event,'${id}')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg></button>`;
   el.addEventListener('click', e => { if (!e.target.closest('.hi-del')) openChat(id, el); });
@@ -783,7 +738,7 @@ async function openChat(id, el) {
     const snap = await db.collection('users').doc(me.uid).collection('chats').doc(id).collection('messages').orderBy('timestamp').get();
     snap.forEach(d => {
       const data = d.data();
-      if (data.role === 'user') { if (!fmsg) fmsg = data.text; addUserBub(data.text); }
+      if (data.role==='user'){if(!fmsg)fmsg=data.text;addUserBub(data.text);}
       else {
         const b = document.getElementById('msgsBox');
         const row = document.createElement('div');
@@ -794,8 +749,8 @@ async function openChat(id, el) {
       }
     });
     scrollD();
-  } catch(e) { showToast('Could not load chat'); }
-  if (window.innerWidth < 768) closeSB();
+  } catch(e){showToast('Could not load chat');}
+  if (window.innerWidth<768) closeSB();
 }
 
 async function delChat(e, id) {
@@ -810,29 +765,25 @@ async function delChat(e, id) {
     const el = document.querySelector(`.hi[data-id="${id}"]`);
     if (el) el.remove();
     const list = document.getElementById('histList');
-    if (!list.children.length) list.innerHTML = '<div class="hist-empty">No chats yet</div>';
-    if (sid === id) newChat();
+    if (!list.children.length) list.innerHTML='<div class="hist-empty">No chats yet</div>';
+    if (sid===id) newChat();
     showToast('Chat deleted');
-  } catch(e) { showToast('Delete failed'); }
+  } catch(e){showToast('Delete failed');}
 }
 
-function toggleMdl() { document.getElementById('mdlDD').classList.toggle('open'); document.getElementById('mdlBtn').classList.toggle('open'); }
-function pickMdl(name, id, el) { mdl=id; document.getElementById('mdlName').textContent=name; document.querySelectorAll('.mdl-opt').forEach(o=>o.classList.remove('sel')); el.classList.add('sel'); toggleMdl(); }
-function openSB() { document.getElementById('sb').classList.add('open'); document.getElementById('overlay').classList.add('show'); }
-function closeSB() { document.getElementById('sb').classList.remove('open'); document.getElementById('overlay').classList.remove('show'); }
-function toggleDD() { document.getElementById('uDD').classList.toggle('open'); }
+function toggleMdl(){document.getElementById('mdlDD').classList.toggle('open');document.getElementById('mdlBtn').classList.toggle('open');}
+function pickMdl(name,id,el){mdl=id;document.getElementById('mdlName').textContent=name;document.querySelectorAll('.mdl-opt').forEach(o=>o.classList.remove('sel'));el.classList.add('sel');toggleMdl();}
+function openSB(){document.getElementById('sb').classList.add('open');document.getElementById('overlay').classList.add('show');}
+function closeSB(){document.getElementById('sb').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
+function toggleDD(){document.getElementById('uDD').classList.toggle('open');}
 document.addEventListener('click', e => {
   if (!e.target.closest('#uRow')) document.getElementById('uDD').classList.remove('open');
-  if (!e.target.closest('.mdl-wrap')) { document.getElementById('mdlDD').classList.remove('open'); document.getElementById('mdlBtn').classList.remove('open'); }
+  if (!e.target.closest('.mdl-wrap')){document.getElementById('mdlDD').classList.remove('open');document.getElementById('mdlBtn').classList.remove('open');}
 });
-function onKey(e) { if (e.key==='Enter'&&!e.shiftKey) { e.preventDefault(); send(); } }
-function onType(el) {
-  el.style.height = 'auto';
-  el.style.height = Math.min(el.scrollHeight,150) + 'px';
-  document.getElementById('sendBtn').disabled = !el.value.trim() || busy;
-}
-function scrollD() { const c=document.getElementById('chatScroll'); c.scrollTop=c.scrollHeight; }
-function showToast(msg) { const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),2400); }
+function onKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}}
+function onType(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,150)+'px';document.getElementById('sendBtn').disabled=!el.value.trim()||busy;}
+function scrollD(){const c=document.getElementById('chatScroll');c.scrollTop=c.scrollHeight;}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400);}
 </script>
 </body>
 </html>
