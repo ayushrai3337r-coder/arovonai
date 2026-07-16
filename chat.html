@@ -142,6 +142,7 @@ html,body{height:100%;width:100%;font-family:'DM Sans',sans-serif;background:var
 .overlay.show{display:block;}
 .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--ink);color:#fff;padding:10px 20px;border-radius:10px;font-size:0.83rem;font-weight:500;z-index:9999;opacity:0;transition:all .25s;pointer-events:none;white-space:nowrap;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.kb-status{font-size:0.7rem;color:var(--ink3);padding:2px 8px;}
 @media(max-width:768px){
 .sb{position:fixed;left:0;top:0;bottom:0;transform:translateX(-100%);z-index:100;}
 .sb.open{transform:translateX(0);}
@@ -183,6 +184,7 @@ New chat
 <div id="histList"><div class="hist-empty">No chats yet</div></div>
 </div>
 <div class="sb-foot">
+<div class="kb-status" id="kbStatus">Loading knowledge...</div>
 <div class="u-row" id="uRow" onclick="toggleDD()">
 <div class="u-av" id="uAv">A</div>
 <div class="u-info">
@@ -261,8 +263,8 @@ Sign out
 <button class="sug-card" onclick="useSug('What is machine learning?')">
 <div class="sug-lbl">Technology</div>What is machine learning?
 </button>
-<button class="sug-card" onclick="useSug('History of India')">
-<div class="sug-lbl">History</div>History of India
+<button class="sug-card" onclick="useSug('Python programming language')">
+<div class="sug-lbl">Coding</div>Python programming language
 </button>
 </div>
 </div>
@@ -287,7 +289,7 @@ Sign out
 
 <script>
 let auth, db, me = null, sid = null, fmsg = '';
-let KB = [], mdl = 'lite', busy = false;
+let KB = [], mdl = 'lite', busy = false, kbLoaded = false;
 
 // ── BOOT ──
 (async function() {
@@ -300,11 +302,15 @@ let KB = [], mdl = 'lite', busy = false;
     auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL).then(() => {
       auth.onAuthStateChanged(u => {
         if (!u) { location.href = 'login.html'; return; }
-        me = u; initUser(); loadHist(); loadKB(); newChat();
+        me = u;
+        initUser();
+        loadHist();
+        loadKB();
+        newChat();
       });
     });
   } catch(e) {
-    console.error('Boot:', e);
+    console.error('Boot error:', e);
     showToast('Server error — refresh');
   }
 })();
@@ -317,124 +323,193 @@ function initUser() {
   document.getElementById('wcName').textContent = n.split(' ')[0];
 }
 
-async function doLogout() { await auth.signOut(); location.href = 'login.html'; }
+async function doLogout() {
+  await auth.signOut();
+  location.href = 'login.html';
+}
 
-// ── LOAD KB ──
+// ── LOAD KNOWLEDGE BASE ──
 async function loadKB() {
   KB = [];
+  kbLoaded = false;
+  document.getElementById('kbStatus').textContent = 'Loading knowledge...';
   try {
     const wSnap = await db.collection('knowledge').get();
     wSnap.forEach(doc => {
       const d = doc.data();
-      if (d.text && d.text.length > 30) {
-        KB.push({ name: (d.name || doc.id.replace(/_/g,' ')).toLowerCase(), originalName: d.name || doc.id.replace(/_/g,' '), text: d.text });
+      if (d.text && d.text.length > 20) {
+        const rawName = d.name || doc.id.replace(/_/g,' ');
+        KB.push({
+          id: doc.id,
+          name: rawName.toLowerCase().trim(),
+          originalName: rawName,
+          text: d.text
+        });
       }
     });
-    const pSnap = await db.collection('pdfs').get();
-    for (const pd of pSnap.docs) {
-      const pdata = pd.data();
-      try {
-        const cSnap = await db.collection('pdfs').doc(pd.id).collection('chunks').get();
-        if (!cSnap.empty) {
-          cSnap.forEach(cd => {
-            const c = cd.data();
-            if (c.text && c.text.length > 30) KB.push({ name: (c.pdfName||pdata.name||'Document').toLowerCase(), originalName: c.pdfName||pdata.name||'Document', text: c.text });
-          });
-        } else if (pdata.text) {
-          KB.push({ name: (pdata.name||'Document').toLowerCase(), originalName: pdata.name||'Document', text: pdata.text });
-        }
-      } catch(e) {}
-    }
+
+    // Load PDFs too
+    try {
+      const pSnap = await db.collection('pdfs').get();
+      for (const pd of pSnap.docs) {
+        const pdata = pd.data();
+        try {
+          const cSnap = await db.collection('pdfs').doc(pd.id).collection('chunks').get();
+          if (!cSnap.empty) {
+            cSnap.forEach(cd => {
+              const c = cd.data();
+              if (c.text && c.text.length > 20) {
+                const rn = c.pdfName || pdata.name || 'Document';
+                KB.push({ id: cd.id, name: rn.toLowerCase().trim(), originalName: rn, text: c.text });
+              }
+            });
+          } else if (pdata.text) {
+            const rn = pdata.name || 'Document';
+            KB.push({ id: pd.id, name: rn.toLowerCase().trim(), originalName: rn, text: pdata.text });
+          }
+        } catch(e) {}
+      }
+    } catch(e) {}
+
+    kbLoaded = true;
     console.log('KB loaded:', KB.length, 'items');
-  } catch(e) { console.error('loadKB error:', e); }
+    document.getElementById('kbStatus').textContent = KB.length + ' topics loaded';
+    setTimeout(() => { document.getElementById('kbStatus').textContent = ''; }, 3000);
+
+  } catch(e) {
+    console.error('loadKB error:', e);
+    document.getElementById('kbStatus').textContent = 'Knowledge load failed';
+  }
 }
 
-// ── SUPER ACCURATE SEARCH ──
+// ── SEARCH ENGINE ──
 function search(query) {
-  if (!KB.length) return null;
+  if (!KB.length) {
+    console.warn('KB empty! Not loaded yet.');
+    return null;
+  }
 
+  // Stopwords — only genuine filler words, NOT topic words
   const STOP = new Set([
     'the','a','an','and','or','but','in','on','at','to','for','of','with',
     'is','are','was','were','be','been','have','has','had','do','does','did',
-    'will','would','could','should','this','that','i','you','he','she','it',
-    'we','they','my','your','his','her','its','ka','ki','ke','hai','ko','se',
-    'mein','ne','kya','aur','ya','woh','yeh','ek','nahi','bhi','hi','also',
-    'from','by','as','not','all','can','may','more','one','some','other',
-    'than','then','there','their','which','who','what','how','when','where',
-    'about','tell','me','explain','describe','batao','bare','bata','karo',
-    'please','give','show','write','list','define','meaning','means','kaise',
-    'kaun','kahan','kab','kyun','kitna','kisne','konsa','wala','wali'
+    'will','would','could','should','this','that','i','you','we','they',
+    'my','your','its','ka','ki','ke','hai','ko','se','mein','ne','aur',
+    'ya','woh','yeh','ek','nahi','bhi','hi','about','tell','me','explain',
+    'describe','batao','bare','bata','please','give','show','define',
+    'meaning','means','kaise','kaun','kahan','kab','kyun','wala','wali',
+    'what','who','how','when','where','which','list','write','name'
   ]);
 
-  const ql = query.toLowerCase().replace(/[^\w\s]/g,' ');
+  const ql = query.toLowerCase()
+    .replace(/[^\w\s]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
 
-  // --- PHASE 1: Try exact full-query match on name ---
-  const fullQuery = ql.trim();
-  for (const item of KB) {
-    if (item.name === fullQuery) return { ...item, score: 9999 };
-  }
+  console.log('Searching for:', ql);
 
-  // --- PHASE 2: Try if name contains the full query ---
+  // ── PHASE 1: Exact full match on name ──
   for (const item of KB) {
-    if (item.name.includes(fullQuery) || fullQuery.includes(item.name)) {
-      // Only if name is substantial (>3 chars) to avoid false matches
-      if (item.name.length > 3) return { ...item, score: 8000 };
+    if (item.name === ql) {
+      console.log('Phase1 exact match:', item.originalName);
+      return item;
     }
   }
 
-  // --- PHASE 3: Extract keywords and score ---
-  const words = ql.split(/\s+/).filter(w => w.length > 2 && !STOP.has(w));
+  // ── PHASE 2: Name contains full query string ──
+  for (const item of KB) {
+    if (item.name.includes(ql) && ql.length > 3) {
+      console.log('Phase2 name contains query:', item.originalName);
+      return item;
+    }
+  }
+
+  // ── PHASE 3: Full query is contained in name ──
+  for (const item of KB) {
+    if (ql.includes(item.name) && item.name.length > 3) {
+      console.log('Phase3 query contains name:', item.originalName);
+      return item;
+    }
+  }
+
+  // ── PHASE 4: Extract keywords ──
+  const words = ql.split(' ').filter(w => w.length > 1 && !STOP.has(w));
+  console.log('Keywords:', words);
+
   if (!words.length) return null;
 
-  // Remove common question starters to get the real subject
-  // e.g. "who is narendra modi" -> ["narendra", "modi"]
-  // e.g. "what is machine learning" -> ["machine", "learning"]
-  const subject = words.join(' ');
+  // ── PHASE 5: All keywords match in name ──
+  if (words.length > 1) {
+    for (const item of KB) {
+      const allMatch = words.every(w => item.name.includes(w));
+      if (allMatch) {
+        console.log('Phase5 all words in name:', item.originalName);
+        return item;
+      }
+    }
+  }
 
+  // ── PHASE 6: Any keyword fully matches name or is main word ──
+  for (const w of words) {
+    if (w.length < 4) continue;
+    for (const item of KB) {
+      if (item.name === w || item.name.startsWith(w + ' ') || item.name.endsWith(' ' + w)) {
+        console.log('Phase6 keyword matches name:', item.originalName, 'word:', w);
+        return item;
+      }
+    }
+  }
+
+  // ── PHASE 7: Keyword appears anywhere in name ──
+  for (const w of words) {
+    if (w.length < 4) continue;
+    for (const item of KB) {
+      if (item.name.includes(w)) {
+        console.log('Phase7 keyword in name:', item.originalName, 'word:', w);
+        return item;
+      }
+    }
+  }
+
+  // ── PHASE 8: Score everything ──
   const scored = KB.map(item => {
     const name = item.name;
     const text = item.text.toLowerCase();
     let score = 0;
+    let nameHits = 0;
 
-    // How many of the subject words appear in the name?
-    let nameMatches = 0;
     words.forEach(w => {
-      if (name.includes(w)) nameMatches++;
+      if (w.length < 2) return;
+      // Name matches — high weight
+      if (name === w) { score += 500; nameHits++; }
+      else if (name.startsWith(w)) { score += 200; nameHits++; }
+      else if (name.includes(w)) { score += 100; nameHits++; }
+      // Text frequency — lower weight
+      if (w.length > 3) {
+        let pos = 0, cnt = 0;
+        while ((pos = text.indexOf(w, pos)) !== -1 && cnt < 20) { cnt++; pos++; }
+        score += cnt * 3;
+      }
     });
 
-    // All words match in name = very strong signal
-    if (nameMatches === words.length && words.length > 0) score += 500 * nameMatches;
-    else if (nameMatches > 0) score += 80 * nameMatches;
-
-    // Name starts with first keyword
-    if (words[0] && name.startsWith(words[0])) score += 100;
-
-    // Count keyword frequency in text (capped to avoid flooding)
-    words.forEach(w => {
-      let pos = 0, count = 0;
-      while ((pos = text.indexOf(w, pos)) !== -1 && count < 20) { count++; pos++; }
-      score += count * 2;
-    });
-
-    // PENALTY: if none of the words appear in the name at all
-    if (nameMatches === 0) score = Math.min(score, 30);
+    // If no name hits at all, heavily penalize
+    if (nameHits === 0) score = Math.min(score, 15);
 
     return { ...item, score };
   });
 
   scored.sort((a, b) => b.score - a.score);
   const best = scored[0];
+  console.log('Phase8 best:', best.originalName, 'score:', best.score);
 
-  console.log('Top match:', best.originalName, '| Score:', best.score, '| Query words:', words);
-
-  // Minimum threshold — must have a decent score
+  // Reject low confidence matches
   if (best.score < 10) return null;
 
-  // Extra safety: if score is low AND name doesn't share any word with query, reject
-  if (best.score < 100) {
-    const nameWords = best.name.split(/\s+/);
-    const overlap = words.filter(w => nameWords.some(nw => nw.includes(w) || w.includes(nw)));
-    if (overlap.length === 0) return null;
+  // Extra check: if score is borderline, make sure name and query share at least one word
+  if (best.score < 50) {
+    const nameWords = best.name.split(' ');
+    const hasOverlap = words.some(w => nameWords.some(nw => nw === w || (w.length > 4 && (nw.includes(w) || w.includes(nw)))));
+    if (!hasOverlap) return null;
   }
 
   return best;
@@ -449,84 +524,124 @@ function format(item, query) {
     .replace(/\n{3,}/g, '\n\n')
     .trim();
 
-  const sentences = text.split(/(?<=[.!?])\s+/).map(s => s.trim()).filter(s => s.length > 20);
-  if (!sentences.length) return `## ${item.originalName}\n\n${text}`;
+  const sentences = text
+    .split(/(?<=[.!?])\s+/)
+    .map(s => s.trim())
+    .filter(s => s.length > 25);
 
-  const isPerson = ql.match(/who (is|was|were)|biography|life|born|kaun|koun/);
-  const isHowTo = ql.match(/how (to|does|do|is|are)|kaise|steps|process|method/);
-  const isList = ql.match(/types|kinds|list|name all|examples/);
+  if (!sentences.length) return '## ' + item.originalName + '\n\n' + text;
 
-  let out = `## ${item.originalName}\n\n`;
+  const isPerson = /who (is|was|were)|biography|life|born|kaun|koun|person/.test(ql);
+  const isHowTo = /how (to|does|do|is|are)|kaise|steps|process|method/.test(ql);
+  const isList = /types|kinds|list|examples|name all/.test(ql);
+  const isCoding = /code|program|function|syntax|example|write|language|script/.test(ql);
 
-  if (isPerson) {
+  let out = '## ' + item.originalName + '\n\n';
+
+  if (isCoding) {
+    out += sentences.slice(0, 3).join(' ') + '\n\n';
+    const rest = sentences.slice(3, 8);
+    if (rest.length) {
+      out += '### Details\n\n';
+      rest.forEach(s => { out += '- ' + s + '\n'; });
+    }
+  } else if (isPerson) {
     out += sentences.slice(0, 2).join(' ') + '\n\n';
     const facts = sentences.slice(2, 7);
-    if (facts.length) { out += `### Key Facts\n\n`; facts.forEach(s => { out += `- ${s}\n`; }); }
+    if (facts.length) {
+      out += '### Key Facts\n\n';
+      facts.forEach(s => { out += '- ' + s + '\n'; });
+    }
   } else if (isHowTo) {
     out += sentences[0] + '\n\n';
     const steps = sentences.slice(1, 7);
-    if (steps.length) { out += `### Steps\n\n`; steps.forEach((s, i) => { out += `${i+1}. ${s}\n`; }); }
+    if (steps.length) {
+      out += '### Steps\n\n';
+      steps.forEach((s, i) => { out += (i+1) + '. ' + s + '\n'; });
+    }
   } else if (isList) {
     out += sentences[0] + '\n\n';
-    const items = sentences.slice(1, 7);
-    if (items.length) { out += `### Types\n\n`; items.forEach(s => { out += `- ${s}\n`; }); }
+    const items = sentences.slice(1, 8);
+    if (items.length) {
+      out += '### List\n\n';
+      items.forEach(s => { out += '- ' + s + '\n'; });
+    }
   } else {
     out += sentences.slice(0, 2).join(' ') + '\n\n';
-    const rest = sentences.slice(2, 6);
-    if (rest.length) { out += `### Key Points\n\n`; rest.forEach(s => { out += `- ${s}\n`; }); }
+    const rest = sentences.slice(2, 7);
+    if (rest.length) {
+      out += '### Key Points\n\n';
+      rest.forEach(s => { out += '- ' + s + '\n'; });
+    }
   }
 
   return out.trim();
 }
 
+// ── BUILT-IN RESPONSES ──
+const BUILTIN = [
+  {
+    k: ['hello','hi','hey','namaste','helo','hii','sup','hye','hiii'],
+    a: 'Hello! I am **Arovon** — India\'s own AI assistant.\n\nI can help you with:\n- **Science & Math** — Physics, Chemistry, Biology, Calculus\n- **Indian History & Culture** — People, Places, Events\n- **Coding** — Python, JavaScript, C++, Java, HTML, CSS, SQL and more\n- **General Knowledge** — Sports, Health, Geography\n- **Any Indian language** — Hindi, English, Tamil, Bengali and more\n\nWhat would you like to know?'
+  },
+  {
+    k: ['who are you','kaun ho','arovon kya hai','what are you','introduce yourself','aap kaun ho','tumhara naam'],
+    a: '## About Arovon\n\nI am **Arovon** — India\'s own AI assistant, built to help everyone.\n\n### What I can do:\n1. Answer questions on **any topic**\n2. Respond in **your language** — Hindi, English, Tamil, Bengali, Marathi and more\n3. Help with **coding** in any programming language\n4. Explain **complex topics** simply\n\n### My knowledge covers:\n- Science, Technology, Mathematics\n- Indian and World History, Geography\n- Health, Sports, Culture\n- Coding and Programming'
+  },
+  {
+    k: ['motivat','inspire','quote','himmat','hausla','zindagi quote','inspiring'],
+    a: '## Motivational Quotes\n\n> "Your time is limited, so do not waste it living someone else\'s life." — **Steve Jobs**\n\n> "The future belongs to those who believe in the beauty of their dreams." — **Eleanor Roosevelt**\n\n> "Arise, awake and stop not till the goal is reached." — **Swami Vivekananda**\n\n> "You have to dream before your dreams can come true." — **APJ Abdul Kalam**\n\nKeep going — every day is a new opportunity!'
+  },
+  {
+    k: ['thank','shukriya','thanks','dhanyawad','bahut accha','shukriya bhai','ty'],
+    a: 'You are most welcome! Feel free to ask me anything else.'
+  },
+  {
+    k: ['weather','mausam','temperature','aaj ka mausam','barish'],
+    a: 'I don\'t have live weather data.\n\n**For accurate weather:**\n- Visit **imd.gov.in** — India Meteorological Department\n- Google: your city + weather\n- Check your phone\'s weather app'
+  },
+  {
+    k: ['joke','jokes','funny','hasao','comedy','maza','mazaak'],
+    a: '## Here is a joke!\n\n**Why do programmers prefer dark mode?**\nBecause light attracts bugs!\n\n---\n\n**Teacher:** What is the full form of MATHS?\n**Student:** Mentally Affected Teacher Harassing Students!\n\nHope that made you smile!'
+  },
+  {
+    k: ['good morning','good night','good evening','good afternoon','subah','shubh'],
+    a: 'Good day to you! Hope you are having a wonderful time. How can I help you today?'
+  },
+  {
+    k: ['bye','goodbye','alvida','tata','ok bye','baad mein'],
+    a: 'Goodbye! Come back anytime you have questions. Take care!'
+  },
+];
+
 // ── MAIN REPLY ──
 async function getReply(q) {
-  const ql = q.toLowerCase();
+  const ql = q.toLowerCase().trim();
 
-  const builtIn = [
-    {
-      k: ['hello','hi','hey','namaste','helo','hii','sup','hye'],
-      a: `Hello! I am **Arovon** — India's own AI assistant.\n\nI can help you with:\n- **Science & Math** — Physics, Chemistry, Biology, Calculus\n- **Indian History & Culture** — People, Places, Events\n- **Coding** — Python, JavaScript, C++, Java, HTML, CSS, SQL and more\n- **General Knowledge** — Sports, Health, Geography\n- **Any Indian language** — Hindi, English, Tamil, Bengali and more\n\nWhat would you like to know?`
-    },
-    {
-      k: ['who are you','kaun ho','arovon kya','what are you','introduce yourself','aap kaun'],
-      a: `## About Arovon\n\nI am **Arovon** — India's own AI assistant, built to help everyone.\n\n### What I can do:\n1. Answer questions on **any topic**\n2. Respond in **your language** — Hindi, English, Tamil, Bengali, Marathi and more\n3. Help with **coding** in any programming language\n4. Explain **complex topics** simply\n\n### My knowledge covers:\n- Science, Technology, Mathematics\n- Indian and World History, Geography\n- Health, Sports, Culture\n- Coding and Programming`
-    },
-    {
-      k: ['motivat','inspire','quote','himmat','hausla','zindagi quote'],
-      a: `## Motivational Quotes\n\n> "Your time is limited, so do not waste it living someone else's life." — **Steve Jobs**\n\n> "The future belongs to those who believe in the beauty of their dreams." — **Eleanor Roosevelt**\n\n> "Arise, awake and stop not till the goal is reached." — **Swami Vivekananda**\n\n> "You have to dream before your dreams can come true." — **APJ Abdul Kalam**\n\nKeep going — every day is a new opportunity!`
-    },
-    {
-      k: ['thank','shukriya','thanks','dhanyawad','bahut accha'],
-      a: 'You are most welcome! Feel free to ask me anything else.'
-    },
-    {
-      k: ['weather','mausam','temperature','aaj ka mausam'],
-      a: `I don't have live weather data.\n\n**For accurate weather:**\n- Visit **imd.gov.in** — India Meteorological Department\n- Google: your city + weather\n- Check your phone's weather app`
-    },
-    {
-      k: ['joke','jokes','funny','hasao','comedy'],
-      a: `## Here is a joke!\n\n**Why do programmers prefer dark mode?**\nBecause light attracts bugs!\n\n---\n\n**Teacher:** What is the full form of MATHS?\n**Student:** Mentally Affected Teacher Harassing Students!\n\nHope that made you smile!`
-    },
-  ];
-
-  for (const item of builtIn) {
+  // Check built-in first
+  for (const item of BUILTIN) {
     if (item.k.some(k => ql.includes(k))) return { text: item.a };
+  }
+
+  // Wait for KB if still loading
+  if (!kbLoaded) {
+    await new Promise(r => setTimeout(r, 2000));
   }
 
   // Search KB
   const result = search(q);
   if (result) return { text: format(result, q) };
 
-  // Nothing found — honest message, not a random wrong answer
+  // Nothing found — honest message
   return {
-    text: `## 🔧 Server Maintenance\n\nI don't have specific information about **"${q}"** right now.\n\nThis could be because:\n- This topic is not yet in my knowledge base\n- The server is still loading data\n\n**Try asking about:**\n- Indian History — Gandhi, Mughal Empire, Independence\n- Science — Physics, Chemistry, DNA, Evolution\n- Coding — Python, JavaScript, C++, HTML, SQL\n- Sports — Cricket, IPL, Olympics\n- Geography — India, Himalaya, World capitals\n- Health — Nutrition, Vaccines, Mental health\n\nOr try rephrasing your question more specifically!`
+    text: '## I don\'t have that information yet\n\nI searched my knowledge base but could not find specific information about **"' + q + '"**.\n\n**Try asking about:**\n- **People** — Gandhi, APJ Abdul Kalam, Sachin Tendulkar, Narendra Modi\n- **Science** — Physics, Chemistry, DNA, Evolution, Quantum mechanics\n- **Coding** — Python, JavaScript, C++, Java, HTML, CSS, SQL, React\n- **History** — Mughal Empire, British Raj, Independence movement\n- **Sports** — Cricket, IPL, Olympics, Football\n- **Geography** — India, Himalaya, World capitals\n- **Health** — Nutrition, Vaccines, Mental health\n\nOr try being more specific — e.g. *"What is Python programming?"* instead of just *"Python"*'
   };
 }
 
 // ── CHAT CORE ──
 function newChat() {
-  sid = 'sess_' + Date.now(); fmsg = '';
+  sid = 'sess_' + Date.now();
+  fmsg = '';
   document.getElementById('welcomeScreen').style.display = 'flex';
   document.getElementById('msgsBox').style.display = 'none';
   document.getElementById('msgsBox').innerHTML = '';
@@ -534,7 +649,10 @@ function newChat() {
   if (window.innerWidth < 768) closeSB();
 }
 
-function useSug(t) { const el = document.getElementById('msgInput'); el.value = t; onType(el); send(); }
+function useSug(t) {
+  const el = document.getElementById('msgInput');
+  el.value = t; onType(el); send();
+}
 
 async function send() {
   const el = document.getElementById('msgInput');
@@ -549,7 +667,7 @@ async function send() {
   addUserBub(txt);
   await saveFB('user', txt);
   const typ = addTyping();
-  await sleep(350 + Math.random() * 350);
+  await sleep(300 + Math.random() * 300);
   const res = await getReply(txt);
   typ.remove();
   await addAIBub(res.text);
@@ -566,7 +684,7 @@ function addUserBub(txt) {
   const b = document.getElementById('msgsBox');
   const r = document.createElement('div');
   r.className = 'msg-row';
-  r.innerHTML = `<div class="msg-user"><div class="msg-user-bub">${esc(txt)}</div></div>`;
+  r.innerHTML = '<div class="msg-user"><div class="msg-user-bub">' + esc(txt) + '</div></div>';
   b.appendChild(r); scrollD();
 }
 
@@ -576,30 +694,14 @@ async function addAIBub(txt) {
   r.className = 'msg-row';
   const id = 'ai_' + Date.now();
   const enc = encodeURIComponent(txt);
-  r.innerHTML = `
-    <div class="msg-ai">
-      <div class="ai-av">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-          <circle cx="12" cy="12" r="5"/>
-          <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
-          <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
-        </svg>
-      </div>
-      <div class="ai-body">
-        <div class="ai-label">Arovon</div>
-        <div class="ai-text" id="${id}"></div>
-      </div>
-    </div>
-    <div class="msg-acts">
-      <button class="act-btn" onclick="cpTxt('${enc}',this)">Copy</button>
-    </div>`;
+  r.innerHTML = '<div class="msg-ai"><div class="ai-av"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg></div><div class="ai-body"><div class="ai-label">Arovon</div><div class="ai-text" id="' + id + '"></div></div></div><div class="msg-acts"><button class="act-btn" onclick="cpTxt(\'' + enc + '\',this)">Copy</button></div>';
   b.appendChild(r);
   const el = document.getElementById(id);
   const html = md2html(txt);
   await new Promise(res => {
     let i = 0;
     function tick() {
-      if (i < html.length) { el.innerHTML = html.substring(0, i + 8); i += 8; scrollD(); requestAnimationFrame(tick); }
+      if (i < html.length) { el.innerHTML = html.substring(0, i + 10); i += 10; scrollD(); requestAnimationFrame(tick); }
       else { el.innerHTML = html; scrollD(); res(); }
     }
     tick();
@@ -610,23 +712,15 @@ function addTyping() {
   const b = document.getElementById('msgsBox');
   const r = document.createElement('div');
   r.className = 'typ-row';
-  r.innerHTML = `
-    <div class="typ-av">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-        <circle cx="12" cy="12" r="5"/>
-        <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
-        <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
-      </svg>
-    </div>
-    <div class="typ-dots"><span></span><span></span><span></span></div>`;
+  r.innerHTML = '<div class="typ-av"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg></div><div class="typ-dots"><span></span><span></span><span></span></div>';
   b.appendChild(r); scrollD();
   return r;
 }
 
-// ── MARKDOWN ──
+// ── MARKDOWN TO HTML ──
 function md2html(text) {
   let s = text.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  s = s.replace(/```(\w*)\n?([\s\S]*?)```/g, (m,l,c) => `<pre><code>${c.trim()}</code></pre>`);
+  s = s.replace(/```(\w*)\n?([\s\S]*?)```/g, (m,l,c) => '<pre><code>' + c.trim() + '</code></pre>');
   s = s.replace(/`([^`\n]+)`/g, '<code>$1</code>');
   s = s.replace(/^#### (.+)$/gm,'<h4>$1</h4>');
   s = s.replace(/^### (.+)$/gm,'<h3>$1</h3>');
@@ -638,15 +732,15 @@ function md2html(text) {
   s = s.replace(/^&gt; (.+)$/gm,'<blockquote>$1</blockquote>');
   s = s.replace(/^---+$/gm,'<hr>');
   s = s.replace(/^\|(.+)\|$/gm, match => {
-    const cells = match.slice(1,-1).split('|').map(c=>c.trim());
-    return '<tr>'+cells.map(c=>`<td>${c}</td>`).join('')+'</tr>';
+    const cells = match.slice(1,-1).split('|').map(c => c.trim());
+    return '<tr>' + cells.map(c => '<td>' + c + '</td>').join('') + '</tr>';
   });
   s = s.replace(/((?:<tr>.*<\/tr>\n?)+)/g, block => {
     const rows = block.trim().split('\n').filter(r => r && !r.match(/^<tr><td>[-: |]+<\/td><\/tr>$/));
     if (!rows.length) return block;
     const head = rows[0].replace(/<td>/g,'<th>').replace(/<\/td>/g,'</th>');
     const body = rows.slice(1).join('');
-    return `<table><thead>${head}</thead><tbody>${body}</tbody></table>`;
+    return '<table><thead>' + head + '</thead><tbody>' + body + '</tbody></table>';
   });
   const lines = s.split('\n');
   let out = '', inUL = false, inOL = false;
@@ -654,26 +748,26 @@ function md2html(text) {
     if (/^- (.+)$/.test(line)) {
       if (inOL){out+='</ol>\n';inOL=false;}
       if (!inUL){out+='<ul>\n';inUL=true;}
-      out+=`<li>${line.slice(2)}</li>\n`;
+      out += '<li>' + line.slice(2) + '</li>\n';
     } else if (/^\d+\. (.+)$/.test(line)) {
       if (inUL){out+='</ul>\n';inUL=false;}
       if (!inOL){out+='<ol>\n';inOL=true;}
-      out+=`<li>${line.replace(/^\d+\. /,'')}</li>\n`;
+      out += '<li>' + line.replace(/^\d+\. /,'') + '</li>\n';
     } else {
       if (inUL){out+='</ul>\n';inUL=false;}
       if (inOL){out+='</ol>\n';inOL=false;}
-      out+=line+'\n';
+      out += line + '\n';
     }
   });
-  if (inUL) out+='</ul>\n';
-  if (inOL) out+='</ol>\n';
+  if (inUL) out += '</ul>\n';
+  if (inOL) out += '</ol>\n';
   s = out;
   const BLOCK = ['<h1','<h2','<h3','<h4','<ul','<ol','<pre','<table','<blockquote','<hr'];
   s = s.split(/\n{2,}/).map(p => {
     p = p.trim();
     if (!p) return '';
     if (BLOCK.some(b => p.startsWith(b))) return p;
-    return '<p>'+p.replace(/\n/g,'<br>')+'</p>';
+    return '<p>' + p.replace(/\n/g,'<br>') + '</p>';
   }).filter(Boolean).join('\n');
   s = s.replace(/<p><\/p>/g,'');
   s = s.replace(/<p>(<h[1-4]|<ul|<ol|<pre|<table|<blockquote|<hr)/g,'$1');
@@ -688,9 +782,9 @@ async function saveFB(role, text) {
   if (!me||!sid||!db) return;
   try {
     await db.collection('users').doc(me.uid).collection('chats').doc(sid).collection('messages')
-      .add({role,text,timestamp:firebase.firestore.FieldValue.serverTimestamp()});
+      .add({role, text, timestamp: firebase.firestore.FieldValue.serverTimestamp()});
     await db.collection('users').doc(me.uid).collection('chats').doc(sid)
-      .set({title:fmsg.substring(0,42)||'New chat',updatedAt:firebase.firestore.FieldValue.serverTimestamp(),model:mdl,uid:me.uid},{merge:true});
+      .set({title: fmsg.substring(0,42)||'New chat', updatedAt: firebase.firestore.FieldValue.serverTimestamp(), model: mdl, uid: me.uid},{merge:true});
   } catch(e){}
 }
 
@@ -711,16 +805,16 @@ function addHistEl(id, title, active) {
   const emp = list.querySelector('.hist-empty');
   if (emp) emp.remove();
   const el = document.createElement('div');
-  el.className = 'hi'+(active?' on':'');
+  el.className = 'hi' + (active?' on':'');
   el.dataset.id = id;
-  el.innerHTML = `<span class="hi-txt">${esc(title)}</span><button class="hi-del" onclick="delChat(event,'${id}')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg></button>`;
+  el.innerHTML = '<span class="hi-txt">' + esc(title) + '</span><button class="hi-del" onclick="delChat(event,\'' + id + '\')"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg></button>';
   el.addEventListener('click', e => { if (!e.target.closest('.hi-del')) openChat(id, el); });
   list.insertBefore(el, list.firstChild);
   return el;
 }
 
 function updateHist() {
-  if (!document.querySelector(`.hi[data-id="${sid}"]`)) {
+  if (!document.querySelector('.hi[data-id="' + sid + '"]')) {
     document.querySelectorAll('.hi').forEach(e => e.classList.remove('on'));
     addHistEl(sid, fmsg.substring(0,40)||'New chat', true);
   }
@@ -744,12 +838,12 @@ async function openChat(id, el) {
         const row = document.createElement('div');
         row.className = 'msg-row';
         const enc = encodeURIComponent(data.text||'');
-        row.innerHTML = `<div class="msg-ai"><div class="ai-av" style="width:28px;height:28px;border-radius:8px;background:var(--accent);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg></div><div class="ai-body"><div class="ai-label">Arovon</div><div class="ai-text">${md2html(data.text||'')}</div></div></div><div class="msg-acts"><button class="act-btn" onclick="cpTxt('${enc}',this)">Copy</button></div>`;
+        row.innerHTML = '<div class="msg-ai"><div class="ai-av" style="width:28px;height:28px;border-radius:8px;background:var(--accent);flex-shrink:0;margin-top:2px;display:flex;align-items:center;justify-content:center;"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/><line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/></svg></div><div class="ai-body"><div class="ai-label">Arovon</div><div class="ai-text">' + md2html(data.text||'') + '</div></div></div><div class="msg-acts"><button class="act-btn" onclick="cpTxt(\'' + enc + '\',this)">Copy</button></div>';
         b.appendChild(row);
       }
     });
     scrollD();
-  } catch(e){showToast('Could not load chat');}
+  } catch(e){ showToast('Could not load chat'); }
   if (window.innerWidth<768) closeSB();
 }
 
@@ -762,26 +856,35 @@ async function delChat(e, id) {
     ms.forEach(d => batch.delete(d.ref));
     await batch.commit();
     await db.collection('users').doc(me.uid).collection('chats').doc(id).delete();
-    const el = document.querySelector(`.hi[data-id="${id}"]`);
+    const el = document.querySelector('.hi[data-id="' + id + '"]');
     if (el) el.remove();
     const list = document.getElementById('histList');
     if (!list.children.length) list.innerHTML='<div class="hist-empty">No chats yet</div>';
     if (sid===id) newChat();
     showToast('Chat deleted');
-  } catch(e){showToast('Delete failed');}
+  } catch(e){ showToast('Delete failed'); }
 }
 
+// ── MODEL ──
 function toggleMdl(){document.getElementById('mdlDD').classList.toggle('open');document.getElementById('mdlBtn').classList.toggle('open');}
 function pickMdl(name,id,el){mdl=id;document.getElementById('mdlName').textContent=name;document.querySelectorAll('.mdl-opt').forEach(o=>o.classList.remove('sel'));el.classList.add('sel');toggleMdl();}
+
+// ── SIDEBAR ──
 function openSB(){document.getElementById('sb').classList.add('open');document.getElementById('overlay').classList.add('show');}
 function closeSB(){document.getElementById('sb').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
+
+// ── DROPDOWN ──
 function toggleDD(){document.getElementById('uDD').classList.toggle('open');}
 document.addEventListener('click', e => {
   if (!e.target.closest('#uRow')) document.getElementById('uDD').classList.remove('open');
   if (!e.target.closest('.mdl-wrap')){document.getElementById('mdlDD').classList.remove('open');document.getElementById('mdlBtn').classList.remove('open');}
 });
+
+// ── INPUT ──
 function onKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}}
 function onType(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,150)+'px';document.getElementById('sendBtn').disabled=!el.value.trim()||busy;}
+
+// ── UTILS ──
 function scrollD(){const c=document.getElementById('chatScroll');c.scrollTop=c.scrollHeight;}
 function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2400);}
 </script>
